@@ -51,7 +51,7 @@ if __name__ == "__main__":
     application.listen(port)
     ioloop = tornado.ioloop.IOLoop().instance()
 
-    tornado.ioloop.PeriodicCallback(twitter.check, 3600 * 1000 * 24).start()
+    tornado.ioloop.PeriodicCallback(twitter.check, 60*1000).start()
 
     tornado.autoreload.start(ioloop)
     ioloop.start()
