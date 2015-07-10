@@ -12,9 +12,9 @@ import tornado_bz
 import twitter
 # 登录模块
 from ui_module import login_m
+from ui_module import profile_m
 
 OK = '0'
-
 
 class login(login_m.login):
 
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     print port
 
     url_map = tornado_bz.getURLMap(the_class)
-    url_map.append((r'/', login))
+    url_map.append((r'/', profile_m.profile))
     url_map.append((r'/static/(.*)', tornado.web.StaticFileHandler, {'path': "./static"}))
 
     settings = tornado_bz.getSettings()

@@ -64,34 +64,48 @@ def saveTwitter(tweet):
     create by bigzhu at 15/07/10 14:39:48
         保存twitter
     '''
-    del tweet.user._json
-    del tweet.user._api
-    tweet.user.entities = json.dumps(tweet.user.entities)
 
-    db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.user))
-    tweet.user = tweet.user.id
-    del tweet.user
+    if hasattr(tweet, 'user'):
+        del tweet.user._json
+        del tweet.user._api
+        tweet.user.entities = json.dumps(tweet.user.entities)
 
-    db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.author))
-    tweet.author = tweet.author.id
+        del tweet.user.id
+        db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.user), "id_str='%s'" % tweet.user.id_str)
+        tweet.user = tweet.user.id_str
+        del tweet.user
 
-    del tweet.author
+    if hasattr(tweet, 'author'):
+        #del tweet.author.id
+        db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.author), "id_str='%s'" % tweet.author.id_str)
+        tweet.author = tweet.author.id_str
 
-    del tweet._api
-    del tweet._json
+        del tweet.author
+
+    if hasattr(tweet, '_api'):
+        del tweet._api
+    if hasattr(tweet, '_json'):
+        del tweet._json
     # twitter id 太大了 "id": 618948810941673472 导致 psycopg2.DataError: integer out of range
-    del tweet.id
+    if hasattr(tweet, 'id'):
+        del tweet.id
 
-    tweet.entities = json.dumps(tweet.entities)
+    if hasattr(tweet, 'entities'):
+        tweet.entities = json.dumps(tweet.entities)
     if hasattr(tweet, 'extended_entities'):
         tweet.extended_entities = json.dumps(tweet.extended_entities)
     if hasattr(tweet, 'retweeted_status'):
         saveTwitter(tweet.retweeted_status)
         tweet.retweeted_status = tweet.retweeted_status.id_str
+    if hasattr(tweet, 'quoted_status'):
+        print tweet.quoted_status
+        del tweet.quoted_status
+    #    saveTwitter(tweet.quoted_status)
+    #    tweet.quoted_status = tweet.quoted_status.id_str
 
     #for k, v in vars(tweet).items():
     #    print '%s=%s' % (k, v)
 
     return db_bz.insertIfNotExist(pg, 'twitter_message', vars(tweet), "id_str='%s'" % tweet.id_str)
 if __name__ == '__main__':
-    getUserTimeline('bigzhu')
+    getUserTimeline('Cluvmmy')

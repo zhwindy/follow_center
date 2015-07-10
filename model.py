@@ -19,6 +19,9 @@ class twitter_message(model_oper_bz.base):
     create by bigzhu at 15/07/08 17:28:57 放twitter的用户的信息
 
     '''
+    quoted_status_id_str = TextField(null=True) #
+    quoted_status_id = TextField(null=True) #
+    quoted_status = TextField(null=True) #
     retweeted_status = TextField(null=True) # 转发的消息
     extended_entities = TextField(null=True)
     contributors = TextField(null=True)  # ?
