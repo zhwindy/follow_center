@@ -89,8 +89,8 @@ def saveTwitter(tweet):
         saveTwitter(tweet.retweeted_status)
         tweet.retweeted_status = tweet.retweeted_status.id_str
 
-    for k, v in vars(tweet).items():
-        print '%s=%s' % (k, v)
+    #for k, v in vars(tweet).items():
+    #    print '%s=%s' % (k, v)
 
     return db_bz.insertIfNotExist(pg, 'twitter_message', vars(tweet), "id_str='%s'" % tweet.id_str)
 if __name__ == '__main__':
