@@ -69,11 +69,11 @@ def saveTwitter(tweet):
     tweet.user.entities = json.dumps(tweet.user.entities)
 
     db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.user))
-    tweet.user_id = tweet.user.id
+    tweet.user = tweet.user.id
     del tweet.user
 
     db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.author))
-    tweet.author_id = tweet.author.id
+    tweet.author = tweet.author.id
 
     del tweet.author
 

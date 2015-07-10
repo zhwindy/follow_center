@@ -28,7 +28,7 @@ class twitter_message(model_oper_bz.base):
     in_reply_to_status_id = TextField(null=True)  # ?
     # id
     favorite_count = IntegerField(null=True)
-    author_id = TextField(null=True) #作者详情
+    author = TextField(null=True) #作者详情
     #_json json
     coordinates = TextField(null=True)  # 座标
     entities = TextField(null=True)  # 实体
@@ -38,7 +38,7 @@ class twitter_message(model_oper_bz.base):
     id_str = TextField(null=True)
     favorited = BooleanField(null=True)
     source_url = TextField(null=True)
-    user_id  = TextField(null=True) #用户详情
+    user  = TextField(null=True) #用户详情
     geo = TextField(null=True)
     in_reply_to_user_id_str = TextField(null=True)
     lang = TextField(null=True)
@@ -104,5 +104,5 @@ if __name__ == '__main__':
     # 需要用户登录模块
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
     model_oper_bz.createTable(model_bz.user_info, db_name)
-    model_oper_bz.reCreateTable(twitter_message, db_name)
+    model_oper_bz.reCreateTable(twitter_message, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
     model_oper_bz.createTable(twitter_user, db_name)
