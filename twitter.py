@@ -92,4 +92,4 @@ def saveTwitter(tweet):
 
     return db_bz.insertIfNotExist(pg, 'twitter_message', vars(tweet), "id_str='%s'" % tweet.id_str)
 if __name__ == '__main__':
-    getUserTimeline('wwwGUIA')
+    getUserTimeline('bigzhu')
