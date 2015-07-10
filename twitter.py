@@ -67,8 +67,7 @@ def saveTwitter(tweet):
     del tweet.user._json
     del tweet.user._api
     tweet.user.entities = json.dumps(tweet.user.entities)
-    for k, v in vars(tweet.user).items():
-        print '%s=%s' % (k, v)
+
     db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.user))
     tweet.user_id = tweet.user.id
     del tweet.user
@@ -89,6 +88,9 @@ def saveTwitter(tweet):
     if hasattr(tweet, 'retweeted_status'):
         saveTwitter(tweet.retweeted_status)
         tweet.retweeted_status = tweet.retweeted_status.id_str
+
+    for k, v in vars(tweet).items():
+        print '%s=%s' % (k, v)
 
     return db_bz.insertIfNotExist(pg, 'twitter_message', vars(tweet), "id_str='%s'" % tweet.id_str)
 if __name__ == '__main__':
