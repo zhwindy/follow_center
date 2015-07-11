@@ -13,8 +13,10 @@ import twitter
 # 登录模块
 from ui_module import login_m
 from ui_module import profile_m
+import public_db
 
 OK = '0'
+
 
 class login(login_m.login):
 
@@ -22,9 +24,21 @@ class login(login_m.login):
 
     def initialize(self):
         login_m.login.initialize(self)
-        #self.oauth2.douban.enabled = True
+        # self.oauth2.douban.enabled = True
         self.oauth2.google.enabled = True
         self.oauth2.twitter.enabled = True
+
+
+class main(tornado_bz.BaseHandler):
+
+    '''
+    首页
+    create by bigzhu at 15/07/11 16:21:16
+    '''
+
+    def get(self):
+        twitter_messages = public_db.getTwitterMessages()
+        self.render(tornado_bz.getTName(self), twitter_messages=twitter_messages)
 
 
 if __name__ == "__main__":
@@ -51,7 +65,7 @@ if __name__ == "__main__":
     application.listen(port)
     ioloop = tornado.ioloop.IOLoop().instance()
 
-    tornado.ioloop.PeriodicCallback(twitter.check, 60*1000).start()
+    tornado.ioloop.PeriodicCallback(twitter.check, 60 * 1000).start()
 
     tornado.autoreload.start(ioloop)
     ioloop.start()

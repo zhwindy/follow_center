@@ -72,13 +72,13 @@ def saveTwitter(tweet):
 
         del tweet.user.id
         db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.user), "id_str='%s'" % tweet.user.id_str)
-        tweet.user = tweet.user.id_str
+        tweet.t_user_id = tweet.user.id_str
         del tweet.user
 
     if hasattr(tweet, 'author'):
         #del tweet.author.id
         db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.author), "id_str='%s'" % tweet.author.id_str)
-        tweet.author = tweet.author.id_str
+        tweet.t_author_id = tweet.author.id_str
 
         del tweet.author
 

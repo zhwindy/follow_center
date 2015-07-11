@@ -31,7 +31,7 @@ class twitter_message(model_oper_bz.base):
     in_reply_to_status_id = TextField(null=True)  # ?
     # id
     favorite_count = IntegerField(null=True)
-    author = TextField(null=True) #作者详情
+    t_author_id = TextField(null=True) #作者详情
     #_json json
     coordinates = TextField(null=True)  # 座标
     entities = TextField(null=True)  # 实体
@@ -41,7 +41,7 @@ class twitter_message(model_oper_bz.base):
     id_str = TextField(null=True)
     favorited = BooleanField(null=True)
     source_url = TextField(null=True)
-    user  = TextField(null=True) #用户详情
+    t_user_id  = TextField(null=True) #用户详情
     geo = TextField(null=True)
     in_reply_to_user_id_str = TextField(null=True)
     lang = TextField(null=True)
@@ -67,7 +67,7 @@ class twitter_user(model_oper_bz.base):
     #_api
     verified = BooleanField(null=True)
     profile_text_color = TextField(null=True)
-    profile_image_url_https = TextField(null=True)
+    profile_image_url_https = TextField(null=True) #用户头像
     profile_sidebar_fill_color = TextField(null=True)
     is_translator = BooleanField(null=True)
     geo_enabled = BooleanField(null=True)
