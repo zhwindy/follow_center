@@ -12,8 +12,10 @@ import tornado_bz
 import twitter
 # 登录模块
 from ui_module import login_m
-from ui_module import profile_m
 import public_db
+import user_bz
+import json
+import db_bz
 
 OK = '0'
 
@@ -41,6 +43,35 @@ class main(tornado_bz.BaseHandler):
         self.render(tornado_bz.getTName(self), twitter_messages=twitter_messages)
 
 
+class add(tornado_bz.BaseHandler):
+
+    '''
+    create by bigzhu at 15/07/11 22:07:36 添加要跟踪的人
+    '''
+    @tornado_bz.mustLogin
+    def get(self, user_name='-1'):
+        user_oper = user_bz.UserOper(self.pg)
+        user_info = user_oper.getUserInfo(user_name=user_name)
+        if user_info:
+            user_info = user_info[0]
+        else:
+            user_info = user_oper.getEmptyUserInfo()
+            if user_name != '-1':
+                user_info.user_name = user_name
+        self.render(tornado_bz.getTName(self), user_info=user_info)
+
+    @tornado_bz.mustLoginApi
+    @tornado_bz.handleError
+    def post(self):
+        self.set_header("Content-Type", "application/json")
+        data = json.loads(self.request.body)
+
+        id = db_bz.insertIfNotExist(pg, 'user_info', data, "user_name='%s'" % data['user_name'])
+        if id is None:
+            self.pg.db.update("user_info", where="user_name='%s'" % self.data['user_name'], **data)
+        self.write(json.dumps({'error': '0'}))
+
+
 if __name__ == "__main__":
 
     the_class = tornado_bz.getAllUIModuleRequestHandlers()
@@ -53,7 +84,7 @@ if __name__ == "__main__":
     print port
 
     url_map = tornado_bz.getURLMap(the_class)
-    url_map.append((r'/', profile_m.profile))
+    url_map.append((r'/', main))
     url_map.append((r'/static/(.*)', tornado.web.StaticFileHandler, {'path': "./static"}))
 
     settings = tornado_bz.getSettings()

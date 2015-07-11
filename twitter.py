@@ -103,6 +103,10 @@ def saveTwitter(tweet):
     #    saveTwitter(tweet.quoted_status)
     #    tweet.quoted_status = tweet.quoted_status.id_str
 
+    #place  是一个对象(我不知道如何处理): Place(_api=<tweepy.api.API object at 0x1808050>
+    if hasattr(tweet, 'place'):
+        del tweet.place
+
     #for k, v in vars(tweet).items():
     #    print '%s=%s' % (k, v)
 

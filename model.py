@@ -5,7 +5,7 @@
 '''
 import model_oper_bz
 from peewee import TextField, IntegerField, BooleanField, DateTimeField
-#from playhouse.postgres_ext import JSONField
+from playhouse.postgres_ext import JSONField
 import public_bz
 import model_bz
 
@@ -23,7 +23,7 @@ class twitter_message(model_oper_bz.base):
     quoted_status_id = TextField(null=True) #
     quoted_status = TextField(null=True) #
     retweeted_status = TextField(null=True) # 转发的消息
-    extended_entities = TextField(null=True)
+    extended_entities = JSONField(null=True) # 外部资源,图片啊什么的
     contributors = TextField(null=True)  # ?
     truncated = BooleanField(null=True)  # 是否截取
     text = TextField(null=True)  # 消息内容
@@ -105,7 +105,5 @@ class twitter_user(model_oper_bz.base):
 
 if __name__ == '__main__':
     # 需要用户登录模块
-    #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
-    model_oper_bz.createTable(model_bz.user_info, db_name)
-    model_oper_bz.reCreateTable(twitter_message, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
-    model_oper_bz.createTable(twitter_user, db_name)
+    model_oper_bz.reCreateTable(model_bz.user_info, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
+    #model_oper_bz.reCreateAllTable(globals().copy(), db_name, user='follow_center', password='follow_center', host='bigzhu.org')
