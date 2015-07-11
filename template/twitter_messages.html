@@ -1,0 +1,39 @@
+{% for twitter_message in twitter_messages %}
+<div class="box box-solid item">
+    <div class="box-header">
+        <h3 class="box-title">
+            <a v-on="click:increaseClickCount({{twitter_message.id}})" href="/user/{{twitter_message.screen_name}}">
+                <img src="{{twitter_message.profile_image_url_https}}" class="img-thumbnail height1 align-bottom">
+                {{twitter_message.screen_name}}
+            </a>
+        </h3>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-9">
+                <p class="description_bz">{{twitter_message.text}}</p>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+
+        {%if twitter_message.extended_entities and twitter_message.extended_entities.get('media')%}
+
+        <div class="row">
+            {%for media in twitter_message.extended_entities['media']%}
+            <div class="col-md-6">
+                <a href="{{media['media_url_https']}}">
+                    <img src="{{media['media_url_https']}}" class="img-responsive">
+                </a>
+            </div>
+            {%end%}
+        </div>
+
+        {%end%}
+    </div>
+    <div class="box-footer">
+        <i class="fa fa-hand-o-up" title="转发"></i> {{twitter_message.retweet_count}}
+        <a v-on="click:like($event, {{twitter_message.id}})" class="btn red btn-xs pull-right"><i class="fa fa-heart"></i> {{twitter_message.favorite_count}}</a>
+    </div>
+</div>
+{% end %}

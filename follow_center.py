@@ -13,7 +13,6 @@ import twitter
 # 登录模块
 from ui_module import login_m
 import public_db
-import user_bz
 import json
 import db_bz
 
@@ -50,15 +49,8 @@ class add(tornado_bz.BaseHandler):
     '''
     @tornado_bz.mustLogin
     def get(self, user_name='-1'):
-        user_oper = user_bz.UserOper(self.pg)
-        user_info = user_oper.getUserInfo(user_name=user_name)
-        if user_info:
-            user_info = user_info[0]
-        else:
-            user_info = user_oper.getEmptyUserInfo()
-            if user_name != '-1':
-                user_info.user_name = user_name
-        self.render(tornado_bz.getTName(self), user_info=user_info)
+        user_info = public_db.getUserInfoByName(user_name)
+        self.render(self.template, user_info=user_info)
 
     @tornado_bz.mustLoginApi
     @tornado_bz.handleError
@@ -71,6 +63,17 @@ class add(tornado_bz.BaseHandler):
             self.pg.db.update("user_info", where="user_name='%s'" % self.data['user_name'], **data)
         self.write(json.dumps({'error': '0'}))
 
+
+class user(add):
+    '''
+    create by bigzhu at 15/07/11 23:43:16 显示这个用户的信息
+    '''
+
+    @tornado_bz.mustLogin
+    def get(self, user_name='-1'):
+        user_info = public_db.getUserInfoByName(user_name)
+        twitter_messages = public_db.getTwitterMessagesByName(user_name)
+        self.render(self.template, user_info=user_info, twitter_messages=twitter_messages)
 
 if __name__ == "__main__":
 
