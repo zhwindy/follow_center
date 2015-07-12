@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block body %}
+{% for user in users %}
+<div class="box box-solid item">
+    <div class="box-header">
+        <h3 class="box-title">
+            <a v-on="click:increaseClickCount({{user.id}})" href="/user/{{user.user_name}}">
+                <img src="{{user.picture}}" class="img-thumbnail height1 align-bottom">
+                {{user.user_name}}
+            </a>
+        </h3>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-9">
+                <p class="description_bz">{{user.slogan}}</p>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <i class="fa fa-hand-o-up" title="转发"></i> user.retweet_count
+        <a v-on="click:like($event, {{user.id}})" class="btn red btn-xs pull-right"><i class="fa fa-heart"></i> user.favorite_count</a>
+    </div>
+</div>
+{% end %}
+{% end %}
