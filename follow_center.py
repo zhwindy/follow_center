@@ -15,6 +15,7 @@ from ui_module import login_m
 import public_db
 import json
 import db_bz
+from proxy import ProxyHandler
 
 OK = '0'
 
