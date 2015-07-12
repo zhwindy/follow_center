@@ -5,7 +5,7 @@
     <div class="box-header">
         <h3 class="box-title">
             <a v-on="click:increaseClickCount({{user.id}})" href="/user/{{user.user_name}}">
-                <img src="{{user.picture}}" class="img-thumbnail height1 align-bottom">
+                <img src="{{user.picture or user.profile_image_url_https}}" class="img-thumbnail height1 align-bottom">
                 {{user.user_name}}
             </a>
         </h3>
@@ -20,8 +20,10 @@
         </div>
     </div>
     <div class="box-footer">
-        <i class="fa fa-hand-o-up" title="转发"></i> user.retweet_count
-        <a v-on="click:like($event, {{user.id}})" class="btn red btn-xs pull-right"><i class="fa fa-heart"></i> user.favorite_count</a>
+        <a title="被关注" v-on="click:like($event, {{user.id}})" class="btn red btn-xs ">关注者<i class="fa fa-heart"></i>  {{user.followers_count}}</a>
+        <div class="pull-right">
+            <i class="fa fa-hand-o-up " title="关注了"></i> {{user.friends_count}}
+        </div>
     </div>
 </div>
 {% end %}

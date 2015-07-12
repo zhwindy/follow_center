@@ -60,7 +60,7 @@ class add(tornado_bz.UserInfoHandler):
 
         id = db_bz.insertIfNotExist(pg, 'user_info', data, "user_name='%s'" % data['user_name'])
         if id is None:
-            self.pg.db.update("user_info", where="user_name='%s'" % self.data['user_name'], **data)
+            self.pg.db.update("user_info", where="user_name='%s'" % data['user_name'], **data)
         self.write(json.dumps({'error': '0'}))
 
 
@@ -80,11 +80,11 @@ class user(add):
 class users(tornado_bz.UserInfoHandler):
 
     '''
-    create by bigzhu at 15/07/12 23:43:54 显示所有的大神
+    create by bigzhu at 15/07/12 23:43:54 显示所有的大神, 关联twitter
     '''
 
     def get(self):
-        users = public_db.getUserInfo()
+        users = public_db.getUserInfoTwitterUser()
         self.render(self.template, users=users)
 
 

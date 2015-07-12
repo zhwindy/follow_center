@@ -4,6 +4,7 @@ import pg
 import user_bz
 user_oper = user_bz.UserOper(pg)
 
+
 def getTwitterMessages():
     sql = '''
     select * from twitter_message tm, twitter_user tu
@@ -22,8 +23,14 @@ def getTwitterMessagesByName(user_name):
     ''' % user_name
     return pg.db.query(sql)
 
-def getUserInfo():
-    return user_oper.getUserInfo()
+
+def getUserInfoTwitterUser():
+    sql = '''
+    select * from user_info u, twitter_user tu
+        where u.twitter = tu.screen_name
+    '''
+    return pg.db.query(sql)
+
 
 def getUserInfoByName(user_name):
     user_info = user_oper.getUserInfo(user_name=user_name)
