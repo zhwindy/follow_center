@@ -105,5 +105,6 @@ class twitter_user(model_oper_bz.base):
 
 if __name__ == '__main__':
     # 需要用户登录模块
-    model_oper_bz.reCreateTable(model_bz.user_info, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
+    #model_oper_bz.reCreateTable(model_bz.user_info, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
     #model_oper_bz.reCreateAllTable(globals().copy(), db_name, user='follow_center', password='follow_center', host='bigzhu.org')
+    model_oper_bz.reCreateAllTable(globals().copy(), db_name)

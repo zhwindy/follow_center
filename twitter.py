@@ -9,6 +9,7 @@ import db_bz
 import pg
 import json
 import http_bz
+import public_bz
 config = ConfigParser.ConfigParser()
 with open('twitter.ini', 'r') as cfg_file:
     config.readfp(cfg_file)
@@ -29,13 +30,14 @@ def check():
             checkUserMessage(user.twitter)
 
 
-def checkUserMessage(url):
+def checkUserMessage(twitter_name):
     '''
     create by bigzhu at 15/07/10 14:41:57
     根据用户twitter url 取用户的最新 message
+    modify by bigzhu at 15/07/13 00:03:52 只存放用户名,不用再取最后一个了
     '''
-    user_name = http_bz.getUrlLastPath(url)
-    getUserTimeline(user_name)
+    #user_name = http_bz.getUrlLastPath(url)
+    getUserTimeline(twitter_name)
 
 
 def getUserTimeline(screen_name):
@@ -50,13 +52,15 @@ def getUserTimeline(screen_name):
     auth.set_access_token(access_token, access_token_secret)
 
     api = tweepy.API(auth)
-    public_tweets = api.user_timeline(screen_name=screen_name)
-    #public_tweets = api.home_timeline()
-    # print dir(public_tweets[0])
-    for tweet in public_tweets:
-        id = saveTwitter(tweet)
-        if id is not None:  # 新增加消息
-            print 'new=', tweet.text
+    try:
+        public_tweets = api.user_timeline(screen_name=screen_name)
+        for tweet in public_tweets:
+            id = saveTwitter(tweet)
+            if id is not None:  # 新增加消息
+                print 'new=', tweet.text
+    except tweepy.error.TweepError:
+        print 'screen_name=', screen_name
+        public_bz.getExpInfo()
 
 
 def saveTwitter(tweet):
@@ -98,18 +102,19 @@ def saveTwitter(tweet):
         saveTwitter(tweet.retweeted_status)
         tweet.retweeted_status = tweet.retweeted_status.id_str
     if hasattr(tweet, 'quoted_status'):
-        print tweet.quoted_status
+        # print tweet.quoted_status
         del tweet.quoted_status
     #    saveTwitter(tweet.quoted_status)
     #    tweet.quoted_status = tweet.quoted_status.id_str
 
-    #place  是一个对象(我不知道如何处理): Place(_api=<tweepy.api.API object at 0x1808050>
+    # place  是一个对象(我不知道如何处理): Place(_api=<tweepy.api.API object at 0x1808050>
     if hasattr(tweet, 'place'):
         del tweet.place
 
-    #for k, v in vars(tweet).items():
+    # for k, v in vars(tweet).items():
     #    print '%s=%s' % (k, v)
 
     return db_bz.insertIfNotExist(pg, 'twitter_message', vars(tweet), "id_str='%s'" % tweet.id_str)
 if __name__ == '__main__':
-    getUserTimeline('Cluvmmy')
+    check()
+    # getUserTimeline('Cluvmmy')

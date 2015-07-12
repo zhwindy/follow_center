@@ -30,7 +30,7 @@ class login(login_m.login):
         self.oauth2.twitter.enabled = True
 
 
-class main(tornado_bz.BaseHandler):
+class main(tornado_bz.UserInfoHandler):
 
     '''
     首页
@@ -42,7 +42,7 @@ class main(tornado_bz.BaseHandler):
         self.render(tornado_bz.getTName(self), twitter_messages=twitter_messages)
 
 
-class add(tornado_bz.BaseHandler):
+class add(tornado_bz.UserInfoHandler):
 
     '''
     create by bigzhu at 15/07/11 22:07:36 添加要跟踪的人
@@ -65,6 +65,7 @@ class add(tornado_bz.BaseHandler):
 
 
 class user(add):
+
     '''
     create by bigzhu at 15/07/11 23:43:16 显示这个用户的信息
     '''
@@ -74,6 +75,18 @@ class user(add):
         user_info = public_db.getUserInfoByName(user_name)
         twitter_messages = public_db.getTwitterMessagesByName(user_name)
         self.render(self.template, user_info=user_info, twitter_messages=twitter_messages)
+
+
+class users(tornado_bz.UserInfoHandler):
+
+    '''
+    create by bigzhu at 15/07/12 23:43:54 显示所有的大神
+    '''
+
+    def get(self):
+        users = public_db.getUserInfo()
+        self.render(self.template, users=users)
+
 
 if __name__ == "__main__":
 

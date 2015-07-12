@@ -19,9 +19,10 @@
     <body class="skin-yellow layout-top-nav">
         {% from public_bz import storage%}
         {% set links = [] %}
-        {% set links.append(storage(href='/add', name='添加牛人')) %}
+        {% set links.append(storage(href='/add', name='添加大神')) %}
+        {% set links.append(storage(href='/users', name='大神们')) %}
         {% set links.append(storage(href='http://me.bigzhu.org', name='关于bigzhu')) %}
-        {% module header_m(None, 'Follow Center', links, need_login=True) %}
+        {% module header_m(user_info, 'Follow Center', links, need_login=True) %}
         <br>
         <div class="container">
             <div class="row">

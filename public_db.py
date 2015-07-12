@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import pg
 import user_bz
-
+user_oper = user_bz.UserOper(pg)
 
 def getTwitterMessages():
     sql = '''
@@ -22,9 +22,10 @@ def getTwitterMessagesByName(user_name):
     ''' % user_name
     return pg.db.query(sql)
 
+def getUserInfo():
+    return user_oper.getUserInfo()
 
 def getUserInfoByName(user_name):
-    user_oper = user_bz.UserOper(pg)
     user_info = user_oper.getUserInfo(user_name=user_name)
     if user_info:
         user_info = user_info[0]
