@@ -3,7 +3,9 @@
     <div class="box-header">
         <h3 class="box-title">
             <a v-on="click:increaseClickCount({{twitter_message.id}})" href="/user/{{twitter_message.screen_name}}">
-                <img src="{{twitter_message.profile_image_url_https}}" class="img-thumbnail height1 align-bottom">
+                <img src="{{twitter_message.profile_image_url_https}}" class="img-thumbnail height1 align-bottom"
+                onerror="this.onerror=null;this.src='/ProxyHandler/{{twitter_message.profile_image_url_https}}';"
+                >
                 {{twitter_message.screen_name}}
             </a>
         </h3>
@@ -23,7 +25,9 @@
             {%for media in twitter_message.extended_entities['media']%}
             <div class="col-md-6">
                 <a href="{{media['media_url_https']}}">
-                    <img src="{{media['media_url_https']}}" class="img-responsive">
+                    <img src="{{media['media_url_https']}}" class="img-responsive"
+                    onerror="this.onerror=null;this.src='/ProxyHandler/{{media['media_url_https']}}';"
+                    >
                 </a>
             </div>
             {%end%}
