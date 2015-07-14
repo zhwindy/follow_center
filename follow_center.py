@@ -71,7 +71,7 @@ class user(add):
     create by bigzhu at 15/07/11 23:43:16 显示这个用户的信息
     '''
 
-    @tornado_bz.mustLogin
+    #@tornado_bz.mustLogin
     def get(self, user_name='-1'):
         user_info = public_db.getUserInfoByName(user_name)
         twitter_messages = public_db.getTwitterMessagesByName(user_name)

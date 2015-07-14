@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block body %}
-{% module profile_m(user_info, True) %}
+<div class="panel panel-default">
+    <div class="panel-body">
+        {% module user_info_m(user_info, True) %}
+    </div>
+</div>
 
 {%include twitter_messages.html %}
 {% end %}
