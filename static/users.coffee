@@ -6,7 +6,7 @@ $ ->
     methods:
       toggleFollow:(e, god_id)->
         target = e.target
-        log target
+        log god_id
 
         if $(target).hasClass('btn-default') #还没follow
           parm = JSON.stringify

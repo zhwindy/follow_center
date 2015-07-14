@@ -10,7 +10,7 @@
         toggleFollow: function(e, god_id) {
           var parm, target;
           target = e.target;
-          log(target);
+          log(god_id);
           if ($(target).hasClass('btn-default')) {
             parm = JSON.stringify({
               god_id: god_id

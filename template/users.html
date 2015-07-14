@@ -26,6 +26,7 @@
             </div>
         </div>
         <div class="box-footer">
+            {{user.god_id}}
             {%if user.followed == 1%}
             <button v-on="click:toggleFollow($event, {{user.god_id}})" type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
                 Following
