@@ -13,6 +13,23 @@ def getTwitterMessages():
     return pg.db.query(sql)
 
 
+def getMyFollowTwitterMessages(user_id):
+    '''
+    create by bigzhu at 15/07/14 15:11:44 查出我 Follow 的用户的twitter message
+    '''
+    sql = '''
+        select * from twitter_message tm, twitter_user tu
+            where tm.t_user_id=tu.id_str
+            and tu.screen_name in(
+            select user_name from user_info where id in(
+                select god_id from follow_who where user_id=%s
+                )
+            )
+            order by tm.created_at desc
+    ''' % user_id
+    return pg.db.query(sql)
+
+
 def getTwitterMessagesByName(user_name):
     sql = '''
     select * from twitter_message tm, twitter_user tu
@@ -24,11 +41,17 @@ def getTwitterMessagesByName(user_name):
     return pg.db.query(sql)
 
 
-def getUserInfoTwitterUser():
+def getUserInfoTwitterUser(user_id=None):
     sql = '''
-    select * from user_info u, twitter_user tu
+    select u.id as god_id, * from user_info u, twitter_user tu
         where u.twitter = tu.screen_name
+        order by tu.created_date desc
     '''
+    if user_id:
+        sql = '''
+            select * from   (%s) ut left join (select god_id, 1 followed from follow_who where user_id=%s) f on ut.god_id=f.god_id
+        ''' % (sql, user_id)
+
     return pg.db.query(sql)
 
 

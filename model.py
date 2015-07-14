@@ -13,17 +13,25 @@ project_name = public_bz.getProjectName()
 db_name = project_name
 
 
+class follow_who(model_oper_bz.base):
+
+    '''
+    create by bigzhu at 15/07/14 14:54:27 你要follow谁
+    '''
+    god_id = IntegerField(null=True)  # 实际上是你要follow的用户的id
+
+
 class twitter_message(model_oper_bz.base):
 
     '''
     create by bigzhu at 15/07/08 17:28:57 放twitter的用户的信息
 
     '''
-    quoted_status_id_str = TextField(null=True) #
-    quoted_status_id = TextField(null=True) #
-    quoted_status = TextField(null=True) #
-    retweeted_status = TextField(null=True) # 转发的消息
-    extended_entities = JSONField(null=True) # 外部资源,图片啊什么的
+    quoted_status_id_str = TextField(null=True)
+    quoted_status_id = TextField(null=True)
+    quoted_status = TextField(null=True)
+    retweeted_status = TextField(null=True)  # 转发的消息
+    extended_entities = JSONField(null=True)  # 外部资源,图片啊什么的
     contributors = TextField(null=True)  # ?
     truncated = BooleanField(null=True)  # 是否截取
     text = TextField(null=True)  # 消息内容
@@ -31,7 +39,7 @@ class twitter_message(model_oper_bz.base):
     in_reply_to_status_id = TextField(null=True)  # ?
     # id
     favorite_count = IntegerField(null=True)
-    t_author_id = TextField(null=True) #作者详情
+    t_author_id = TextField(null=True)  # 作者详情
     #_json json
     coordinates = TextField(null=True)  # 座标
     entities = TextField(null=True)  # 实体
@@ -41,7 +49,7 @@ class twitter_message(model_oper_bz.base):
     id_str = TextField(null=True)
     favorited = BooleanField(null=True)
     source_url = TextField(null=True)
-    t_user_id  = TextField(null=True) #用户详情
+    t_user_id = TextField(null=True)  # 用户详情
     geo = TextField(null=True)
     in_reply_to_user_id_str = TextField(null=True)
     lang = TextField(null=True)
@@ -67,7 +75,7 @@ class twitter_user(model_oper_bz.base):
     #_api
     verified = BooleanField(null=True)
     profile_text_color = TextField(null=True)
-    profile_image_url_https = TextField(null=True) #用户头像
+    profile_image_url_https = TextField(null=True)  # 用户头像
     profile_sidebar_fill_color = TextField(null=True)
     is_translator = BooleanField(null=True)
     geo_enabled = BooleanField(null=True)
@@ -107,4 +115,5 @@ if __name__ == '__main__':
     # 需要用户登录模块
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
     #model_oper_bz.reCreateAllTable(globals().copy(), db_name, user='follow_center', password='follow_center', host='bigzhu.org')
-    model_oper_bz.reCreateAllTable(globals().copy(), db_name)
+    #model_oper_bz.reCreateAllTable(globals().copy(), db_name)
+    model_oper_bz.reCreateTable(follow_who, db_name)

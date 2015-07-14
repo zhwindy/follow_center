@@ -38,8 +38,9 @@ class main(tornado_bz.UserInfoHandler):
     create by bigzhu at 15/07/11 16:21:16
     '''
 
+    @tornado_bz.mustLogin
     def get(self):
-        twitter_messages = public_db.getTwitterMessages()
+        twitter_messages = public_db.getMyFollowTwitterMessages(self.current_user)
         self.render(tornado_bz.getTName(self), twitter_messages=twitter_messages)
 
 
@@ -85,9 +86,39 @@ class users(tornado_bz.UserInfoHandler):
     '''
 
     def get(self):
-        users = public_db.getUserInfoTwitterUser()
+        users = public_db.getUserInfoTwitterUser(self.current_user)
         self.render(self.template, users=users)
 
+class follow(tornado_bz.UserInfoHandler):
+
+    '''
+    create by bigzhu at 15/07/14 17:11:45 follow
+    '''
+    @tornado_bz.mustLoginApi
+    @tornado_bz.handleError
+    def post(self):
+        self.set_header("Content-Type", "application/json")
+        data = json.loads(self.request.body)
+        data['user_id'] = self.current_user
+        id = db_bz.insertIfNotExist(pg, 'follow_who', data, "user_id=%s and god_id=%s" % (data['user_id'], data['god_id']))
+        if id is None:
+            raise Exception('没有正确的Follow, 似乎已经Follow过了呢')
+        self.write(json.dumps({'error': '0'}))
+
+class unfollow(tornado_bz.UserInfoHandler):
+
+    '''
+    create by bigzhu at 15/07/14 17:11:45 follow
+    '''
+    @tornado_bz.mustLoginApi
+    @tornado_bz.handleError
+    def post(self):
+        self.set_header("Content-Type", "application/json")
+        data = json.loads(self.request.body)
+        count = pg.db.delete('follow_who', where="user_id=%s and god_id=%s" %(self.current_user, data['god_id']))
+        if count ==0:
+            raise Exception('没有正确的Unfollow, Unfollow %s 人' % count)
+        self.write(json.dumps({'error': '0'}))
 
 if __name__ == "__main__":
 
