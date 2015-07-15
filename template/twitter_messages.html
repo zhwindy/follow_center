@@ -11,16 +11,8 @@
         </h3>
     </div>
     <div class="box-body">
-        <div class="row">
-            <div class="col-md-9">
-                <p class="description_bz">{{twitter_message.text}}</p>
-            </div>
-            <div class="col-md-3">
-            </div>
-        </div>
-
+        <p class="description_bz">{{twitter_message.text}}</p>
         {%if twitter_message.extended_entities and twitter_message.extended_entities.get('media')%}
-
         <div class="row">
             {%for media in twitter_message.extended_entities['media']%}
             <div class="col-md-6">
@@ -32,7 +24,6 @@
             </div>
             {%end%}
         </div>
-
         {%end%}
     </div>
 </div>
