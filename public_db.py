@@ -43,13 +43,16 @@ def getTwitterMessagesByName(user_name):
 
 def getUserInfoTwitterUser(user_id=None):
     sql = '''
-    select u.id as god_id, * from user_info u, twitter_user tu
+    select  u.id as god_id,
+            u.created_date as u_created_date,
+    * from user_info u, twitter_user tu
         where u.twitter = tu.screen_name
         order by tu.created_date desc
     '''
     if user_id:
         sql = '''
             select * from   (%s) ut left join (select god_id followed_god_id, 1 followed from follow_who where user_id=%s) f on ut.god_id=f.followed_god_id
+            order by ut.u_created_date desc
         ''' % (sql, user_id)
 
     return pg.db.query(sql)

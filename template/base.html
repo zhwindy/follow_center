@@ -2,13 +2,13 @@
 <html lang="zh">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}You Know Nothing, Jon Snow{% end %}</title>
+        <title>{% block title %}Follow Center{% end %}</title>
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <meta name="description" content="{% block description %}叶脉书签:You Know Nothing, Jon Snow{% end %}" />
-        <meta name="keywords" content="{% block keywords %}bookmarks,site,url{% end %}" />
+        <meta name="description" content="{% block description %}Follow Center: 关注聚合大神的一切社交媒体 twitter github,方便的实时消息提醒,不错过他/她的一切{% end %}" />
+        <meta name="keywords" content="{% block keywords %}Follow,Center,社交,聚合,跟踪{% end %}" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel='shortcut icon' href='/static/images/login-logo.png' />
-        <link href="/lib_static/lib/AdminLTE-2.0.4/dist/css/skins/skin-yellow.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lib_static/lib/AdminLTE-2.0.4/dist/css/skins/skin-black.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/base.css" rel="stylesheet" type="text/css" />
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -17,12 +17,13 @@
             {% block css %}
             {% end %}
     </head>
-    <body class="skin-yellow layout-top-nav">
+    <body class="skin-black layout-top-nav">
         {% from public_bz import storage%}
         {% set links = [] %}
-        {% set links.append(storage(href='/add', name='添加大神')) %}
-        {% set links.append(storage(href='/users', name='大神们')) %}
+        {% set links.append(storage(href='/add', name='添加')) %}
+        {% set links.append(storage(href='/users', name='神们')) %}
         {% set links.append(storage(href='http://me.bigzhu.org', name='关于bigzhu')) %}
+
         {% module header_m(user_info, 'Follow Center', links, need_login=True) %}
         <br>
         <div class="container">
