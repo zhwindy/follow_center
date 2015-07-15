@@ -67,7 +67,9 @@ class add(tornado_bz.UserInfoHandler):
 
         id = db_bz.insertIfNotExist(pg, 'user_info', data, "user_name='%s'" % data['user_name'])
         if id is None:
-            self.pg.db.update("user_info", where="user_name='%s'" % data['user_name'], **data)
+            where = "user_name='%s'" % data['user_name']
+            self.pg.db.update("user_info", where=where, **data)
+            id = self.pg.db.select('user_info', where=where)[0].id
 
         oper.follow(self.current_user, id)
 
