@@ -23,7 +23,11 @@
                 return function(data, status, response) {
                   _this.loading = false;
                   if (data.error !== '0') {
-                    throw new Error(data.error);
+                    if (data.error === 'must login') {
+                      return window.location.href = "/login";
+                    } else {
+                      throw new Error(data.error);
+                    }
                   } else {
                     bz.showSuccess5('Follow 成功');
                     $(target).text('Following');

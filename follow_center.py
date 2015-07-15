@@ -43,7 +43,8 @@ class main(tornado_bz.UserInfoHandler):
     create by bigzhu at 15/07/11 16:21:16
     '''
 
-    @tornado_bz.mustLogin
+    #@tornado_bz.mustLogin
+
     def get(self):
         twitter_messages = public_db.getMyFollowTwitterMessages(self.current_user)
         self.render(tornado_bz.getTName(self), twitter_messages=twitter_messages)
@@ -59,9 +60,10 @@ class add(tornado_bz.UserInfoHandler):
         user_info = public_db.getUserInfoByName(user_name)
         self.render(self.template, user_info=user_info)
 
-    @tornado_bz.mustLoginApi
     @tornado_bz.handleError
+    @tornado_bz.mustLoginApi
     def post(self):
+
         self.set_header("Content-Type", "application/json")
         data = json.loads(self.request.body)
 
@@ -71,7 +73,7 @@ class add(tornado_bz.UserInfoHandler):
             self.pg.db.update("user_info", where=where, **data)
             id = self.pg.db.select('user_info', where=where)[0].id
 
-        oper.follow(self.current_user, id)
+        oper.follow(self.current_user, id, make_sure=False)
 
         self.write(json.dumps({'error': '0'}))
 
@@ -82,8 +84,7 @@ class user(add):
     create by bigzhu at 15/07/11 23:43:16 显示这个用户的信息
     '''
 
-    #@tornado_bz.mustLogin
-
+    @tornado_bz.mustLogin
     def get(self, user_name='-1'):
         user_info = public_db.getUserInfoByName(user_name)
         twitter_messages = public_db.getTwitterMessagesByName(user_name)
@@ -96,7 +97,8 @@ class users(tornado_bz.UserInfoHandler):
     create by bigzhu at 15/07/12 23:43:54 显示所有的大神, 关联twitter
     '''
 
-    @tornado_bz.mustLogin
+    #@tornado_bz.mustLogin
+
     def get(self):
         users = public_db.getUserInfoTwitterUser(self.current_user)
         self.render(self.template, users=users)
@@ -107,8 +109,8 @@ class follow(tornado_bz.UserInfoHandler):
     '''
     create by bigzhu at 15/07/14 17:11:45 follow
     '''
-    @tornado_bz.mustLoginApi
     @tornado_bz.handleError
+    @tornado_bz.mustLoginApi
     def post(self):
         self.set_header("Content-Type", "application/json")
         data = json.loads(self.request.body)

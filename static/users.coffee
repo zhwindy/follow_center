@@ -18,7 +18,11 @@ $ ->
             success: (data, status, response) =>
               @loading=false
               if data.error != '0'
-                throw new Error(data.error)
+                #如果是要登录,那么跳转到登录
+                if data.error == 'must login'
+                  window.location.href = "/login"
+                else
+                  throw new Error(data.error)
               else
                 bz.showSuccess5('Follow 成功')
                 $(target).text('Following')
