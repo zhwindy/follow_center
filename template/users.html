@@ -17,7 +17,7 @@
             </h3>
         </div>
         <div class="box-body">
-            <p class="description_bz">{{user.slogan or user.description}}</p>
+            {{user.slogan or user.description}}
         </div>
         <div class="box-footer">
             {%if user.followed == 1%}

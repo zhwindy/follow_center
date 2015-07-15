@@ -17,6 +17,7 @@ import json
 import db_bz
 from proxy import ProxyHandler
 import oper
+import github
 
 OK = '0'
 
@@ -158,6 +159,7 @@ if __name__ == "__main__":
     ioloop = tornado.ioloop.IOLoop().instance()
 
     tornado.ioloop.PeriodicCallback(twitter.check, 60 * 1000).start()
+    tornado.ioloop.PeriodicCallback(github.check, 60 * 1000).start()
 
     tornado.autoreload.start(ioloop)
     ioloop.start()

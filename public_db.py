@@ -4,6 +4,14 @@ import pg
 import user_bz
 user_oper = user_bz.UserOper(pg)
 
+def getUserInfoGithub():
+    '''
+    create by bigzhu at 15/07/15 22:45:42
+    '''
+    sql = '''
+            select * from   user_info u left join github_user g on u.user_name=g.login
+    '''
+    return pg.db.query(sql)
 
 def getTwitterMessages():
     sql = '''
