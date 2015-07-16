@@ -47,7 +47,7 @@ class main(tornado_bz.UserInfoHandler):
     #@tornado_bz.mustLogin
 
     def get(self):
-        messages = list(public_db.getMyFollowTwitterMessages(self.current_user))
+        messages = list(public_db.getMessages(self.current_user))
         self.render(tornado_bz.getTName(self), messages=messages)
 
 
@@ -88,8 +88,8 @@ class user(add):
     @tornado_bz.mustLogin
     def get(self, user_name='-1'):
         user_info = public_db.getUserInfoByName(user_name)
-        twitter_messages = public_db.getTwitterMessagesByName(user_name)
-        self.render(self.template, user_info=user_info, twitter_messages=twitter_messages)
+        messages = public_db.getMessages(god_name=user_name)
+        self.render(self.template, user_info=user_info, messages=messages)
 
 
 class users(tornado_bz.UserInfoHandler):

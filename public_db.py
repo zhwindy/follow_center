@@ -23,13 +23,26 @@ def getTwitterMessages():
     return pg.db.query(sql)
 
 
-def getMyFollowTwitterMessages(user_id=None):
+def getMessages(user_id=None, god_name=None):
     '''
     create by bigzhu at 15/07/14 15:11:44 查出我 Follow 的用户的twitter message
+    create by bigzhu at 15/07/17 01:39:21 过于复杂,合并sql,根据god_name也可以查
     '''
 
     twitter_in = ''
     github_in = ''
+    if god_name is not None:
+        twitter_in = '''
+            and u.screen_name in(
+            select twitter from user_info where  user_name='%s'
+            )
+        ''' % god_name
+        github_in = '''
+            and u.login in(
+            select github from user_info where user_name='%s'
+            )
+        ''' % god_name
+
     if user_id is not None:
         twitter_in = '''
             and u.screen_name in(
@@ -78,17 +91,6 @@ def getMyFollowTwitterMessages(user_id=None):
     return pg.db.query(sql)
 
 
-def getTwitterMessagesByName(user_name):
-    sql = '''
-    select * from twitter_message tm, twitter_user tu
-        where tm.t_user_id=tu.id_str
-        and tu.screen_name='%s'
-
-        order by tm.created_at desc
-    ''' % user_name
-    return pg.db.query(sql)
-
-
 def getUserInfoTwitterUser(user_id=None):
     sql = '''
     select  u.id as god_id, 0 followed,
@@ -116,5 +118,4 @@ def getUserInfoByName(user_name):
             user_info.user_name = user_name
     return user_info
 if __name__ == '__main__':
-    for i in getMyFollowTwitterMessages():
-        print i
+    pass
