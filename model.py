@@ -5,7 +5,8 @@
 '''
 import model_oper_bz
 from peewee import TextField, IntegerField, BooleanField, DateTimeField
-from playhouse.postgres_ext import JSONField
+
+from playhouse.postgres_ext import JSONField, BinaryJSONField
 import public_bz
 import model_bz
 
@@ -25,6 +26,7 @@ class github_message(model_oper_bz.base):
     public = BooleanField(null=True)
     created_at = DateTimeField(null=True)
     org = JSONField(null=True)
+    content = BinaryJSONField(null=True) #整合的内容
 
 class github_user(model_oper_bz.base):
     '''
@@ -165,6 +167,6 @@ if __name__ == '__main__':
     # 需要用户登录模块
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
     #model_oper_bz.reCreateAllTable(globals().copy(), db_name, user='follow_center', password='follow_center', host='bigzhu.org')
-    model_oper_bz.reCreateAllTable(globals().copy(), db_name)
-    model_oper_bz.createAllTable(globals().copy(), db_name)
-    #model_oper_bz.reCreateTable(follow_who, db_name)
+    #model_oper_bz.reCreateAllTable(globals().copy(), db_name)
+    #model_oper_bz.createAllTable(globals().copy(), db_name)
+    model_oper_bz.reCreateTable(github_message, db_name)

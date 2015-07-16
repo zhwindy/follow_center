@@ -35,28 +35,33 @@ def getUserEvent(user_name, etag):
     if r.status_code == 200:
         messages = r.json()
         actor = messages[0]['actor']
-        id = saveUser(actor['id'], actor['url'])
+        user_id = saveUser(actor['id'], actor['url'])
         #更新etag
         etag = r.headers['etag']
         updateEtag(user_name, etag)
 
         for i in r.json():
-            i['actor'] = id
+            i['actor'] = user_id
             message = storage(i)
             id = saveMessage(message)
             if id is not None:
-                print 'new',message.type,message.repo
+                print 'new',message.type,message.content
 
 
 def saveMessage(message):
+    '''
+    create by bigzhu at 15/07/16 09:44:39 为了抽取数据方便,合并数据到 content 里
+    '''
     message.id_str = message.pop('id')
-    message.repo = json.dumps(message.repo)
-    message.payload = json.dumps(message.payload)
+
+    content = storage()
+    content.type = message.type
+    content.repo = message.pop('repo')
+    content.payload = message.pop('payload')
+    message.content = json.dumps(content)
+
     if message.get('org'):
         message.org = json.dumps(message.org)
-
-    for k,v in message.items():
-        print k,'=',v
 
     return db_bz.insertIfNotExist(pg, 'github_message', message, "id_str='%s'" % message.id_str)
 
