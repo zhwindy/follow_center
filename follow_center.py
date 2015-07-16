@@ -48,7 +48,6 @@ class main(tornado_bz.UserInfoHandler):
 
     def get(self):
         messages = list(public_db.getMyFollowTwitterMessages(self.current_user))
-        print messages[0].content['payload']['commits']
         self.render(tornado_bz.getTName(self), messages=messages)
 
 
