@@ -47,8 +47,9 @@ class main(tornado_bz.UserInfoHandler):
     #@tornado_bz.mustLogin
 
     def get(self):
-        twitter_messages = public_db.getMyFollowTwitterMessages(self.current_user)
-        self.render(tornado_bz.getTName(self), twitter_messages=twitter_messages)
+        messages = list(public_db.getMyFollowTwitterMessages(self.current_user))
+        print messages[0].content['payload']['commits']
+        self.render(tornado_bz.getTName(self), messages=messages)
 
 
 class add(tornado_bz.UserInfoHandler):

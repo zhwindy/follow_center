@@ -30,16 +30,16 @@ def getMyFollowTwitterMessages(user_id=None):
 
     twitter_in = ''
     github_in = ''
-    if user_id is None:
+    if user_id is not None:
         twitter_in = '''
-            and tu.screen_name in(
+            and u.screen_name in(
             select twitter from user_info where id in(
                 select god_id from follow_who where user_id=%s
                 )
             )
         ''' % user_id
         github_in = '''
-            and gu.login in(
+            and u.login in(
             select github from user_info where id in(
                 select god_id from follow_who where user_id=%s
                 )
@@ -47,13 +47,15 @@ def getMyFollowTwitterMessages(user_id=None):
         ''' % user_id
 
     sql = '''
+    select * from (
         select
             'twitter' as m_type,
             m.created_at,
             u.screen_name as name,
             u.profile_image_url_https as avatar,
             null as content,
-            m.text
+            m.text,
+            m.extended_entities
                 from twitter_message m, twitter_user u
                 where m.t_user_id=u.id_str
             %s
@@ -64,12 +66,14 @@ def getMyFollowTwitterMessages(user_id=None):
             u.login as name,
             u.avatar_url as avatar,
             m.content,
-            null as text
+            null as text,
+            null as extended_entities
                 from github_message m, github_user u
                 where m.actor=u.id
             %s
+
+            ) as t order by created_at desc
         ''' % (twitter_in, github_in)
-    print sql
 
     return pg.db.query(sql)
 
@@ -112,4 +116,5 @@ def getUserInfoByName(user_name):
             user_info.user_name = user_name
     return user_info
 if __name__ == '__main__':
-    getMyFollowTwitterMessages(6)
+    for i in getMyFollowTwitterMessages():
+        print i

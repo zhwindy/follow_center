@@ -83,7 +83,7 @@ class twitter_message(model_oper_bz.base):
     quoted_status_id = TextField(null=True)
     quoted_status = TextField(null=True)
     retweeted_status = TextField(null=True)  # 转发的消息
-    extended_entities = JSONField(null=True)  # 外部资源,图片啊什么的
+    extended_entities = BinaryJSONField(null=True)  # 外部资源,图片啊什么的
     contributors = TextField(null=True)  # ?
     truncated = BooleanField(null=True)  # 是否截取
     text = TextField(null=True)  # 消息内容
@@ -169,4 +169,6 @@ if __name__ == '__main__':
     #model_oper_bz.reCreateAllTable(globals().copy(), db_name, user='follow_center', password='follow_center', host='bigzhu.org')
     #model_oper_bz.reCreateAllTable(globals().copy(), db_name)
     #model_oper_bz.createAllTable(globals().copy(), db_name)
-    model_oper_bz.reCreateTable(github_message, db_name)
+    #model_oper_bz.createAllTable(globals().copy(), db_name)
+    #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
+    model_oper_bz.reCreateTable(twitter_message, db_name)

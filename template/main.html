@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block body %}
 
-{% if twitter_messages %}
-{%include twitter_messages.html %}
+{% if messages %}
+{%include messages.html %}
 {%else%}
 <div class="box box-warning box-solid text-center">
     <div class="box-header with-border">

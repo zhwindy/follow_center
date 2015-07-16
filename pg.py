@@ -6,7 +6,8 @@ sys.setdefaultencoding('utf-8')
 import webpy_db
 import user_bz
 
-DB_IP = '127.0.0.1'
+#DB_IP = '127.0.0.1'
+DB_IP = 'bigzhu.org'
 db = None
 
 
