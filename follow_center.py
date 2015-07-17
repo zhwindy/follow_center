@@ -96,12 +96,24 @@ class users(tornado_bz.UserInfoHandler):
 
     '''
     create by bigzhu at 15/07/12 23:43:54 显示所有的大神, 关联twitter
+    modify by bigzhu at 15/07/17 15:20:26 关联其他的,包括 github
     '''
 
     #@tornado_bz.mustLogin
 
     def get(self):
-        users = public_db.getUserInfoTwitterUser(self.current_user)
+        #users = public_db.getUserInfoTwitterUser(self.current_user)
+        users = list(public_db.getGodInfoFollow(self.current_user))
+        will_del = []
+        for user in users:
+            user.twitter_user = public_db.getTwitterUser(user.twitter)
+            user.github_user = public_db.getGithubUser(user.github)
+            if user.twitter_user  is None  and user.github_user is None:
+                will_del.append(user)
+        for user in will_del:
+            users.remove(user)
+
+
         self.render(self.template, users=users)
 
 

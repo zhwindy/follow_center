@@ -2,7 +2,12 @@
 # -*- coding: utf-8 -*-
 '''
 create by bigzhu at 15/07/04 22:25:30 取twitter的最新信息
+modify by bigzhu at 15/07/17 16:49:58 添加pytz来修正crated_at的时区
+modify by bigzhu at 15/07/17 17:08:38 存进去还是不对,手工来来修正吧
 '''
+#import pytz
+#tz = pytz.timezone('Asia/Shanghai')
+from datetime import timedelta
 import tweepy
 import ConfigParser
 import db_bz
@@ -24,9 +29,10 @@ def check():
     create by bigzhu at 15/07/10 14:46:58
         从 user_info 取出 twitter url 来检查
     '''
-    users = pg.db.select('user_info', what='twitter')
+    users = pg.db.select('user_info', what='twitter', where='twitter is not null')
     for user in users:
         if user.twitter and user.twitter != '':
+            print 'check twitter %s' % user.twitter
             checkUserMessage(user.twitter)
 
 
@@ -55,6 +61,9 @@ def getUserTimeline(screen_name):
     try:
         public_tweets = api.user_timeline(screen_name=screen_name)
         for tweet in public_tweets:
+            #tweet.created_at = tz.localize(tweet.created_at)
+            tweet.created_at += timedelta(hours=8)
+            #print tweet.created_at
             id = saveTwitter(tweet)
             if id is not None:  # 新增加消息
                 print 'new=', tweet.text
@@ -116,5 +125,5 @@ def saveTwitter(tweet):
 
     return db_bz.insertIfNotExist(pg, 'twitter_message', vars(tweet), "id_str='%s'" % tweet.id_str)
 if __name__ == '__main__':
-    check()
-    # getUserTimeline('Cluvmmy')
+    #check()
+    getUserTimeline('tualatrix')

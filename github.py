@@ -18,6 +18,7 @@ def check():
     users = public_db.getUserInfoGithub()
     for user in users:
         if user.github and user.github != '':
+            print 'check github %s' % user.github
             getUserEvent(user.github, user.etag)
 
 def updateEtag(user_name, etag):

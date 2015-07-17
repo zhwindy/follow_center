@@ -2,7 +2,32 @@
 # -*- coding: utf-8 -*-
 import pg
 import user_bz
+import db_bz
 user_oper = user_bz.UserOper(pg)
+
+
+def getTwitterUser(name):
+    '''
+    create by bigzhu at 15/07/17 15:09:56 twitter用户
+    '''
+    result = list(pg.db.select('twitter_user', where="screen_name='%s'" % name))
+    count = len(result)
+    if count > 1:
+        raise Exception('twitter_user screen_name=%s count=%s' % (name, count))
+    if count == 1:
+        return result[0]
+
+
+def getGithubUser(name):
+    '''
+    create by bigzhu at 15/07/17 15:10:23 github 用户
+    '''
+    result = list(pg.db.select('github_user', where="login='%s'" % name))
+    count = len(result)
+    if count > 1:
+        raise Exception('github_user screen_name=%s count=%s' % (name, count))
+    if count == 1:
+        return result[0]
 
 
 def getUserInfoGithub():
@@ -83,10 +108,26 @@ def getMessages(user_id=None, god_name=None):
             null as extended_entities
                 from github_message m, github_user u
                 where m.actor=u.id
+                and m.type='IssuesEvent'
             %s
 
             ) as t order by created_at desc
         ''' % (twitter_in, github_in)
+
+    return pg.db.query(sql)
+
+
+def getGodInfoFollow(user_id=None):
+    sql = '''
+    select  u.id as god_id, 0 followed,
+            u.created_date as u_created_date,
+    * from user_info u order by u.created_date desc
+    '''
+    if user_id:
+        sql = '''
+            select * from   (%s) ut left join (select god_id followed_god_id, 1 followed from follow_who where user_id=%s) f on ut.god_id=f.followed_god_id
+            order by ut.u_created_date desc
+        ''' % (sql, user_id)
 
     return pg.db.query(sql)
 
