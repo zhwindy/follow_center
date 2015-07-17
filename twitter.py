@@ -105,6 +105,10 @@ def saveTwitter(tweet):
 
     if hasattr(tweet, 'entities'):
         tweet.entities = json.dumps(tweet.entities)
+    if hasattr(tweet, 'geo'):
+        tweet.geo = json.dumps(tweet.geo)
+    if hasattr(tweet, 'coordinates'):
+        tweet.coordinates = json.dumps(tweet.coordinates)
     if hasattr(tweet, 'extended_entities'):
         tweet.extended_entities = json.dumps(tweet.extended_entities)
     if hasattr(tweet, 'retweeted_status'):

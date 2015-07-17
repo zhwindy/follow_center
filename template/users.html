@@ -19,6 +19,14 @@
     {% set avatar_url = user.twitter_user.get('profile_image_url_https') %}
     {%end%}
 
+    {%if user.slogan %}
+    {% set description = user.slogan %}
+    {%elif user.twitter_user%}
+    {% set description = user.twitter_user.get('description') %}
+    {%else%}
+    {% set description = '' %}
+    {%end%}
+
     <div  class="box box-solid item">
         <div class="box-header">
             <h3 class="box-title">
@@ -46,7 +54,7 @@
         </div>
         </div>
         <div class="box-body">
-            {{user.slogan or user.twitter_user.get('description') }}
+            {{description}}
         </div>
         <div class="box-footer">
             {%if user.followed == 1%}

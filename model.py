@@ -93,7 +93,7 @@ class twitter_message(model_oper_bz.base):
     favorite_count = IntegerField(null=True)
     t_author_id = TextField(null=True)  # 作者详情
     #_json json
-    coordinates = TextField(null=True)  # 座标
+    coordinates = BinaryJSONField(null=True)  # 座标
     entities = TextField(null=True)  # 实体
     in_reply_to_screen_name = TextField(null=True)
     in_reply_to_user_id = TextField(null=True)
@@ -102,7 +102,7 @@ class twitter_message(model_oper_bz.base):
     favorited = BooleanField(null=True)
     source_url = TextField(null=True)
     t_user_id = TextField(null=True)  # 用户详情
-    geo = TextField(null=True)
+    geo = BinaryJSONField(null=True)
     in_reply_to_user_id_str = TextField(null=True)
     lang = TextField(null=True)
     created_at = DateTimeField(null=True)
