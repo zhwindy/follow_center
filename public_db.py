@@ -6,6 +6,13 @@ import db_bz
 user_oper = user_bz.UserOper(pg)
 
 
+def getWechatUserByOpenid(openid):
+    '''
+    create by bigzhu at 15/04/04 12:48:58 根据 openid 来查询微信用户
+    '''
+    return list(pg.db.select('wechat_user', where="openid='%s'" % openid))
+
+
 def getTwitterUser(name):
     '''
     create by bigzhu at 15/07/17 15:09:56 twitter用户

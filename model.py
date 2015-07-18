@@ -13,50 +13,76 @@ import model_bz
 project_name = public_bz.getProjectName()
 db_name = project_name
 
+
+class wechat_user(model_oper_bz.base):
+
+    '''
+    create by bigzhu at 15/04/04 13:30:57 记录微信用户的信息
+    '''
+
+    subscribe = IntegerField()  # 用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。
+    openid = TextField()  # 用户的标识，对当前公众号唯一
+    nickname = TextField()  # 用户的昵称
+    sex = IntegerField()  # 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
+    city = TextField()  # 用户所在城市
+    country = TextField()  # 用户所在国家
+    province = TextField()  # 用户所在省份
+    language = TextField()  # 用户的语言，简体中文为zh_CN
+    headimgurl = TextField(null=True)  # 用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。
+    subscribe_time = IntegerField()  # 用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间
+    unionid = TextField(null=True)  # 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。详见：获取用户个人信息（UnionID机制）
+    remark = TextField()  # 不知道是什么
+    groupid = IntegerField()  # 突然出现的
+    user_name = TextField(null=True) #系统的用户名,用来绑定
+
+
 class github_message(model_oper_bz.base):
+
     '''
     create by bigzhu at 15/07/15 17:57:00
     '''
-    #id to id_str
+    # id to id_str
     id_str = TextField(null=True)
     type = TextField(null=True)
-    actor = IntegerField(null=True) # trans to id
+    actor = IntegerField(null=True)  # trans to id
     repo = JSONField(null=True)
     payload = JSONField(null=True)
     public = BooleanField(null=True)
     created_at = DateTimeField(null=True)
     org = JSONField(null=True)
-    content = BinaryJSONField(null=True) #整合的内容
+    content = BinaryJSONField(null=True)  # 整合的内容
+
 
 class github_user(model_oper_bz.base):
+
     '''
     create by bigzhu at 15/07/15 18:02:15
     '''
-    login = TextField(null=True) #用户名
-    #id": 66433,
-    avatar_url = TextField(null=True) #头像地址
+    login = TextField(null=True)  # 用户名
+    # id": 66433,
+    avatar_url = TextField(null=True)  # 头像地址
     gravatar_id = TextField(null=True)
-    #url = TextField(null=True) # api取用户信息的地址
-    html_url = TextField(null=True) # git项目地址
-    #followers_url": "https://api.github.com/users/navy3/followers",
-    #following_url": "https://api.github.com/users/navy3/following{/other_user}",
-    #gists_url": "https://api.github.com/users/navy3/gists{/gist_id}",
-    #starred_url": "https://api.github.com/users/navy3/starred{/owner}{/repo}",
-    #subscriptions_url": "https://api.github.com/users/navy3/subscriptions",
-    #organizations_url": "https://api.github.com/users/navy3/orgs",
-    #repos_url": "https://api.github.com/users/navy3/repos",
-    #events_url": "https://api.github.com/users/navy3/events{/privacy}",
-    #received_events_url": "https://api.github.com/users/navy3/received_events",
-    #type": "User",
+    # url = TextField(null=True) # api取用户信息的地址
+    html_url = TextField(null=True)  # git项目地址
+    # followers_url": "https://api.github.com/users/navy3/followers",
+    # following_url": "https://api.github.com/users/navy3/following{/other_user}",
+    # gists_url": "https://api.github.com/users/navy3/gists{/gist_id}",
+    # starred_url": "https://api.github.com/users/navy3/starred{/owner}{/repo}",
+    # subscriptions_url": "https://api.github.com/users/navy3/subscriptions",
+    # organizations_url": "https://api.github.com/users/navy3/orgs",
+    # repos_url": "https://api.github.com/users/navy3/repos",
+    # events_url": "https://api.github.com/users/navy3/events{/privacy}",
+    # received_events_url": "https://api.github.com/users/navy3/received_events",
+    # type": "User",
     site_admin = BooleanField(null=True)
     name = TextField(null=True)
     company = TextField(null=True)
     blog = TextField(null=True)
     location = TextField(null=True)
     email = TextField(null=True)
-    hireable = BooleanField(null=True) #被雇佣了么
-    bio = TextField(null=True) #不知道干什么的
-    public_repos = IntegerField(null=True) # 公开项目数
+    hireable = BooleanField(null=True)  # 被雇佣了么
+    bio = TextField(null=True)  # 不知道干什么的
+    public_repos = IntegerField(null=True)  # 公开项目数
     public_gists = IntegerField(null=True)
     followers = IntegerField(null=True)
     following = IntegerField(null=True)
@@ -171,4 +197,4 @@ if __name__ == '__main__':
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
-    model_oper_bz.reCreateTable(twitter_message, db_name)
+    model_oper_bz.createTable(wechat_user, db_name)
