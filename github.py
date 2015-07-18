@@ -26,6 +26,12 @@ def updateEtag(user_name, etag):
     if count !=1:
         raise Exception('更新etag 失败, %s' % count)
 
+def delGithubUser(user_name):
+    sql = '''
+    update user_info set github=null where github='%s'
+    ''' % user_name
+    pg.db.query(sql)
+
 def getUserEvent(user_name, etag):
     '''
     create by bigzhu at 15/07/15 17:54:08 取github
@@ -35,8 +41,13 @@ def getUserEvent(user_name, etag):
 
     if r.status_code == 200:
         messages = r.json()
+        if not messages:
+            delGithubUser(user_name)
+            #没有这个github用户,取消
+            return
         actor = messages[0]['actor']
         user_id = saveUser(actor['id'], actor['url'])
+
         #更新etag
         etag = r.headers['etag']
         updateEtag(user_name, etag)
@@ -47,6 +58,8 @@ def getUserEvent(user_name, etag):
             id = saveMessage(message)
             if id is not None:
                 print 'new',message.type,message.content
+    else:
+        print r.status_code
 
 
 def saveMessage(message):

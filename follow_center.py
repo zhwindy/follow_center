@@ -33,8 +33,8 @@ class login(login_m.login):
     def initialize(self):
         login_m.login.initialize(self)
         # self.oauth2.douban.enabled = True
-        self.oauth2.google.enabled = True
-        self.oauth2.twitter.enabled = True
+        #self.oauth2.google.enabled = True
+        #self.oauth2.twitter.enabled = True
 
 
 class main(tornado_bz.UserInfoHandler):
