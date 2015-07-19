@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 {% block body %}
-<div style="margin-top: 80px;">
-    <img src="{{url}}"/>
+<div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-5">
+        <div class="panel panel-default">
+            <div class="panel-body">
+            <div class="callout callout-defalt">
+                <p>你一定不愿意错过关于她/他的任何一条动态</p>
+                <p>拿起微信扫一扫, 我们将实时推送给你, 不再有遗漏</p>
+            </div>
+                <img class="img-responsive" src="{{url}}"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+    </div>
 </div>
 {% end %}

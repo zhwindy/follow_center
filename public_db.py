@@ -6,6 +6,17 @@ import db_bz
 user_oper = user_bz.UserOper(pg)
 
 
+def getOpenidsByTwitterName(name):
+    sql = '''
+        select w.openid from user_info u, follow_who f, user_info u2, wechat_user w
+        where u.twitter='%s'
+        and u.id = f.god_id
+        and u2.id = f.user_id
+        and w.user_name=u2.user_name
+    ''' % name
+    return pg.db.query(sql)
+
+
 def getWechatUserByOpenid(openid):
     '''
     create by bigzhu at 15/04/04 12:48:58 根据 openid 来查询微信用户
@@ -55,10 +66,11 @@ def getTwitterMessages():
     return pg.db.query(sql)
 
 
-def getMessages(user_id=None, god_name=None):
+def getMessages(user_id=None, god_name=None, type=None, id=None):
     '''
     create by bigzhu at 15/07/14 15:11:44 查出我 Follow 的用户的twitter message
     create by bigzhu at 15/07/17 01:39:21 过于复杂,合并sql,根据god_name也可以查
+    modify by bigzhu at 15/07/19 15:30:55 可以根据type和id查出某一条记录
     '''
 
     twitter_in = ''
@@ -94,6 +106,7 @@ def getMessages(user_id=None, god_name=None):
     sql = '''
     select * from (
         select
+            m.id,
             'twitter' as m_type,
             m.created_at,
             u.screen_name as name,
@@ -106,6 +119,7 @@ def getMessages(user_id=None, god_name=None):
             %s
             union
         select
+            m.id,
             'github' as m_type,
             m.created_at,
             u.login as name,
@@ -120,6 +134,12 @@ def getMessages(user_id=None, god_name=None):
 
             ) as t order by created_at desc
         ''' % (twitter_in, github_in)
+    if type and id:
+        sql = '''
+        select * from (%s) s
+        where s.m_type='%s'
+        and s.id = %s
+        '''%(sql, type, id)
 
     return pg.db.query(sql)
 

@@ -3,14 +3,15 @@
 {% for message in messages %}
 <div class="box box-solid item">
     <div class="box-header">
-        <h3 class="box-title">
+        <h2 class="box-title">
             <a href="/user/{{message.name}}">
                 <img src="{{message.avatar}}" class="direct-chat-img" onerror="this.onerror=null;this.src='/ProxyHandler/{{message.avatar}}';">
                 <div class="name">
                     {{message.name}}
                 </div>
             </a>
-        </h3>
+
+        </h2>
         <div class="box-tools pull-right">
             {%if message.m_type=='twitter'%}
             <span class="round-icon bg-icon-blue">
@@ -22,6 +23,11 @@
             </span>
             {%end%}
             <sub>{{message.created_at}}</sub>
+            <a href="/message?t={{message.m_type}}&id={{message.id}}">
+                <sub>
+                    详情
+                </sub>
+            </a>
         </div>
     </div>
     <div class="box-body">

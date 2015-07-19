@@ -43,18 +43,7 @@ class WechatBaseHandler(tornado_bz.BaseHandler):
 
     def initialize(self):
         super(WechatBaseHandler, self).initialize()
-        current_timestamp = time.time()
-        if (float(self.settings['access_token_expires_at']) <= current_timestamp or
-                float(self.settings['jsapi_ticket_expires_at']) <= current_timestamp):
-            settings, self.wechat = wechat_bz.initWechat(self.settings)
-        else:
-            self.wechat = WechatBasic(jsapi_ticket=self.settings['jsapi_ticket'],
-                                      jsapi_ticket_expires_at=self.settings['jsapi_ticket_expires_at'],
-                                      token=self.settings["token"],
-                                      access_token=self.settings['access_token'],
-                                      access_token_expires_at=self.settings['access_token_expires_at'],
-                                      appid=self.settings["appid"],
-                                      appsecret=self.settings["appsecret"])
+        self.wechat = wechat_oper.getWechat()
 
 
 class ProxyHandler(ProxyHandler):
@@ -84,6 +73,26 @@ class main(tornado_bz.UserInfoHandler):
     def get(self):
         messages = list(public_db.getMessages(self.current_user))
         self.render(tornado_bz.getTName(self), messages=messages)
+
+class Changelog(tornado_bz.UserInfoHandler):
+
+    '''
+    create by bigzhu at 15/07/19 22:15:13
+    '''
+    def get(self):
+        self.render(tornado_bz.getTName(self))
+
+class message(tornado_bz.UserInfoHandler):
+
+    '''
+    某条信息
+    create by bigzhu at 15/07/19 15:27:45
+    '''
+    def get(self):
+        type = self.get_argument('t',None,True)
+        id = self.get_argument('id',None,True)
+        messages = public_db.getMessages(type=type, id=id)
+        self.render(tornado_bz.getTName(self, "main"), messages=messages)
 
 
 class add(tornado_bz.UserInfoHandler):
@@ -279,7 +288,7 @@ class qr(WechatBaseHandler, tornado_bz.UserInfoHandler):
 
     @tornado_bz.mustLogin
     def get(self):
-        url = wechat_oper.getQrUrl(self.wechat,self.get_user_info().user_name)
+        url = wechat_oper.getQrUrl(self.wechat, self.get_user_info().user_name)
         self.render(tornado_bz.getTName(self), url=url)
 
 
@@ -301,7 +310,7 @@ if __name__ == "__main__":
     settings = tornado_bz.getSettings()
 
     settings["pg"] = pg
-    settings, wechat = wechat_oper.initSetting(settings)
+    #settings, wechat = wechat_oper.initSetting(settings)
     application = tornado.web.Application(url_map, **settings)
 
     application.listen(port)

@@ -4,8 +4,69 @@ import ConfigParser
 import public_bz
 import wechat_bz
 import public_db
+from public_bz import storage
 import pg
+import datetime
+import time_bz
+try:
+    from wechat_sdk import WechatBasic
+    from wechat_sdk.messages import (
+        TextMessage, VoiceMessage, ImageMessage, VideoMessage, LinkMessage, LocationMessage, EventMessage
+    )
+except ImportError:
+    print 'you need install wechat, please run:'
+    print 'sudo pip install wechat-sdk'
+    exit(1)
 config = ConfigParser.ConfigParser()
+with open('wechat.ini', 'r') as cfg_file:
+    config.readfp(cfg_file)
+    appid = config.get('app', 'appid')
+    appsecret = config.get('app', 'appsecret')
+    token = config.get('app', 'token')
+
+
+def getNewWechatInfo():
+    '''
+    modify by bigzhu at 15/07/20 00:00:12 自动转化python的时间类型
+    '''
+    wechat = WechatBasic(token=token, appid=appid, appsecret=appsecret)
+    the_access_token = wechat.get_access_token()
+    access_token = the_access_token['access_token']
+    access_token_expires_at = the_access_token['access_token_expires_at']
+    ticket_info = wechat.get_jsapi_ticket()
+    jsapi_ticket = ticket_info['jsapi_ticket']
+    jsapi_ticket_expires_at = ticket_info['jsapi_ticket_expires_at']
+
+    access_token_expires_at = time_bz.timestampToDateTime(access_token_expires_at)
+    jsapi_ticket_expires_at = time_bz.timestampToDateTime(jsapi_ticket_expires_at)
+
+    return wechat, access_token, access_token_expires_at, jsapi_ticket, jsapi_ticket_expires_at
+
+
+def getWechat():
+    '''
+    控制最新的wechat
+    '''
+    result = list(pg.db.select('wechat_dead_line'))
+    if result:
+        wechat_dead_line = result[0]
+        now = datetime.datetime.now()
+        if now < wechat_dead_line.access_token_expires_at and now < wechat_dead_line.jsapi_ticket_expires_at:
+            wechat = WechatBasic(jsapi_ticket=wechat_dead_line.jsapi_ticket,
+                                 jsapi_ticket_expires_at=time_bz.datetimeToTimestamp(wechat_dead_line.jsapi_ticket_expires_at),
+                                 access_token=wechat_dead_line.access_token,
+                                 access_token_expires_at=time_bz.datetimeToTimestamp(wechat_dead_line.access_token_expires_at),
+                                 token=token,
+                                 appid=appid,
+                                 appsecret=appsecret)
+        else:
+            wechat, access_token, access_token_expires_at, jsapi_ticket, jsapi_ticket_expires_at = getNewWechatInfo()
+            pg.db.update('wechat_dead_line', access_token=access_token, access_token_expires_at=access_token_expires_at, jsapi_ticket=jsapi_ticket, jsapi_ticket_expires_at=jsapi_ticket_expires_at)
+    else:
+        wechat, access_token, access_token_expires_at, jsapi_ticket, jsapi_ticket_expires_at = getNewWechatInfo()
+
+        pg.db.insert('wechat_dead_line', access_token=access_token, access_token_expires_at=access_token_expires_at, jsapi_ticket=jsapi_ticket, jsapi_ticket_expires_at=jsapi_ticket_expires_at)
+    return wechat
 
 
 def getQrUrl(wechat, user_name):
@@ -53,6 +114,32 @@ def bindUser(user_name, openid):
     if count != 1:
         raise Exception('绑定失败: count=%s, openid=%s' % (count, openid))
 
+
+def sendTwitter(openid, tweet, screen_name, id):
+    '''
+    发送twitter的消息
+    '''
+    wechat = getWechat()
+
+    articles = []
+    if hasattr(tweet, 'extended_entities') and tweet.extended_entities['media']:
+        for media in tweet.extended_entities['media']:
+            article = storage()
+            article.picurl = "http://follow.center/ProxyHandler/%s" % media['media_url_https']
+            article.url = "http://follow.center/message?t=twitter&id=%s" % id
+            articles.append(article)
+        if len(articles) == 1:
+            articles[0].title = screen_name
+        else:
+            articles[0].title = screen_name + ': ' + tweet.text
+        articles[0].description = tweet.text
+    else:
+        article = storage()
+        article.title = screen_name
+        article.url = "http://follow.center/message?t=twitter&id=%s" % id
+        article.description = tweet.text
+        articles = [article]
+    print 'wechat.send_article_message'
+    wechat.send_article_message(openid, articles)
 if __name__ == '__main__':
-    settings, wechat = initSetting({})
-    getQrUrl(wechat, 'bigzhu')
+    print getWechat()

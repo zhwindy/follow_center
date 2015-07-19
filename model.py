@@ -13,6 +13,14 @@ import model_bz
 project_name = public_bz.getProjectName()
 db_name = project_name
 
+class wechat_dead_line(model_oper_bz.base):
+    '''
+    记录wechat的超时时间,以决定要不要新建
+    '''
+    jsapi_ticket = TextField()
+    jsapi_ticket_expires_at = DateTimeField()
+    access_token = TextField()
+    access_token_expires_at = DateTimeField()
 
 class wechat_user(model_oper_bz.base):
 
@@ -197,4 +205,4 @@ if __name__ == '__main__':
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
-    model_oper_bz.createTable(wechat_user, db_name)
+    model_oper_bz.createTable(wechat_dead_line, db_name)

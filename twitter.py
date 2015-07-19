@@ -7,8 +7,11 @@ modify by bigzhu at 15/07/17 17:08:38 存进去还是不对,手工来来修正�
 '''
 #import pytz
 #tz = pytz.timezone('Asia/Shanghai')
+import copy
 from datetime import timedelta
 import tweepy
+import wechat_oper
+import public_db
 import db_bz
 import pg
 import json
@@ -62,9 +65,12 @@ def getUserTimeline(screen_name):
             #tweet.created_at = tz.localize(tweet.created_at)
             tweet.created_at += timedelta(hours=8)
             # print tweet.created_at
-            id = saveTwitter(tweet)
+            id = saveTwitter(copy.deepcopy(tweet))
             if id is not None:  # 新增加消息
+                openids = public_db.getOpenidsByTwitterName(screen_name)
                 print 'new=', tweet.text
+                for data in openids:
+                    wechat_oper.sendTwitter(data.openid, tweet, screen_name, id)
     except tweepy.error.TweepError:
         print 'screen_name=', screen_name
         public_bz.getExpInfo()
@@ -78,7 +84,7 @@ def saveTwitter(tweet):
 
     if hasattr(tweet, 'user'):
         del tweet.user._json
-        del tweet.user._api
+        #del tweet.user._api
         tweet.user.entities = json.dumps(tweet.user.entities)
 
         del tweet.user.id
@@ -127,92 +133,6 @@ def saveTwitter(tweet):
 
     return db_bz.insertIfNotExist(pg, 'twitter_message', vars(tweet), "id_str='%s'" % tweet.id_str)
 
-
-class callback(WechatBaseHandler):
-
-    '''
-    create by bigzhu at 15/04/02 16:34:53 微信的回调接口
-    '''
-
-    def get(self):
-        self.write(self.get_argument('echostr'))
-
-    def post(self):
-        self.set_header("Content-Type", "application/json")
-
-        '''
-        #to 7+1
-        print self.request.body
-        result = wechat_bz.callPlatform(self, url='http://admin.hoywe.com/api.php?hash=GO5KZ')
-        print result
-        self.write(result)
-        return
-        '''
-
-        wechat = self.wechat
-
-        wechat.parse_data(self.request.body)
-        message = wechat.get_message()
-
-        response = None
-        if isinstance(message, TextMessage):
-            # count = public_db.updateDescription(openid=message.source, desc=message.content)
-            # if count == 1:
-            #    response = wechat.response_text(content=u'描述已经添加,感谢您的举报.')
-            # else:
-            #    response = wechat.response_text(content=u'请先发送需要举报的照片')
-            response = wechat.response_text(content=u'文字信息')
-
-        elif isinstance(message, VoiceMessage):
-            response = wechat.response_text(content=u'语音信息')
-        elif isinstance(message, ImageMessage):
-
-            # 需要下载图片
-            def downloadImageFile():
-                http_client = tornado.httpclient.AsyncHTTPClient()
-                http_client.fetch(message.picurl, callback=done)
-
-            def done(response):
-                with open("static/upload/images/" + message.media_id + '.jpg', "w") as f:
-                    f.write(response.body)
-                print "DONE"
-            downloadImageFile()
-            # 检查用户是否存储了,没有的话存之
-            wechat_user_info = public_db.getWechatUserByOpenid(message.source)
-            if wechat_user_info:
-                pass
-            else:
-                wechat_user_info = wechat.get_user_info(message.source)
-                pg.db.insert('wechat_user', **wechat_user_info)
-            pg.db.insert('upload_info', openid=message.source, media_id=message.media_id)
-
-            response = wechat.response_text(content=u'图片已经保存,请继续向我们发送对图片的描述')
-        elif isinstance(message, VideoMessage):
-            response = wechat.response_text(content=u'视频信息')
-        elif isinstance(message, LinkMessage):
-            wechat_user_info = wechat.get_user_info(message.source)
-            print wechat_user_info
-            response = wechat.response_text(content=u'链接信息')
-        elif isinstance(message, LocationMessage):
-            response = wechat.response_text(content=u'地理位置信息')
-        elif isinstance(message, EventMessage):  # 事件信息
-            if message.type == 'subscribe':  # 关注事件(包括普通关注事件和扫描二维码造成的关注事件)
-                if message.key and message.ticket:  # 如果 key 和 ticket 均不为空，则是扫描二维码造成的关注事件
-                    response = wechat.response_text(content=u'用户尚未关注时的二维码扫描关注事件')
-                else:
-                    response = wechat.response_text(content=u'普通关注事件')
-            elif message.type == 'unsubscribe':
-                response = wechat.response_text(content=u'取消关注事件')
-            elif message.type == 'scan':
-                response = wechat.response_text(content=u'用户已关注时的二维码扫描事件')
-            elif message.type == 'location':
-                response = wechat.response_text(content=u'上报地理位置事件')
-            elif message.type == 'click':
-                response = wechat.response_text(content=u'自定义菜单点击事件')
-            elif message.type == 'view':
-                response = wechat.response_text(content=u'自定义菜单跳转链接事件')
-
-        self.write(response)
 
 if __name__ == '__main__':
     # check()
