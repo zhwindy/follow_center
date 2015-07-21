@@ -61,7 +61,7 @@ def getWechat():
                                  appsecret=appsecret)
         else:
             wechat, access_token, access_token_expires_at, jsapi_ticket, jsapi_ticket_expires_at = getNewWechatInfo()
-            pg.db.update('wechat_dead_line', access_token=access_token, access_token_expires_at=access_token_expires_at, jsapi_ticket=jsapi_ticket, jsapi_ticket_expires_at=jsapi_ticket_expires_at)
+            pg.db.update('wechat_dead_line', where='1=1', access_token=access_token, access_token_expires_at=access_token_expires_at, jsapi_ticket=jsapi_ticket, jsapi_ticket_expires_at=jsapi_ticket_expires_at)
     else:
         wechat, access_token, access_token_expires_at, jsapi_ticket, jsapi_ticket_expires_at = getNewWechatInfo()
 

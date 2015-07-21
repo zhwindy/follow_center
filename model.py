@@ -13,7 +13,9 @@ import model_bz
 project_name = public_bz.getProjectName()
 db_name = project_name
 
+
 class wechat_dead_line(model_oper_bz.base):
+
     '''
     记录wechat的超时时间,以决定要不要新建
     '''
@@ -21,6 +23,7 @@ class wechat_dead_line(model_oper_bz.base):
     jsapi_ticket_expires_at = DateTimeField()
     access_token = TextField()
     access_token_expires_at = DateTimeField()
+
 
 class wechat_user(model_oper_bz.base):
 
@@ -41,7 +44,7 @@ class wechat_user(model_oper_bz.base):
     unionid = TextField(null=True)  # 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。详见：获取用户个人信息（UnionID机制）
     remark = TextField()  # 不知道是什么
     groupid = IntegerField()  # 突然出现的
-    user_name = TextField(null=True) #系统的用户名,用来绑定
+    user_name = TextField(null=True)  # 系统的用户名,用来绑定
 
 
 class github_message(model_oper_bz.base):

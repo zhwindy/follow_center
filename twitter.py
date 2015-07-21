@@ -52,7 +52,7 @@ def getUserTimeline(screen_name):
     create by bigzhu at 15/07/04 22:49:04
         用 https://api.twitter.com/1.1/statuses/user_timeline.json 可以取到某个用户的信息
         参看 https://dev.twitter.com/rest/reference/get/statuses/user_timeline
-    create by bigzhu at 15/07/04 22:53:09
+    modify by bigzhu at 15/07/04 22:53:09
         考虑使用 http://www.tweepy.org/ 来调用twitter api
     '''
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)

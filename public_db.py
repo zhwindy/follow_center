@@ -113,7 +113,8 @@ def getMessages(user_id=None, god_name=None, type=None, id=None):
             u.profile_image_url_https as avatar,
             null as content,
             m.text,
-            m.extended_entities
+            m.extended_entities,
+            'https://twitter.com/'||u.screen_name||'/status/'||m.id_str as href
                 from twitter_message m, twitter_user u
                 where m.t_user_id=u.id_str
             %s
@@ -126,7 +127,8 @@ def getMessages(user_id=None, god_name=None, type=None, id=None):
             u.avatar_url as avatar,
             m.content,
             null as text,
-            null as extended_entities
+            null as extended_entities,
+            null as href
                 from github_message m, github_user u
                 where m.actor=u.id
                 and m.type='IssuesEvent'
