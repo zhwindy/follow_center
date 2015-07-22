@@ -141,7 +141,6 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
             null as href
                 from github_message m, github_user u
                 where m.actor=u.id
-                and m.type='IssuesEvent'
             %s
 
             ) as t order by created_at desc
@@ -158,6 +157,7 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
         limit %s
         '''%(sql, limit)
 
+    print sql
 
     return pg.db.query(sql)
 

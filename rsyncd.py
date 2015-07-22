@@ -9,4 +9,4 @@ if __name__ == '__main__':
     while True:
         twitter.check()
         github.check()
-        time.sleep(60)
+        time.sleep(600)

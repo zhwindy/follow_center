@@ -56,13 +56,11 @@ def getUserEvent(user_name, etag):
 
         # 更新etag
         etag = r.headers['etag']
-        #updateEtag(user_name, etag)
+        updateEtag(user_name, etag)
 
         for i in r.json():
             i['actor'] = user_id
             message = storage(i)
-            #text = formatInfo(message)
-            #print text
             id = saveMessage(copy.deepcopy(message))
             if id is not None:
                 text = formatInfo(message)
@@ -70,7 +68,6 @@ def getUserEvent(user_name, etag):
                 openids = public_db.getOpenidsByGithubName(user_name)
                 for data in openids:
                     wechat_oper.sendGithub(data.openid, text, user_name, id)
-
     else:
         print r.status_code
 
@@ -139,4 +136,4 @@ def saveUser(id, url):
 
 
 if __name__ == '__main__':
-    getUserEvent('bigzhu', 'fuck')
+    check()
