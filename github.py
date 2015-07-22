@@ -5,12 +5,14 @@ create by bigzhu at 15/07/15 17:17:29 取github的动态
 '''
 import requests
 import pg
+from datetime import timedelta
 import copy
 import db_bz
 import wechat_oper
 from public_bz import storage
 import public_db
 import json
+import time_bz
 
 
 def check():
@@ -41,6 +43,7 @@ def delGithubUser(user_name):
 def getUserEvent(user_name, etag):
     '''
     create by bigzhu at 15/07/15 17:54:08 取github
+    modify by bigzhu at 15/07/22 16:20:42 时间同样要加入8小时,否则不正确
     '''
     headers = {'If-None-Match': etag}
     r = requests.get('https://api.github.com/users/%s/events' % user_name, headers=headers)
@@ -61,6 +64,8 @@ def getUserEvent(user_name, etag):
         for i in r.json():
             i['actor'] = user_id
             message = storage(i)
+            message.created_at = time_bz.unicodeToDateTIme(message.created_at)
+            message.created_at += timedelta(hours=8)
             id = saveMessage(copy.deepcopy(message))
             if id is not None:
                 text = formatInfo(message)
@@ -77,7 +82,6 @@ def formatInfo(message):
     create by bigzhu at 15/07/22 14:48:01 组装message为可读的
     '''
     text = ''
-    print message
     if message['type'] == 'PushEvent':
         commits = message['payload']['commits']
         commits = ';'.join(c['message'] for c in commits)
@@ -89,8 +93,9 @@ def formatInfo(message):
     elif message['type'] == 'WatchEvent':
         text = message['payload']['action'] + ' ' + message['repo']['name']
     elif message['type'] == 'IssuesEvent':
+        payload = message['payload']
         text = message['repo']['name'] + '\n'
-        text += message['payload']['action'] + ' issue ' + payload['issue']['title']
+        text += payload['action'] + ' issue ' + payload['issue']['title']
     return text
 
 
@@ -98,7 +103,6 @@ def saveMessage(message):
     '''
     create by bigzhu at 15/07/16 09:44:39 为了抽取数据方便,合并数据到 content 里
     '''
-    print message
     message.id_str = message.pop('id')
 
     content = storage()
@@ -116,9 +120,10 @@ def saveMessage(message):
 def saveUser(id, url):
     '''
     create by bigzhu at 15/07/15 21:27:19 保存github信息
+    create by bigzhu at 15/07/22 16:17:37 fix bug, not return id
     '''
     if list(pg.db.select('github_user', where='id=%s' % id)):
-        return
+        return id
     else:
         r = requests.get(url)
         user = storage(r.json())
@@ -137,4 +142,5 @@ def saveUser(id, url):
 
 
 if __name__ == '__main__':
+    #getUserEvent('bigzhu', 'test')
     check()
