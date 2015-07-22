@@ -5,6 +5,7 @@ create by bigzhu at 15/07/15 17:17:29 取github的动态
 '''
 import requests
 import pg
+import copy
 import db_bz
 import wechat_oper
 from public_bz import storage
@@ -60,17 +61,15 @@ def getUserEvent(user_name, etag):
         for i in r.json():
             i['actor'] = user_id
             message = storage(i)
-            print message
-            text = formatInfo(message)
-            print text
-            #id = saveMessage(message)
-            #if id is not None:
-            #    print message
-            #    text = formatInfo(message)
-            #    print text
-            #    openids = public_db.getOpenidsByGithubName(user_name)
-            #    for data in openids:
-            #        wechat_oper.sendGithub(data.openid, text, user_name, id)
+            #text = formatInfo(message)
+            #print text
+            id = saveMessage(copy.deepcopy(message))
+            if id is not None:
+                text = formatInfo(message)
+                print text
+                openids = public_db.getOpenidsByGithubName(user_name)
+                for data in openids:
+                    wechat_oper.sendGithub(data.openid, text, user_name, id)
 
     else:
         print r.status_code
@@ -81,9 +80,11 @@ def formatInfo(message):
     create by bigzhu at 15/07/22 14:48:01 组装message为可读的
     '''
     text = ''
+    print message
     if message['type'] == 'PushEvent':
         commits = message['payload']['commits']
-        text = 'Push ' + message['repo']['name'] + ':' + ';'.join(commits)
+        commits = ';'.join(c['message'] for c in commits)
+        text = 'Push ' + message['repo']['name'] + ':' + commits
     elif message['type'] == 'IssueCommentEvent':
         payload = message['payload']
         text = payload['issue']['title'] + '\n'
@@ -93,6 +94,7 @@ def formatInfo(message):
     elif message['type'] == 'IssuesEvent':
         text = message['repo']['name'] + '\n'
         text += message['payload']['action'] + ' issue ' + payload['issue']['title']
+    return text
 
 
 def saveMessage(message):
