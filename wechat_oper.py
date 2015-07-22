@@ -141,5 +141,19 @@ def sendTwitter(openid, tweet, screen_name, id):
         articles = [article]
     print 'wechat.send_article_message'
     wechat.send_article_message(openid, articles)
+
+def sendGithub(openid, text, user_name, id):
+    '''
+    create by bigzhu at 15/07/22 15:05:01 发送github的消息
+    '''
+    wechat = getWechat()
+    articles = []
+    article = storage()
+    article.title = user_name
+    article.url = "http://follow.center/message?t=github&id=%s" % id
+    article.description = text
+    articles = [article]
+    print 'wechat.send_article_message'
+    wechat.send_article_message(openid, articles)
 if __name__ == '__main__':
     print getWechat()

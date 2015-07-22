@@ -71,7 +71,8 @@ class main(tornado_bz.UserInfoHandler):
         if limit == '':
             limit = 50
         messages = list(public_db.getMessages(self.current_user, limit=limit))
-        anchor = '%s_%s' %(messages[-1].m_type, messages[-1].id)
+        anchor_message = messages[-2]
+        anchor = '%s_%s' %(anchor_message.m_type, anchor_message.id)
         self.render(tornado_bz.getTName(self), messages=messages, more=int(limit)+50, anchor=anchor)
 
 

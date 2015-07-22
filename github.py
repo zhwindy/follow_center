@@ -6,9 +6,11 @@ create by bigzhu at 15/07/15 17:17:29 取github的动态
 import requests
 import pg
 import db_bz
+import wechat_oper
 from public_bz import storage
 import public_db
 import json
+
 
 def check():
     '''
@@ -21,16 +23,19 @@ def check():
             print 'check github %s' % user.github
             getUserEvent(user.github, user.etag)
 
+
 def updateEtag(user_name, etag):
-    count = pg.db.update('github_user',where="login='%s'"%user_name, etag=etag)
-    if count !=1:
+    count = pg.db.update('github_user', where="login='%s'" % user_name, etag=etag)
+    if count != 1:
         raise Exception('更新etag 失败, %s' % count)
+
 
 def delGithubUser(user_name):
     sql = '''
     update user_info set github=null where github='%s'
     ''' % user_name
     pg.db.query(sql)
+
 
 def getUserEvent(user_name, etag):
     '''
@@ -43,12 +48,12 @@ def getUserEvent(user_name, etag):
         messages = r.json()
         if not messages:
             delGithubUser(user_name)
-            #没有这个github用户,取消
+            # 没有这个github用户,取消
             return
         actor = messages[0]['actor']
         user_id = saveUser(actor['id'], actor['url'])
 
-        #更新etag
+        # 更新etag
         etag = r.headers['etag']
         updateEtag(user_name, etag)
 
@@ -57,9 +62,33 @@ def getUserEvent(user_name, etag):
             message = storage(i)
             id = saveMessage(message)
             if id is not None:
-                print 'new',message.type,message.content
+                text = formatInfo(message)
+                print text
+                openids = public_db.getOpenidsByGithubName(user_name)
+                for data in openids:
+                    wechat_oper.sendGithub(data.openid, text, user_name, id)
+
     else:
         print r.status_code
+
+
+def formatInfo(message):
+    '''
+    create by bigzhu at 15/07/22 14:48:01 组装message为可读的
+    '''
+    text = ''
+    if message.content['type'] == 'PushEvent':
+        commits = message.content['payload']['commits']
+        text = 'Push ' + message.content['repo']['name'] + ':' + ';'.join(commits)
+    elif message.content['type'] == 'IssueCommentEvent':
+        payload = message.content['payload']
+        text = payload['issue']['title'] + '\n'
+        text += payload['comment']['body']
+    elif message.content['type'] == 'WatchEvent':
+        text = message.content['payload']['action'] + ' ' + message.content['repo']['name']
+    elif message.content['type'] == 'IssuesEvent':
+        text = message.content['repo']['name'] + '\n'
+        text += message.content['payload']['action'] + ' issue ' + payload['issue']['title']
 
 
 def saveMessage(message):

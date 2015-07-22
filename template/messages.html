@@ -7,6 +7,7 @@
     {%end%}
 {% end %}
 
+{% try %}
 {%from http_bz import removeUrlLastPath%}
 <div class="row">
     <div class="col-md-4">
@@ -17,3 +18,5 @@
     <div class="col-md-4">
     </div>
 </div>
+{% except %}
+{% end %}
