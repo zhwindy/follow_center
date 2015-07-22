@@ -55,18 +55,22 @@ def getUserEvent(user_name, etag):
 
         # 更新etag
         etag = r.headers['etag']
-        updateEtag(user_name, etag)
+        #updateEtag(user_name, etag)
 
         for i in r.json():
             i['actor'] = user_id
             message = storage(i)
-            id = saveMessage(message)
-            if id is not None:
-                text = formatInfo(message)
-                print text
-                openids = public_db.getOpenidsByGithubName(user_name)
-                for data in openids:
-                    wechat_oper.sendGithub(data.openid, text, user_name, id)
+            print message
+            text = formatInfo(message)
+            print text
+            #id = saveMessage(message)
+            #if id is not None:
+            #    print message
+            #    text = formatInfo(message)
+            #    print text
+            #    openids = public_db.getOpenidsByGithubName(user_name)
+            #    for data in openids:
+            #        wechat_oper.sendGithub(data.openid, text, user_name, id)
 
     else:
         print r.status_code
@@ -77,18 +81,18 @@ def formatInfo(message):
     create by bigzhu at 15/07/22 14:48:01 组装message为可读的
     '''
     text = ''
-    if message.content['type'] == 'PushEvent':
-        commits = message.content['payload']['commits']
-        text = 'Push ' + message.content['repo']['name'] + ':' + ';'.join(commits)
-    elif message.content['type'] == 'IssueCommentEvent':
-        payload = message.content['payload']
+    if message['type'] == 'PushEvent':
+        commits = message['payload']['commits']
+        text = 'Push ' + message['repo']['name'] + ':' + ';'.join(commits)
+    elif message['type'] == 'IssueCommentEvent':
+        payload = message['payload']
         text = payload['issue']['title'] + '\n'
         text += payload['comment']['body']
-    elif message.content['type'] == 'WatchEvent':
-        text = message.content['payload']['action'] + ' ' + message.content['repo']['name']
-    elif message.content['type'] == 'IssuesEvent':
-        text = message.content['repo']['name'] + '\n'
-        text += message.content['payload']['action'] + ' issue ' + payload['issue']['title']
+    elif message['type'] == 'WatchEvent':
+        text = message['payload']['action'] + ' ' + message['repo']['name']
+    elif message['type'] == 'IssuesEvent':
+        text = message['repo']['name'] + '\n'
+        text += message['payload']['action'] + ' issue ' + payload['issue']['title']
 
 
 def saveMessage(message):
@@ -133,4 +137,4 @@ def saveUser(id, url):
 
 
 if __name__ == '__main__':
-    getUserEvent('navy3', '')
+    getUserEvent('bigzhu', 'fuck')
