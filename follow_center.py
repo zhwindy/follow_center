@@ -16,13 +16,10 @@ import json
 import db_bz
 from proxy import ProxyHandler
 import oper
-import time
-import wechat_bz
 import wechat_oper
 import ConfigParser
 config = ConfigParser.ConfigParser()
 try:
-    from wechat_sdk import WechatBasic
     from wechat_sdk.messages import (
         TextMessage, VoiceMessage, ImageMessage, VideoMessage, LinkMessage, LocationMessage, EventMessage
     )
@@ -70,17 +67,23 @@ class main(tornado_bz.UserInfoHandler):
 
     #@tornado_bz.mustLogin
 
-    def get(self):
-        messages = list(public_db.getMessages(self.current_user))
-        self.render(tornado_bz.getTName(self), messages=messages)
+    def get(self, limit=50):
+        if limit == '':
+            limit = 50
+        messages = list(public_db.getMessages(self.current_user, limit=limit))
+        anchor = '%s_%s' %(messages[-1].m_type, messages[-1].id)
+        self.render(tornado_bz.getTName(self), messages=messages, more=int(limit)+50, anchor=anchor)
+
 
 class Changelog(tornado_bz.UserInfoHandler):
 
     '''
     create by bigzhu at 15/07/19 22:15:13
     '''
+
     def get(self):
         self.render(tornado_bz.getTName(self))
+
 
 class message(tornado_bz.UserInfoHandler):
 
@@ -88,9 +91,10 @@ class message(tornado_bz.UserInfoHandler):
     某条信息
     create by bigzhu at 15/07/19 15:27:45
     '''
+
     def get(self):
-        type = self.get_argument('t',None,True)
-        id = self.get_argument('id',None,True)
+        type = self.get_argument('t', None, True)
+        id = self.get_argument('id', None, True)
         messages = public_db.getMessages(type=type, id=id)
         self.render(tornado_bz.getTName(self, "main"), messages=messages)
 
@@ -261,7 +265,7 @@ class callback(WechatBaseHandler):
                     wechat_oper.saveUserInfo(wechat, message.source)
                     wechat_oper.bindUser(user_name, message.source)
                     #response = wechat.response_text(content=u'用户尚未关注时的二维码扫描关注事件')
-                    response = wechat.response_text(content=u'感谢你关注FollowCenter, %s follow 的动态信息将会发送到您的微信上'%user_name)
+                    response = wechat.response_text(content=u'感谢你关注FollowCenter, %s follow 的动态信息将会发送到您的微信上' % user_name)
                 else:
                     response = wechat.response_text(content=u'普通关注事件')
             elif message.type == 'unsubscribe':
@@ -271,7 +275,7 @@ class callback(WechatBaseHandler):
                 wechat_oper.saveUserInfo(wechat, message.source)
                 wechat_oper.bindUser(user_name, message.source)
                 #response = wechat.response_text(content=u'用户已关注时的二维码扫描事件')
-                response = wechat.response_text(content=u'成功与%s绑定, 其follow 的动态信息将会发送到您的微信上'%user_name)
+                response = wechat.response_text(content=u'成功与%s绑定, 其follow 的动态信息将会发送到您的微信上' % user_name)
 
                 print message.key
             elif message.type == 'location':
@@ -304,7 +308,7 @@ if __name__ == "__main__":
     print port
 
     url_map = tornado_bz.getURLMap(the_class)
-    url_map.append((r'/', main))
+    url_map.append((r'/(.*)', main))
     url_map.append((r'/static/(.*)', tornado.web.StaticFileHandler, {'path': "./static"}))
 
     settings = tornado_bz.getSettings()

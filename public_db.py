@@ -66,11 +66,12 @@ def getTwitterMessages():
     return pg.db.query(sql)
 
 
-def getMessages(user_id=None, god_name=None, type=None, id=None):
+def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
     '''
     create by bigzhu at 15/07/14 15:11:44 查出我 Follow 的用户的twitter message
     create by bigzhu at 15/07/17 01:39:21 过于复杂,合并sql,根据god_name也可以查
     modify by bigzhu at 15/07/19 15:30:55 可以根据type和id查出某一条记录
+    modify by bigzhu at 15/07/22 12:49:35 limit 设定取多少条
     '''
 
     twitter_in = ''
@@ -142,6 +143,12 @@ def getMessages(user_id=None, god_name=None, type=None, id=None):
         where s.m_type='%s'
         and s.id = %s
         '''%(sql, type, id)
+    if limit:
+        sql = '''
+        select * from (%s) s
+        limit %s
+        '''%(sql, limit)
+
 
     return pg.db.query(sql)
 
