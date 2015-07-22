@@ -98,6 +98,7 @@ def saveMessage(message):
     '''
     create by bigzhu at 15/07/16 09:44:39 为了抽取数据方便,合并数据到 content 里
     '''
+    print message
     message.id_str = message.pop('id')
 
     content = storage()
