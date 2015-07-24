@@ -9,6 +9,7 @@ import pg
 import datetime
 import time_bz
 try:
+    import wechat_sdk
     from wechat_sdk import WechatBasic
     from wechat_sdk.messages import (
         TextMessage, VoiceMessage, ImageMessage, VideoMessage, LinkMessage, LocationMessage, EventMessage
@@ -23,6 +24,17 @@ with open('wechat.ini', 'r') as cfg_file:
     appid = config.get('app', 'appid')
     appsecret = config.get('app', 'appsecret')
     token = config.get('app', 'token')
+
+
+def sendArticle(openid, articles):
+    '''
+    发送信息 create by bigzhu at 15/07/24 09:35:31
+    '''
+    wechat = getWechat()
+    try:
+        wechat.send_article_message(openid, articles)
+    except wechat_sdk.exceptions.OfficialAPIError:
+        print 'openid=', openid, ' ', public_bz.getExpInfo()
 
 
 def getNewWechatInfo():
@@ -119,7 +131,6 @@ def sendTwitter(openid, tweet, screen_name, id):
     '''
     发送twitter的消息
     '''
-    wechat = getWechat()
 
     articles = []
     if hasattr(tweet, 'extended_entities') and tweet.extended_entities['media']:
@@ -139,21 +150,19 @@ def sendTwitter(openid, tweet, screen_name, id):
         article.url = "http://follow.center/message?t=twitter&id=%s" % id
         article.description = tweet.text
         articles = [article]
-    print 'wechat.send_article_message'
-    wechat.send_article_message(openid, articles)
+    sendArticle(openid, articles)
+
 
 def sendGithub(openid, text, user_name, id):
     '''
     create by bigzhu at 15/07/22 15:05:01 发送github的消息
     '''
-    wechat = getWechat()
     articles = []
     article = storage()
     article.title = user_name
     article.url = "http://follow.center/message?t=github&id=%s" % id
     article.description = text
     articles = [article]
-    print 'wechat.send_article_message'
-    wechat.send_article_message(openid, articles)
+    sendArticle(openid, articles)
 if __name__ == '__main__':
     print getWechat()

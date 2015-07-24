@@ -68,12 +68,17 @@ class main(tornado_bz.UserInfoHandler):
     #@tornado_bz.mustLogin
 
     def get(self, limit=50):
-        if limit == '':
-            limit = 50
+        anchor = ''
+        more = None
         messages = list(public_db.getMessages(self.current_user, limit=limit))
-        anchor_message = messages[-2]
-        anchor = '%s_%s' %(anchor_message.m_type, anchor_message.id)
-        self.render(tornado_bz.getTName(self), messages=messages, more=int(limit)+50, anchor=anchor)
+        if messages:
+            if limit == '':
+                limit = 50
+            anchor_message = messages[-2]
+            anchor = '%s_%s' %(anchor_message.m_type, anchor_message.id)
+            more = int(limit)+50
+
+        self.render(tornado_bz.getTName(self), messages=messages, more=more, anchor=anchor)
 
 
 class Changelog(tornado_bz.UserInfoHandler):
