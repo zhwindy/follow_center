@@ -23,7 +23,7 @@
     <div class="box-body">
         {%set repo_url = message.content['repo']['url'].replace('api.github.com/repos', 'github.com') %}
         {%set repo_name = message.content['repo']['name'] %}
-        {%set repo_link = '<a href=="%s">%s</a>'%(repo_url, repo_name) %}
+        {%set repo_link = '<a href="%s">%s</a>'%(repo_url, repo_name) %}
 
         {%if message.content['type']=='PushEvent'%}
         Push {{repo_link}}
@@ -48,9 +48,6 @@
         {%elif message.content['type']=='WatchEvent'%}
 
         {%set payload = message.content['payload'] %}
-        {%set repo_url = message.content['repo']['url'].replace('api.github.com/repos', 'github.com') %}
-        {%set repo_name = message.content['repo']['name'] %}
-        {%set repo_link = '<a href=="%s">%s</a>'%(repo_url, repo_name) %}
 
         {{message.content['payload']['action']}} {{repo_link}}
 
@@ -58,9 +55,6 @@
         {%elif message.content['type']=='IssuesEvent'%}
 
         {%set payload = message.content['payload'] %}
-        {%set repo_url = message.content['repo']['url'].replace('api.github.com/repos', 'github.com') %}
-        {%set repo_name = message.content['repo']['name'] %}
-        {%set repo_link = '<a href=="%s">%s</a>'%(repo_url, repo_name) %}
 
         {%set issue_url = payload['issue']['html_url']%}
         {%set issue_title = payload['issue']['title']%}
@@ -68,6 +62,14 @@
         {{repo_link}}
         <br>
         {{message.content['payload']['action']}} issue <a target="_blank" href="{{issue_url}}" >{{issue_title}}</a>
+
+        {%elif message.content['type']=='PullRequestEvent'%}
+        {%set payload = message.content['payload'] %}
+        {%set pull_request = payload['pull_request'] %}
+
+        {%set pull_request_link = '<a target="_blank" href="%s">%s</a>'%(pull_request['html_url'], pull_request['title']) %}
+
+        {{payload['action']}} {{repo_link}} PullRequest {{pull_request_link}}
         {%end%}
     </div>
 </div>

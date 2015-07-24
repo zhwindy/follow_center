@@ -12,7 +12,7 @@ with open('instagram.ini', 'r') as cfg_file:
 from instagram.client import InstagramAPI
 
 api = InstagramAPI(access_token=access_token, client_secret=client_secret)
-q='jerrymice'
+q='tildalindstam'
 user = api.user_search(q, 1)[0]
 user_id = user.id
 print user.profile_picture

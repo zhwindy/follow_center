@@ -199,7 +199,25 @@ class twitter_user(model_oper_bz.base):
     default_profile = BooleanField(null=True)
     following = BooleanField(null=True)
 
-
+class instagram_user(model_oper_bz.base):
+    #"id": "1574083",
+    id_str = TextField()
+    #"username": "snoopdogg",
+    username = TextField(null=True)
+    #"full_name": "Snoop Dogg",
+    full_name = TextField(null=True)
+    #"profile_picture": "http://distillery.s3.amazonaws.com/profiles/profile_1574083_75sq_1295469061.jpg",
+    profile_picture = TextField(null=True)
+    #"bio": "This is my bio",
+    bio = TextField(null=True)
+    #"website": "http://snoopdogg.com",
+    website = TextField(null=True)
+    #"counts": {
+    #    "media": 1320,
+    #    "follows": 420,
+    #    "followed_by": 3410
+    #}
+    counts = BinaryJSONField(null=True)
 if __name__ == '__main__':
     # 需要用户登录模块
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
