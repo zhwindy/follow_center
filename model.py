@@ -199,9 +199,10 @@ class twitter_user(model_oper_bz.base):
     default_profile = BooleanField(null=True)
     following = BooleanField(null=True)
 
+
 class instagram_user(model_oper_bz.base):
     #"id": "1574083",
-    id_str = TextField()
+    #id_str = TextField()
     #"username": "snoopdogg",
     username = TextField(null=True)
     #"full_name": "Snoop Dogg",
@@ -218,6 +219,25 @@ class instagram_user(model_oper_bz.base):
     #    "followed_by": 3410
     #}
     counts = BinaryJSONField(null=True)
+
+
+class instagram_media(model_oper_bz.base):
+    #'user_has_liked'
+    caption = BinaryJSONField(null=True)  # 字幕
+    comment_count = IntegerField(null=True)
+    comments = BinaryJSONField(null=True)
+    created_time = DateTimeField()
+    filter = TextField(null=True)
+
+    low_resolution = BinaryJSONField(null=True)
+    standard_resolution = BinaryJSONField(null=True)
+    thumbnail = BinaryJSONField(null=True)
+
+    id_str = TextField()
+    like_count = IntegerField(null=True)
+    likes = BinaryJSONField(null=True)
+    link = TextField()
+    type = TextField()
 if __name__ == '__main__':
     # 需要用户登录模块
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
@@ -226,4 +246,5 @@ if __name__ == '__main__':
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
-    model_oper_bz.createTable(wechat_dead_line, db_name)
+    model_oper_bz.createTable(instagram_user, db_name)
+    model_oper_bz.reCreateTable(instagram_media, db_name)
