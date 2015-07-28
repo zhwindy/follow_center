@@ -1,3 +1,4 @@
+{%set repo_url = message.content['repo']['url'].replace('api.github.com/repos', 'github.com') %}
 <div id="github_{{message.id}}" class="box box-solid item">
     <div class="box-header">
         <h2 class="box-title">
@@ -9,9 +10,11 @@
             </a>
         </h2>
         <div class="box-tools pull-right">
-            <span class="round-icon bg-icon-black">
-                <i class="fa fa-github"></i>
-            </span>
+            <a class="a-icon" target="_blank" href="{{repo_url}}">
+                <span class="round-icon bg-icon-black">
+                    <i class="fa fa-github"></i>
+                </span>
+            </a>
             <sub>{{message.created_at}}</sub>
             <a href="/message?t={{message.m_type}}&id={{message.id}}">
                 <sub>
@@ -21,7 +24,6 @@
         </div>
     </div>
     <div class="box-body">
-        {%set repo_url = message.content['repo']['url'].replace('api.github.com/repos', 'github.com') %}
         {%set repo_name = message.content['repo']['name'] %}
         {%set repo_link = '<a href="%s">%s</a>'%(repo_url, repo_name) %}
 
