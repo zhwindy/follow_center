@@ -16,6 +16,7 @@ def getOpenidsByTwitterName(name):
     ''' % name
     return pg.db.query(sql)
 
+
 def getOpenidsByGithubName(name):
     sql = '''
         select w.openid from user_info u, follow_who f, user_info u2, wechat_user w
@@ -25,6 +26,7 @@ def getOpenidsByGithubName(name):
         and w.user_name=u2.user_name
     ''' % name
     return pg.db.query(sql)
+
 
 def getWechatUserByOpenid(openid):
     '''
@@ -150,14 +152,12 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
         select * from (%s) s
         where s.m_type='%s'
         and s.id = %s
-        '''%(sql, type, id)
+        ''' % (sql, type, id)
     if limit:
         sql = '''
         select * from (%s) s
         limit %s
-        '''%(sql, limit)
-
-    print sql
+        ''' % (sql, limit)
 
     return pg.db.query(sql)
 
