@@ -35,6 +35,8 @@ def sendArticle(openid, articles):
         wechat.send_article_message(openid, articles)
     except wechat_sdk.exceptions.OfficialAPIError:
         print 'openid=', openid, ' ', public_bz.getExpInfo()
+    except Exception:
+        print public_bz.getExpInfo()
 
 
 def getNewWechatInfo():
