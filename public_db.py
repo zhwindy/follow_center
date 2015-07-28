@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import pg
 import user_bz
-import db_bz
 user_oper = user_bz.UserOper(pg)
 
 

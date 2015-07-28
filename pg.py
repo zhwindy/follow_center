@@ -4,7 +4,10 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import webpy_db
-import db_bz
+import functools
+import psycopg2
+import public_bz
+import time
 
 #DB_IP = '127.0.0.1'
 DB_IP = 'bigzhu.org'
@@ -25,27 +28,44 @@ def connect():
 connect()
 
 
-@db_bz.daemonDB
+def daemon(method):
+    '''
+    自动重连数据库的一个装饰器
+    '''
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        try:
+            return method(self, *args, **kwargs)
+        except(psycopg2.OperationalError, psycopg2.InterfaceError, psycopg2.DatabaseError):
+            print public_bz.getExpInfo()
+            connect()
+            time.sleep(5)
+            return wrapper(self, *args, **kwargs)
+            print '重新连接数据库'
+    return wrapper
+
+
+@daemon
 def select(*args, **kwargs):
     return db.select(*args, **kwargs)
 
 
-@db_bz.daemonDB
+@daemon
 def query(*args, **kwargs):
     return db.query(*args, **kwargs)
 
 
-@db_bz.daemonDB
+@daemon
 def update(*args, **kwargs):
     return db.update(*args, **kwargs)
 
 
-@db_bz.daemonDB
+@daemon
 def delete(*args, **kwargs):
     return db.delete(*args, **kwargs)
 
 
-@db_bz.daemonDB
+@daemon
 def insert(*args, **kwargs):
     return db.insert(*args, **kwargs)
 
