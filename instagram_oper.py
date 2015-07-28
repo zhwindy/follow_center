@@ -17,7 +17,7 @@ with open('instagram.ini', 'r') as cfg_file:
 api = InstagramAPI(access_token=access_token, client_secret=client_secret)
 
 def getUser(user_name):
-    users = list(pg.db.select('instagram_user', where="username='%s'" % user_name))
+    users = list(pg.select('instagram_user', where="username='%s'" % user_name))
     if users:
         return users[0]
     else:
@@ -32,7 +32,7 @@ def getUser(user_name):
         db_user.bio = user.bio
         db_user.website = user.website
         db_user.counts = json.dumps(user.counts)
-        pg.db.insert('instagram_user', **db_user)
+        pg.insert('instagram_user', **db_user)
         return getUser(user_name)
 
 def getMedia(user_name):
@@ -62,7 +62,7 @@ def getMedia(user_name):
         db_media.link = media.link
         db_media.type = media.type
         db_media.user_id = user.id
-        pg.db.insert('instagram_media', **db_media)
+        pg.insert('instagram_media', **db_media)
 
 #q='tildalindstam'
 #user = api.user_search(q, 1)[0]

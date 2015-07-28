@@ -31,7 +31,7 @@ def check():
     create by bigzhu at 15/07/10 14:46:58
         从 user_info 取出 twitter url 来检查
     '''
-    users = pg.db.select('user_info', what='twitter', where='twitter is not null')
+    users = pg.select('user_info', what='twitter', where='twitter is not null')
     for user in users:
         if user.twitter and user.twitter != '':
             print 'check twitter %s' % user.twitter

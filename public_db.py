@@ -14,7 +14,7 @@ def getOpenidsByTwitterName(name):
         and u2.id = f.user_id
         and w.user_name=u2.user_name
     ''' % name
-    return pg.db.query(sql)
+    return pg.query(sql)
 
 
 def getOpenidsByGithubName(name):
@@ -25,21 +25,21 @@ def getOpenidsByGithubName(name):
         and u2.id = f.user_id
         and w.user_name=u2.user_name
     ''' % name
-    return pg.db.query(sql)
+    return pg.query(sql)
 
 
 def getWechatUserByOpenid(openid):
     '''
     create by bigzhu at 15/04/04 12:48:58 根据 openid 来查询微信用户
     '''
-    return list(pg.db.select('wechat_user', where="openid='%s'" % openid))
+    return list(pg.select('wechat_user', where="openid='%s'" % openid))
 
 
 def getTwitterUser(name):
     '''
     create by bigzhu at 15/07/17 15:09:56 twitter用户
     '''
-    result = list(pg.db.select('twitter_user', where="screen_name='%s'" % name))
+    result = list(pg.select('twitter_user', where="screen_name='%s'" % name))
     count = len(result)
     if count > 1:
         raise Exception('twitter_user screen_name=%s count=%s' % (name, count))
@@ -51,7 +51,7 @@ def getGithubUser(name):
     '''
     create by bigzhu at 15/07/17 15:10:23 github 用户
     '''
-    result = list(pg.db.select('github_user', where="login='%s'" % name))
+    result = list(pg.select('github_user', where="login='%s'" % name))
     count = len(result)
     if count > 1:
         raise Exception('github_user screen_name=%s count=%s' % (name, count))
@@ -66,7 +66,7 @@ def getUserInfoGithub():
     sql = '''
             select * from   user_info u left join github_user g on u.user_name=g.login
     '''
-    return pg.db.query(sql)
+    return pg.query(sql)
 
 
 def getTwitterMessages():
@@ -74,7 +74,7 @@ def getTwitterMessages():
     select * from twitter_message tm, twitter_user tu
         where tm.t_user_id=tu.id_str order by tm.created_at desc
     '''
-    return pg.db.query(sql)
+    return pg.query(sql)
 
 
 def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
@@ -159,7 +159,7 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
         limit %s
         ''' % (sql, limit)
 
-    return pg.db.query(sql)
+    return pg.query(sql)
 
 
 def getGodInfoFollow(user_id=None):
@@ -174,7 +174,7 @@ def getGodInfoFollow(user_id=None):
             order by ut.u_created_date desc
         ''' % (sql, user_id)
 
-    return pg.db.query(sql)
+    return pg.query(sql)
 
 
 def getUserInfoTwitterUser(user_id=None):
@@ -191,7 +191,7 @@ def getUserInfoTwitterUser(user_id=None):
             order by ut.u_created_date desc
         ''' % (sql, user_id)
 
-    return pg.db.query(sql)
+    return pg.query(sql)
 
 
 def getUserInfoByName(user_name):

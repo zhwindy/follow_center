@@ -125,8 +125,8 @@ class add(tornado_bz.UserInfoHandler):
         id = db_bz.insertIfNotExist(pg, 'user_info', data, "user_name='%s'" % data['user_name'])
         if id is None:
             where = "user_name='%s'" % data['user_name']
-            self.pg.db.update("user_info", where=where, **data)
-            id = self.pg.db.select('user_info', where=where)[0].id
+            self.pg.update("user_info", where=where, **data)
+            id = self.pg.select('user_info', where=where)[0].id
 
         oper.follow(self.current_user, id, make_sure=False)
 
@@ -194,7 +194,7 @@ class unfollow(tornado_bz.UserInfoHandler):
     def post(self):
         self.set_header("Content-Type", "application/json")
         data = json.loads(self.request.body)
-        count = pg.db.delete('follow_who', where="user_id=%s and god_id=%s" % (self.current_user, data['god_id']))
+        count = pg.delete('follow_who', where="user_id=%s and god_id=%s" % (self.current_user, data['god_id']))
         if count == 0:
             raise Exception('没有正确的Unfollow, Unfollow %s 人' % count)
         self.write(json.dumps({'error': '0'}))
@@ -251,8 +251,8 @@ class callback(WechatBaseHandler):
                 pass
             else:
                 wechat_user_info = wechat.get_user_info(message.source)
-                pg.db.insert('wechat_user', **wechat_user_info)
-            pg.db.insert('upload_info', openid=message.source, media_id=message.media_id)
+                pg.insert('wechat_user', **wechat_user_info)
+            pg.insert('upload_info', openid=message.source, media_id=message.media_id)
 
             response = wechat.response_text(content=u'图片已经保存,请继续向我们发送对图片的描述')
         elif isinstance(message, VideoMessage):

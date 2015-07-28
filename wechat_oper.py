@@ -61,7 +61,7 @@ def getWechat():
     '''
     控制最新的wechat
     '''
-    result = list(pg.db.select('wechat_dead_line'))
+    result = list(pg.select('wechat_dead_line'))
     if result:
         wechat_dead_line = result[0]
         now = datetime.datetime.now()
@@ -75,11 +75,11 @@ def getWechat():
                                  appsecret=appsecret)
         else:
             wechat, access_token, access_token_expires_at, jsapi_ticket, jsapi_ticket_expires_at = getNewWechatInfo()
-            pg.db.update('wechat_dead_line', where='1=1', access_token=access_token, access_token_expires_at=access_token_expires_at, jsapi_ticket=jsapi_ticket, jsapi_ticket_expires_at=jsapi_ticket_expires_at)
+            pg.update('wechat_dead_line', where='1=1', access_token=access_token, access_token_expires_at=access_token_expires_at, jsapi_ticket=jsapi_ticket, jsapi_ticket_expires_at=jsapi_ticket_expires_at)
     else:
         wechat, access_token, access_token_expires_at, jsapi_ticket, jsapi_ticket_expires_at = getNewWechatInfo()
 
-        pg.db.insert('wechat_dead_line', access_token=access_token, access_token_expires_at=access_token_expires_at, jsapi_ticket=jsapi_ticket, jsapi_ticket_expires_at=jsapi_ticket_expires_at)
+        pg.insert('wechat_dead_line', access_token=access_token, access_token_expires_at=access_token_expires_at, jsapi_ticket=jsapi_ticket, jsapi_ticket_expires_at=jsapi_ticket_expires_at)
     return wechat
 
 
@@ -120,11 +120,11 @@ def saveUserInfo(wechat, openid):
         pass
     else:
         wechat_user_info = wechat.get_user_info(openid)
-        pg.db.insert('wechat_user', **wechat_user_info)
+        pg.insert('wechat_user', **wechat_user_info)
 
 
 def bindUser(user_name, openid):
-    count = pg.db.update('wechat_user', where="openid='%s'" % openid, user_name=user_name)
+    count = pg.update('wechat_user', where="openid='%s'" % openid, user_name=user_name)
     if count != 1:
         raise Exception('绑定失败: count=%s, openid=%s' % (count, openid))
 

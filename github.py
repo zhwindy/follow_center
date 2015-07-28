@@ -28,7 +28,7 @@ def check():
 
 
 def updateEtag(user_name, etag):
-    count = pg.db.update('github_user', where="login='%s'" % user_name, etag=etag)
+    count = pg.update('github_user', where="login='%s'" % user_name, etag=etag)
     if count != 1:
         raise Exception('更新etag 失败, %s' % count)
 
@@ -37,7 +37,7 @@ def delGithubUser(user_name):
     sql = '''
     update user_info set github=null where github='%s'
     ''' % user_name
-    pg.db.query(sql)
+    pg.query(sql)
 
 
 def getUserEvent(user_name, etag):
@@ -122,7 +122,7 @@ def saveUser(id, url):
     create by bigzhu at 15/07/15 21:27:19 保存github信息
     create by bigzhu at 15/07/22 16:17:37 fix bug, not return id
     '''
-    if list(pg.db.select('github_user', where='id=%s' % id)):
+    if list(pg.select('github_user', where='id=%s' % id)):
         return id
     else:
         r = requests.get(url)
