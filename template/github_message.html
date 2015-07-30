@@ -15,11 +15,8 @@
                     <i class="fa fa-github"></i>
                 </span>
             </a>
-            <sub>{{message.created_at}}</sub>
             <a href="/message?t={{message.m_type}}&id={{message.id}}">
-                <sub>
-                    详情
-                </sub>
+                <sub>{{message.created_at}}</sub>
             </a>
         </div>
     </div>
@@ -36,31 +33,22 @@
         {%end%}
 
         {%elif message.content['type']=='IssueCommentEvent'%}
-
         {%set payload = message.content['payload'] %}
-
         {%set issue_url = payload['issue']['html_url']%}
         {%set issue_title = payload['issue']['title']%}
         {%set issue_comment_url = payload['comment']['html_url']%}
         {%set issue_comment_body = payload['comment']['body']%}
-
         <a target="_blank" href="{{issue_comment_url}}" >{{issue_title}}</a>
         <p class="description_bz">{{issue_comment_body}}</p>
 
         {%elif message.content['type']=='WatchEvent'%}
-
         {%set payload = message.content['payload'] %}
-
         {{message.content['payload']['action']}} {{repo_link}}
 
-
         {%elif message.content['type']=='IssuesEvent'%}
-
         {%set payload = message.content['payload'] %}
-
         {%set issue_url = payload['issue']['html_url']%}
         {%set issue_title = payload['issue']['title']%}
-
         {{repo_link}}
         <br>
         {{message.content['payload']['action']}} issue <a target="_blank" href="{{issue_url}}" >{{issue_title}}</a>
@@ -68,10 +56,17 @@
         {%elif message.content['type']=='PullRequestEvent'%}
         {%set payload = message.content['payload'] %}
         {%set pull_request = payload['pull_request'] %}
-
         {%set pull_request_link = '<a target="_blank" href="%s">%s</a>'%(pull_request['html_url'], pull_request['title']) %}
-
         {{payload['action']}} {{repo_link}} PullRequest {{pull_request_link}}
+
+        {%elif message.content['type']=='PullRequestReviewCommentEvent'%}
+        {%set payload = message.content['payload'] %}
+        {%set pull_request = payload['pull_request'] %}
+        {%set pull_comment_url = payload['comment']['html_url']%}
+        {%set pull_comment_link = '<a target="_blank" href="%s">%s</a>'%(pull_comment_url, pull_request['title']) %}
+        {%set pull_comment_body = payload['comment']['body']%}
+        {{payload['action']}} {{repo_link}} PullRequestReviewComment {{pull_request_link}}
+        <p class="description_bz">{{pull_comment_body}}</p>
         {%end%}
     </div>
 </div>

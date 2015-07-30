@@ -36,12 +36,13 @@ def daemon(method):
     def wrapper(self, *args, **kwargs):
         try:
             return method(self, *args, **kwargs)
-        except(psycopg2.OperationalError, psycopg2.InterfaceError, psycopg2.DatabaseError):
+        #except(psycopg2.OperationalError, psycopg2.InterfaceError, psycopg2.DatabaseError):
+        except(psycopg2.InterfaceError, psycopg2.DatabaseError):
             print public_bz.getExpInfo()
             connect()
             time.sleep(5)
-            return wrapper(self, *args, **kwargs)
             print '重新连接数据库'
+            return wrapper(self, *args, **kwargs)
     return wrapper
 
 
