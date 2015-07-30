@@ -28,7 +28,7 @@
         Push {{repo_link}}
         {%for commit in message.content['payload']['commits'] %}
         <li>
-            <a target="_blank" href="{{commit['url'].replace('api.github.com/repos', 'github.com')}}" >{{commit['message']}}</a>
+            <a class="description_bz" target="_blank" href="{{commit['url'].replace('api.github.com/repos', 'github.com')}}" >{{commit['message']}}</a>
         </li>
         {%end%}
 
