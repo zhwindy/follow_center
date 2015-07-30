@@ -311,6 +311,10 @@ if __name__ == "__main__":
     url_map = tornado_bz.getURLMap(the_class)
     url_map.append((r'/(.*)', main))
     url_map.append((r'/static/(.*)', tornado.web.StaticFileHandler, {'path': "./static"}))
+    #机器人
+    url_map.append((r'/robots\.txt', tornado.web.StaticFileHandler, {'path': "./static/robots.txt"}))
+    #sitemap
+    url_map.append((r'/sitemap\.xml', tornado.web.StaticFileHandler, {'path': "./static/sitemap.xml"}))
 
     settings = tornado_bz.getSettings()
 
