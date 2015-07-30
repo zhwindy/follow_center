@@ -32,26 +32,30 @@
             <h3 class="box-title">
                 <a href="/user/{{user.user_name}}">
                     <img src="{{avatar_url}}" class="direct-chat-img">
-                <div class="name">
-                    {{user.user_name}}
-                </div>
+                    <div class="name">
+                        {{user.user_name}}
+                    </div>
                 </a>
             </h3>
-        <div class="box-tools pull-right">
-            {%if user.twitter_user %}
-            <span class="round-icon bg-icon-blue">
-                <i class="fa fa-twitter"></i>
-            </span>
-            {{user.twitter_user.get('followers_count')}}
-            {%end%}
+            <div class="box-tools pull-right">
+                {%if user.twitter_user %}
+                <a class="a-icon" target="_blank" href="https://twitter.com/{{user.twitter}}">
+                    <span class="round-icon bg-icon-blue">
+                        <i class="fa fa-twitter"></i>
+                    </span>
+                </a>
+                {{user.twitter_user.get('followers_count')}}
+                {%end%}
 
-            {%if user.github_user%}
-            <span class="round-icon bg-icon-black">
-                <i class="fa fa-github"></i>
-            </span>
-            {{user.github_user.get('followers')}}
-            {%end%}
-        </div>
+                {%if user.github_user%}
+                <a class="a-icon" target="_blank" href="https://github.com/{{user.github}}">
+                    <span class="round-icon bg-icon-black">
+                        <i class="fa fa-github"></i>
+                    </span>
+                </a>
+                {{user.github_user.get('followers')}}
+                {%end%}
+            </div>
         </div>
         <div class="box-body">
             {{description}}

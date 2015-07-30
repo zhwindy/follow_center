@@ -67,6 +67,7 @@
         {%set pull_comment_body = payload['comment']['body']%}
         {{payload['action']}} {{repo_link}} PullRequestReviewComment {{pull_comment_link}}
         <p class="description_bz">{{pull_comment_body}}</p>
+
         {%elif message.content['type']=='CreateEvent'%}
         {%set payload = message.content['payload'] %}
         created Repository {{repo_link}}

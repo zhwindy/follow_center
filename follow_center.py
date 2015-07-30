@@ -214,9 +214,7 @@ class callback(WechatBaseHandler):
 
         '''
         #to 7+1
-        print self.request.body
         result = wechat_bz.callPlatform(self, url='http://admin.hoywe.com/api.php?hash=GO5KZ')
-        print result
         self.write(result)
         return
         '''
@@ -243,7 +241,6 @@ class callback(WechatBaseHandler):
             def done(response):
                 with open("static/upload/images/" + message.media_id + '.jpg', "w") as f:
                     f.write(response.body)
-                print "DONE"
             downloadImageFile()
             # 检查用户是否存储了,没有的话存之
             wechat_user_info = public_db.getWechatUserByOpenid(message.source)
@@ -259,7 +256,6 @@ class callback(WechatBaseHandler):
             response = wechat.response_text(content=u'视频信息')
         elif isinstance(message, LinkMessage):
             wechat_user_info = wechat.get_user_info(message.source)
-            print wechat_user_info
             response = wechat.response_text(content=u'链接信息')
         elif isinstance(message, LocationMessage):
             response = wechat.response_text(content=u'地理位置信息')
@@ -283,7 +279,6 @@ class callback(WechatBaseHandler):
                 #response = wechat.response_text(content=u'用户已关注时的二维码扫描事件')
                 response = wechat.response_text(content=u'成功与%s绑定, 其follow 的动态信息将会发送到您的微信上' % user_name)
 
-                print message.key
             elif message.type == 'location':
                 response = wechat.response_text(content=u'上报地理位置事件')
             elif message.type == 'click':
