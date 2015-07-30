@@ -65,8 +65,12 @@
         {%set pull_comment_url = payload['comment']['html_url']%}
         {%set pull_comment_link = '<a target="_blank" href="%s">%s</a>'%(pull_comment_url, pull_request['title']) %}
         {%set pull_comment_body = payload['comment']['body']%}
-        {{payload['action']}} {{repo_link}} PullRequestReviewComment {{pull_request_link}}
+        {{payload['action']}} {{repo_link}} PullRequestReviewComment {{pull_comment_link}}
         <p class="description_bz">{{pull_comment_body}}</p>
+        {%elif message.content['type']=='CreateEvent'%}
+        {%set payload = message.content['payload'] %}
+        created Repository {{repo_link}}
+        <p class="description_bz">{{payload['description']}}</p>
         {%end%}
     </div>
 </div>
