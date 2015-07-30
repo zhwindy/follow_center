@@ -37,7 +37,7 @@ def getUser(user_name):
 
 def getMedia(user_name):
     user = getUser(user_name)
-    medias, next_ = api.user_recent_media(user.id_str)
+    medias, next_ = api.user_recent_media(user.id)
     for media in medias:
         db_media = storage()
         if media.caption:
