@@ -113,6 +113,14 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
                 )
             )
         ''' % user_id
+        instagram_in = '''
+            and u.username in(
+            select instagram from user_info where id in(
+                select god_id from follow_who where user_id=%s
+                )
+            )
+        ''' % user_id
+
 
     sql = '''
     select * from (
@@ -125,7 +133,8 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
             null as content,
             m.text,
             m.extended_entities,
-            'https://twitter.com/'||u.screen_name||'/status/'||m.id_str as href
+            'https://twitter.com/'||u.screen_name||'/status/'||m.id_str as href,
+            null as type
                 from twitter_message m, twitter_user u
                 where m.t_user_id=u.id_str
             %s
@@ -139,12 +148,28 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
             m.content,
             null as text,
             null as extended_entities,
-            null as href
+            null as href,
+            null as type
                 from github_message m, github_user u
                 where m.actor=u.id
             %s
+            union
+        select
+            m.id,
+            'instagram' as m_type,
+            m.created_time as created_at,
+            u.username as name,
+            u.profile_picture as avatar,
+            null as content,
+            m.comments as text,
+            m.standard_resolution as extended_entities,
+            m.link as href,
+            m.type as type
+                from instagram_media m, instagram_user u
+                where m.user_id=u.id
 
             ) as t order by created_at desc
+
         ''' % (twitter_in, github_in)
     if type and id:
         sql = '''
