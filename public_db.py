@@ -160,8 +160,8 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
             m.created_time as created_at,
             u.username as name,
             u.profile_picture as avatar,
-            null as content,
-            m.comments as text,
+            m.comments as content,
+            null as text,
             m.standard_resolution as extended_entities,
             m.link as href,
             m.type as type
