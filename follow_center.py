@@ -27,7 +27,10 @@ except ImportError:
     print 'you need install wechat, please run:'
     print 'sudo pip install wechat-sdk'
     exit(1)
-
+#加入 svn type
+import mimetypes
+mimetypes.guess_type("ulla.svg")
+mimetypes.add_type("image/svg+xml", ".svg")
 
 OK = '0'
 
@@ -143,7 +146,7 @@ class user(add):
     def get(self, user_name='-1'):
         user_info = public_db.getUserInfoByName(user_name)
         messages = public_db.getMessages(god_name=user_name)
-        self.render(self.template, user_info=user_info, messages=messages)
+        self.render(self.template, the_user_info=user_info, messages=messages)
 
 
 class users(tornado_bz.UserInfoHandler):
