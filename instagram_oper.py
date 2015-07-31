@@ -55,12 +55,12 @@ def getMedia(user_name=None, with_next_url=None, user=None):
         medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
         if medias:
             last_id = medias[0].id
-            pg.update('instagram_user', where="username='%s'" % user_name, last_id=last_id)
+            pg.update('instagram_user', where="lower(username)=lower('%s')" % user_name, last_id=last_id)
     else:
         medias, next_ = api.user_recent_media(with_next_url=with_next_url)
 
     for media in medias:
-        print media.id,user.username
+        print media.id, user.username
         db_media = storage()
         if media.caption:
             caption = media.caption.__dict__
@@ -106,7 +106,7 @@ def check():
 
 
 if __name__ == '__main__':
-    #print getUser('ruanyf')
+    # print getUser('ruanyf')
     while True:
         check()
         time.sleep(300)
