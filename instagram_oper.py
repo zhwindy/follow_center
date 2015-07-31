@@ -4,6 +4,8 @@ import pg
 from public_bz import storage
 import public_bz
 from instagram.client import InstagramAPI
+
+from datetime import timedelta
 import time
 import json
 import db_bz
@@ -78,6 +80,8 @@ def getMedia(user_name=None, with_next_url=None, user=None):
                 comment['user'] = comment['user'].__dict__
         db_media.comments = json.dumps(media.comments, cls=public_bz.ExtEncoder)
         db_media.created_time = media.created_time
+        #8小时的问题
+        db_media.created_time += timedelta(hours=8)
         db_media.filter = media.filter
         db_media.low_resolution = json.dumps(media.images['low_resolution'].__dict__)
         db_media.standard_resolution = json.dumps(media.images['standard_resolution'].__dict__)
