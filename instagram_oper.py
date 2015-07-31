@@ -8,6 +8,8 @@ import time
 import json
 import db_bz
 import ConfigParser
+import public_db
+import wechat_oper
 config = ConfigParser.ConfigParser()
 
 
@@ -60,7 +62,6 @@ def getMedia(user_name=None, with_next_url=None, user=None):
         medias, next_ = api.user_recent_media(with_next_url=with_next_url)
 
     for media in medias:
-        print media.id, user.username
         db_media = storage()
         if media.caption:
             caption = media.caption.__dict__
@@ -88,7 +89,13 @@ def getMedia(user_name=None, with_next_url=None, user=None):
         db_media.link = media.link
         db_media.type = media.type
         db_media.user_id = user.id
-        db_bz.insertIfNotExist(pg, 'instagram_media', db_media, "id_str='%s'" % db_media.id_str)
+        id = db_bz.insertIfNotExist(pg, 'instagram_media', db_media, "id_str='%s'" % db_media.id_str)
+        if id is not None:  # 新增加消息
+            openids = public_db.getOpenidsByName('instagram', user.username)
+            print 'new=', media.id, user.username
+            for data in openids:
+                text = caption.get('text')
+                wechat_oper.sendInstagram(data.openid, text, db_media.standard_resolution, user.username, id)
     # 递归查出
     if next_ != with_next_url:
         getMedia(with_next_url=next_, user=user)
