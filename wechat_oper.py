@@ -170,10 +170,11 @@ def sendGithub(openid, text, user_name, id):
 def sendInstagram(openid, text, img_url, user_name, id):
     '''
     create by bigzhu at 15/08/01 00:35:08
+    modify by bigzhu at 15/08/01 00:57:28 不用代理,没被屏蔽
     '''
     article = storage()
     article.title = user_name
-    article.picurl = "http://follow.center/ProxyHandler/%s" % img_url
+    article.picurl = img_url
     article.url = "http://follow.center/message?t=instagram&id=%s" % id
     articles = [article]
     sendArticle(openid, articles)
