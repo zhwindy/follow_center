@@ -179,7 +179,7 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
             u.username as name,
             u.profile_picture as avatar,
             m.comments as content,
-            null as text,
+            (m.caption->>'text')::text as text,
             m.standard_resolution as extended_entities,
             m.link as href,
             m.type as type
