@@ -33,7 +33,7 @@
         <div class="box-header">
             <h3 class="box-title">
                 <a href="/user/{{user.user_name}}">
-                    <img src="{{avatar_url}}" class="direct-chat-img">
+                    <img src="{{avatar_url}}" onerror="this.onerror=null;this.src='/ProxyHandler/{{avatar_url}}';" class="direct-chat-img">
                     <div class="name">
                         {{user.user_name}}
                     </div>
