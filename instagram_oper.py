@@ -20,11 +20,19 @@ api = InstagramAPI(access_token=access_token, client_secret=client_secret)
 
 
 def getUser(user_name):
+    '''
+    modify by bigzhu at 15/07/31 16:41:16 api找用户时是按专注度来排序的,名字绝对匹配的未必是第一位, 从10个里面找
+    '''
     users = list(pg.select('instagram_user', where="lower(username)=lower('%s')" % user_name))
     if users:
         return users[0]
     else:
-        user = api.user_search(user_name, 1)[0]
+        user = None
+        for this_user in api.user_search(user_name, 10):
+            if this_user.username.lower() == user_name.lower():
+                user = this_user
+                break
+        #user = api.user_search(user_name, 1)[0]
         user = api.user(user.id)
 
         db_user = storage()
@@ -98,6 +106,7 @@ def check():
 
 
 if __name__ == '__main__':
+    #print getUser('ruanyf')
     while True:
         check()
         time.sleep(300)
