@@ -20,7 +20,7 @@ api = InstagramAPI(access_token=access_token, client_secret=client_secret)
 
 
 def getUser(user_name):
-    users = list(pg.select('instagram_user', where="username='%s'" % user_name))
+    users = list(pg.select('instagram_user', where="lower(username)=lower('%s')" % user_name))
     if users:
         return users[0]
     else:
@@ -36,6 +36,7 @@ def getUser(user_name):
         db_user.website = user.website
         db_user.counts = json.dumps(user.counts)
         pg.insert('instagram_user', **db_user)
+        #db_bz.insertIfNotExist(pg, 'instagram_user', db_user, "id=%s" % db_user.id)
         return getUser(user_name)
 
 
