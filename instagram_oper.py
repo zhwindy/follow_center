@@ -4,7 +4,9 @@ import pg
 from public_bz import storage
 import public_bz
 from instagram.client import InstagramAPI
+import time
 import json
+import db_bz
 import ConfigParser
 config = ConfigParser.ConfigParser()
 
@@ -15,6 +17,7 @@ with open('instagram.ini', 'r') as cfg_file:
     client_secret = config.get('secret', 'client_secret')
 
 api = InstagramAPI(access_token=access_token, client_secret=client_secret)
+
 
 def getUser(user_name):
     users = list(pg.select('instagram_user', where="username='%s'" % user_name))
@@ -35,21 +38,35 @@ def getUser(user_name):
         pg.insert('instagram_user', **db_user)
         return getUser(user_name)
 
-def getMedia(user_name):
-    user = getUser(user_name)
-    medias, next_ = api.user_recent_media(user.id)
+
+def getMedia(user_name=None, with_next_url=None, user=None):
+    if user_name:
+        user = getUser(user_name)
+        # min_id 会查出大于等于这个id的
+        medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
+        if medias:
+            last_id = medias[0].id
+            pg.update('instagram_user', where="username='%s'" % user_name, last_id=last_id)
+    else:
+        medias, next_ = api.user_recent_media(with_next_url=with_next_url)
+
     for media in medias:
+        print media.id,user.username
         db_media = storage()
         if media.caption:
             caption = media.caption.__dict__
             caption['user_id'] = caption['user'].id
             del caption['user']
-            print caption
         else:
             caption = ''
         db_media.caption = json.dumps(caption, cls=public_bz.ExtEncoder)
         db_media.comment_count = media.comment_count
-        db_media.comments = json.dumps(media.comments)
+
+        if media.comments:
+            media.comments = [d.__dict__ for d in media.comments]
+            for comment in media.comments:
+                comment['user'] = comment['user'].__dict__
+        db_media.comments = json.dumps(media.comments, cls=public_bz.ExtEncoder)
         db_media.created_time = media.created_time
         db_media.filter = media.filter
         db_media.low_resolution = json.dumps(media.images['low_resolution'].__dict__)
@@ -57,24 +74,29 @@ def getMedia(user_name):
         db_media.thumbnail = json.dumps(media.images['thumbnail'].__dict__)
         db_media.id_str = media.id
         db_media.like_count = media.like_count
-        #likes里有User对象,暂时不存了
+        # likes里有User对象,暂时不存了
         #db_media.likes = json.dumps(media.likes)
         db_media.link = media.link
         db_media.type = media.type
         db_media.user_id = user.id
-        pg.insert('instagram_media', **db_media)
+        db_bz.insertIfNotExist(pg, 'instagram_media', db_media, "id_str='%s'" % db_media.id_str)
+    # 递归查出
+    if next_ != with_next_url:
+        getMedia(with_next_url=next_, user=user)
 
-#q='tildalindstam'
-#user = api.user_search(q, 1)[0]
-#print user.profile_picture
-#
-#w = api.user_recent_media(user_id)
-#print w
-#m =  w[0]
-#print m
-#l = m[0]
-#print l
-#print dir(l)
+
+def check():
+    '''
+    create by bigzhu at 15/07/31 14:28:30
+    '''
+    users = pg.select('user_info', what='instagram', where='instagram is not null')
+    for user in users:
+        if user.instagram and user.instagram != '':
+            print 'check instagram %s' % user.instagram
+            getMedia(user.instagram)
+
 
 if __name__ == '__main__':
-    print getMedia('tildalindstam')
+    while True:
+        check()
+        time.sleep(300)

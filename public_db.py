@@ -58,6 +58,18 @@ def getGithubUser(name):
         return result[0]
 
 
+def getInstagramUser(name):
+    '''
+    create by bigzhu at 15/07/31 15:00:19 Instagram
+    '''
+    result = list(pg.select('instagram_user', where="username='%s'" % name))
+    count = len(result)
+    if count > 1:
+        raise Exception('instagram_user username=%s count=%s' % (name, count))
+    if count == 1:
+        return result[0]
+
+
 def getUserInfoGithub():
     '''
     create by bigzhu at 15/07/15 22:45:42
@@ -86,6 +98,7 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
 
     twitter_in = ''
     github_in = ''
+    instagram_in = ''
     if god_name is not None:
         twitter_in = '''
             and u.screen_name in(
@@ -95,6 +108,11 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
         github_in = '''
             and u.login in(
             select github from user_info where user_name='%s'
+            )
+        ''' % god_name
+        instagram_in = '''
+            and u.username in(
+            select instagram from user_info where  user_name='%s'
             )
         ''' % god_name
 
@@ -167,10 +185,10 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
             m.type as type
                 from instagram_media m, instagram_user u
                 where m.user_id=u.id
-
+            %s
             ) as t order by created_at desc
 
-        ''' % (twitter_in, github_in)
+        ''' % (twitter_in, github_in, instagram_in)
     if type and id:
         sql = '''
         select * from (%s) s

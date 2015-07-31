@@ -219,6 +219,7 @@ class instagram_user(model_oper_bz.base):
     #    "followed_by": 3410
     #}
     counts = BinaryJSONField(null=True)
+    last_id = TextField(null=True) #已经取过的最后一个id
 
 
 class instagram_media(model_oper_bz.base):
@@ -246,5 +247,6 @@ if __name__ == '__main__':
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
-    model_oper_bz.createTable(instagram_user, db_name)
+    model_oper_bz.reCreateTable(instagram_user, db_name)
     model_oper_bz.reCreateTable(instagram_media, db_name)
+    model_oper_bz.reCreateTable(model_bz.user_info, db_name)

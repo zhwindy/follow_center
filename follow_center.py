@@ -162,7 +162,8 @@ class users(tornado_bz.UserInfoHandler):
         for user in users:
             user.twitter_user = public_db.getTwitterUser(user.twitter)
             user.github_user = public_db.getGithubUser(user.github)
-            if user.twitter_user is None and user.github_user is None:
+            user.instagram_user = public_db.getInstagramUser(user.instagram)
+            if user.twitter_user is None and user.github_user is None and user.instagram_user is None:
                 will_del.append(user)
         for user in will_del:
             users.remove(user)

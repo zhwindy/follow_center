@@ -17,6 +17,8 @@
     {% set avatar_url = user.github_user.get('avatar_url') %}
     {%elif user.twitter_user%}
     {% set avatar_url = user.twitter_user.get('profile_image_url_https') %}
+    {%elif user.instagram_user%}
+    {% set avatar_url = user.instagram_user.get('profile_picture') %}
     {%end%}
 
     {%if user.slogan %}
@@ -54,6 +56,15 @@
                     </span>
                 </a>
                 {{user.github_user.get('followers')}}
+                {%end%}
+
+                {%if user.instagram_user %}
+                <a class="a-icon" target="_blank" href="https://instagram.com/{{user.instagram}}">
+                    <span class="round-icon bg-icon-orange">
+                        <i class="fa fa-instagram"></i>
+                    </span>
+                </a>
+                {{user.instagram_user.get('counts').get('follows')}}
                 {%end%}
             </div>
         </div>
