@@ -72,6 +72,14 @@
         {%set payload = message.content['payload'] %}
         created Repository {{repo_link}}
         <p class="description_bz">{{payload['description']}}</p>
+
+        {%elif message.content['type']=='ReleaseEvent'%}
+        {%set payload = message.content['payload'] %}
+        {%set release = payload['release'] %}
+        {%set version_link = '<a target="_blank" href="%s">%s</a>'%(release['html_url'], release['name']) %}
+        {{payload['action']}} Repository {{repo_link}} {{version_link}}
+        <br>
+        {{release['body']}}
         {%end%}
     </div>
 </div>
