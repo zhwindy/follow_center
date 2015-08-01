@@ -99,7 +99,7 @@ def getMedia(user_name=None, with_next_url=None, user=None):
             openids = public_db.getOpenidsByName('instagram', user.username)
             for data in openids:
                 text = caption.get('text')
-                wechat_oper.sendInstagram(data.openid, text, db_media.standard_resolution, user.username, id)
+                wechat_oper.sendInstagram(data.openid, text, media.images['standard_resolution'].url, user.username, id)
     # 递归查出
     if next_ != with_next_url:
         getMedia(with_next_url=next_, user=user)

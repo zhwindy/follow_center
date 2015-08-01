@@ -26,6 +26,7 @@ def getOpenidsByGithubName(name):
     ''' % name
     return pg.query(sql)
 
+
 def getOpenidsByInstagramName(name):
     sql = '''
         select w.openid from user_info u, follow_who f, user_info u2, wechat_user w
@@ -35,6 +36,7 @@ def getOpenidsByInstagramName(name):
         and w.user_name=u2.user_name
     ''' % name
     return pg.query(sql)
+
 
 def getOpenidsByName(type, name):
     sql = '''
@@ -159,10 +161,10 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
             )
         ''' % user_id
 
-
     sql = '''
     select * from (
         select
+            ui.user_name,
             m.id,
             'twitter' as m_type,
             m.created_at,
@@ -173,11 +175,13 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
             m.extended_entities,
             'https://twitter.com/'||u.screen_name||'/status/'||m.id_str as href,
             null as type
-                from twitter_message m, twitter_user u
+                from twitter_message m, twitter_user u, user_info ui
                 where m.t_user_id=u.id_str
+                and lower(u.screen_name) = lower(ui.twitter)
             %s
             union
         select
+            ui.user_name,
             m.id,
             'github' as m_type,
             m.created_at,
@@ -188,11 +192,13 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
             null as extended_entities,
             null as href,
             null as type
-                from github_message m, github_user u
+                from github_message m, github_user u, user_info ui
                 where m.actor=u.id
+                and lower(u.login) = lower(ui.github)
             %s
             union
         select
+            ui.user_name,
             m.id,
             'instagram' as m_type,
             m.created_time as created_at,
@@ -203,8 +209,9 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
             m.standard_resolution as extended_entities,
             m.link as href,
             m.type as type
-                from instagram_media m, instagram_user u
+                from instagram_media m, instagram_user u, user_info ui
                 where m.user_id=u.id
+                and lower(u.username) = lower(ui.instagram)
             %s
             ) as t order by created_at desc
 
