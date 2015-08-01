@@ -67,7 +67,7 @@ def getUserTimeline(screen_name):
             # print tweet.created_at
             id = saveTwitter(copy.deepcopy(tweet))
             if id is not None:  # 新增加消息
-                openids = public_db.getOpenidsByTwitterName(screen_name)
+                openids = public_db.getOpenidsByName('twitter', screen_name)
                 print 'new=', tweet.text
                 for data in openids:
                     wechat_oper.sendTwitter(data.openid, tweet, screen_name, id)

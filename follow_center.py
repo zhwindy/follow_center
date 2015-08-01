@@ -1,23 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # sys.setdefaultencoding() does not exist, here!
+import ConfigParser
+import json
+import mimetypes
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
-import tornado
+
+import db_bz
 import tornado.ioloop
 import tornado.web
-import pg
 import tornado_bz
-# 登录模块
 from ui_module import login_m
-import public_db
-import json
-import db_bz
-from proxy import ProxyHandler
+
 import oper
+import pg
+import public_db
 import wechat_oper
-import ConfigParser
+
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
+# 登录模块
 config = ConfigParser.ConfigParser()
 try:
     from wechat_sdk.messages import (
@@ -27,8 +30,7 @@ except ImportError:
     print 'you need install wechat, please run:'
     print 'sudo pip install wechat-sdk'
     exit(1)
-#加入 svn type
-import mimetypes
+# 加入 svn type
 mimetypes.guess_type("ulla.svg")
 mimetypes.add_type("image/svg+xml", ".svg")
 
@@ -78,8 +80,8 @@ class main(tornado_bz.UserInfoHandler):
         messages = list(public_db.getMessages(self.current_user, limit=limit))
         if messages:
             anchor_message = messages[-2]
-            anchor = '%s_%s' %(anchor_message.m_type, anchor_message.id)
-            more = int(limit)+50
+            anchor = '%s_%s' % (anchor_message.m_type, anchor_message.id)
+            more = int(limit) + 50
 
         self.render(tornado_bz.getTName(self), messages=messages, more=more, anchor=anchor)
 
@@ -313,9 +315,9 @@ if __name__ == "__main__":
     print port
 
     url_map = tornado_bz.getURLMap(the_class)
-    #机器人
+    # 机器人
     url_map.append((r'/robots.txt()', tornado.web.StaticFileHandler, {'path': "./static/robots.txt"}))
-    #sitemap
+    # sitemap
     url_map.append((r'/sitemap.xml()', tornado.web.StaticFileHandler, {'path': "./static/sitemap.xml"}))
     url_map.append((r'/(.*)', main))
     url_map.append((r'/static/(.*)', tornado.web.StaticFileHandler, {'path': "./static"}))

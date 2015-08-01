@@ -70,7 +70,7 @@ def getUserEvent(user_name, etag):
             if id is not None:
                 text = formatInfo(message)
                 print text
-                openids = public_db.getOpenidsByGithubName(user_name)
+                openids = public_db.getOpenidsByName('github', user_name)
                 for data in openids:
                     wechat_oper.sendGithub(data.openid, text, user_name, id)
     else:

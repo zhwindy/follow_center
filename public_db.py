@@ -5,39 +5,6 @@ import user_bz
 user_oper = user_bz.UserOper(pg)
 
 
-def getOpenidsByTwitterName(name):
-    sql = '''
-        select w.openid from user_info u, follow_who f, user_info u2, wechat_user w
-        where u.twitter='%s'
-        and u.id = f.god_id
-        and u2.id = f.user_id
-        and w.user_name=u2.user_name
-    ''' % name
-    return pg.query(sql)
-
-
-def getOpenidsByGithubName(name):
-    sql = '''
-        select w.openid from user_info u, follow_who f, user_info u2, wechat_user w
-        where u.github='%s'
-        and u.id = f.god_id
-        and u2.id = f.user_id
-        and w.user_name=u2.user_name
-    ''' % name
-    return pg.query(sql)
-
-
-def getOpenidsByInstagramName(name):
-    sql = '''
-        select w.openid from user_info u, follow_who f, user_info u2, wechat_user w
-        where u.instagram='%s'
-        and u.id = f.god_id
-        and u2.id = f.user_id
-        and w.user_name=u2.user_name
-    ''' % name
-    return pg.query(sql)
-
-
 def getOpenidsByName(type, name):
     sql = '''
         select w.openid from user_info u, follow_who f, user_info u2, wechat_user w
