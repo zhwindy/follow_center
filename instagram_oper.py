@@ -94,11 +94,14 @@ def getMedia(user_name=None, with_next_url=None, user=None):
         db_media.type = media.type
         db_media.user_id = user.id
         id = db_bz.insertIfNotExist(pg, 'instagram_media', db_media, "id_str='%s'" % db_media.id_str)
-        if id is not None:  # 新增加消息
-            print 'new=', media.id, user.username
+        print 'new=', media.id, user.username
+        if id is not None and len(medias)<=2:  # 新增加消息,微信通知只通知2条以内
             openids = public_db.getOpenidsByName('instagram', user.username)
             for data in openids:
-                text = caption.get('text')
+                if caption != '':
+                    text = caption.get('text')
+                else:
+                    text = ''
                 wechat_oper.sendInstagram(data.openid, text, media.images['standard_resolution'].url, user.username, id)
     # 递归查出
     if next_ != with_next_url:

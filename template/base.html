@@ -24,7 +24,7 @@
         {% set links.append(storage(href='/users', name='神们')) %}
         {% set links.append(storage(href='/qr', name='微信关注')) %}
         {% set links.append(storage(href='/Changelog', name='Changelog')) %}
-        {% set links.append(storage(href='http://yncoder.github.io/', name='云南程序员', target='_blank')) %}
+        {% set links.append(storage(href='http://yncoder.github.io/', name='云南程序员', target='_blank', loading=False)) %}
 
         {% module header_m(user_info, 'Follow Center', links, need_login=True) %}
         <br>

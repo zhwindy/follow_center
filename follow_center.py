@@ -16,6 +16,7 @@ import oper
 import pg
 import public_db
 import wechat_oper
+import proxy
 
 
 reload(sys)
@@ -48,7 +49,7 @@ class WechatBaseHandler(tornado_bz.BaseHandler):
         self.wechat = wechat_oper.getWechat()
 
 
-class ProxyHandler(ProxyHandler):
+class ProxyHandler(proxy.ProxyHandler):
     pass
 
 
