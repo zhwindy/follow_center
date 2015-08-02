@@ -54,6 +54,7 @@ def getUserTimeline(screen_name):
         参看 https://dev.twitter.com/rest/reference/get/statuses/user_timeline
     modify by bigzhu at 15/07/04 22:53:09
         考虑使用 http://www.tweepy.org/ 来调用twitter api
+    modify by bigzhu at 15/08/02 21:35:46 避免批量微信通知
     '''
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
@@ -66,7 +67,7 @@ def getUserTimeline(screen_name):
             tweet.created_at += timedelta(hours=8)
             # print tweet.created_at
             id = saveTwitter(copy.deepcopy(tweet))
-            if id is not None:  # 新增加消息
+            if id is not None and len(public_tweets) <=3:  # 新增加消息
                 openids = public_db.getOpenidsByName('twitter', screen_name)
                 print 'new=', tweet.text
                 for data in openids:
