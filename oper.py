@@ -25,7 +25,7 @@ def getMessages(limit='', current_user=None, god_name=None):
         more = 100
     messages = list(public_db.getMessages(current_user, limit=limit, god_name=god_name))
     if messages:
-        anchor_message = messages[-2]
+        anchor_message = messages[-1]
         anchor = '%s_%s' % (anchor_message.m_type, anchor_message.id)
         more = int(limit) + 50
     return messages, more, anchor
@@ -42,7 +42,6 @@ def makeSurePicture(user_info):
     github_user = public_db.getGithubUser(user_info.user_name)
     if github_user:
         user_info.picture = github_user.avatar_url
-
         return
     twitter_user = public_db.getTwitterUser(user_info.user_name)
     if twitter_user:
@@ -52,7 +51,7 @@ def makeSurePicture(user_info):
         return
     instagram_user = public_db.getInstagramUser(user_info.user_name)
     if instagram_user:
-        user_info.picture = twitter_user.profile_picture
+        user_info.picture = instagram_user.profile_picture
         return
 
 if __name__ == '__main__':
