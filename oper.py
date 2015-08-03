@@ -14,6 +14,7 @@ def follow(user_id, god_id, make_sure=True):
     if id is None and make_sure:
         raise Exception('没有正确的Follow, 似乎已经Follow过了呢')
 
+
 def getMessages(limit='', current_user=None, god_name=None):
     '''
     create by bigzhu at 15/08/03 13:24:39 分页方式取messages
@@ -30,7 +31,25 @@ def getMessages(limit='', current_user=None, god_name=None):
     return messages, more, anchor
 
 
+def makeSurePicture(user_info):
+    '''
+    create by bigzhu at 15/08/03 16:31:00 从各种用户里找头像
+    '''
+    if user_info.picture:
+        return
 
+    github_user = public_db.getGithubUser(user_info.user_name)
+    if github_user:
+        user_info.picture = github_user.avatar_url
+        return
+    twitter_user = public_db.getTwitterUser(user_info.user_name)
+    if twitter_user:
+        user_info.picture = twitter_user.profile_image_url_https
+        return
+    instagram_user = public_db.getInstagramUser(user_info.user_name)
+    if instagram_user:
+        user_info.picture = twitter_user.profile_picture
+        return
 
 if __name__ == '__main__':
     pass

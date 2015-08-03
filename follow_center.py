@@ -138,11 +138,12 @@ class user(add):
 
     @tornado_bz.mustLogin
     def get(self, user_name='-1'):
-        user_info = public_db.getUserInfoByName(user_name)
+        the_user_info = public_db.getUserInfoByName(user_name)
+        oper.makeSurePicture(the_user_info)
         limit = 100
         messages, more, anchor = oper.getMessages(limit, god_name=user_name)
         messages = public_db.getMessages(god_name=user_name)
-        self.render(self.template, the_user_info=user_info, messages=messages, more=more, anchor=anchor)
+        self.render(self.template, the_user_info=the_user_info, messages=messages, more=more, anchor=anchor)
 
 
 class users(tornado_bz.UserInfoHandler):
