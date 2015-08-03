@@ -34,6 +34,7 @@ def getMessages(limit='', current_user=None, god_name=None):
 def makeSurePicture(user_info):
     '''
     create by bigzhu at 15/08/03 16:31:00 从各种用户里找头像
+    modify by bigzhu at 15/08/03 16:58:52 同时把描述也找了
     '''
     if user_info.picture:
         return
@@ -41,10 +42,13 @@ def makeSurePicture(user_info):
     github_user = public_db.getGithubUser(user_info.user_name)
     if github_user:
         user_info.picture = github_user.avatar_url
+
         return
     twitter_user = public_db.getTwitterUser(user_info.user_name)
     if twitter_user:
         user_info.picture = twitter_user.profile_image_url_https
+        if not user_info.slogan:
+            user_info.slogan = twitter_user.description
         return
     instagram_user = public_db.getInstagramUser(user_info.user_name)
     if instagram_user:
