@@ -73,17 +73,8 @@ class main(tornado_bz.UserInfoHandler):
 
     #@tornado_bz.mustLogin
 
-    def get(self, limit=50):
-        anchor = ''
-        if limit == '':
-            limit = 50
-            more = 100
-        messages = list(public_db.getMessages(self.current_user, limit=limit))
-        if messages:
-            anchor_message = messages[-2]
-            anchor = '%s_%s' % (anchor_message.m_type, anchor_message.id)
-            more = int(limit) + 50
-
+    def get(self, limit=''):
+        messages, more, anchor = oper.getMessages(limit, self.current_user)
         self.render(tornado_bz.getTName(self), messages=messages, more=more, anchor=anchor)
 
 
@@ -148,8 +139,10 @@ class user(add):
     @tornado_bz.mustLogin
     def get(self, user_name='-1'):
         user_info = public_db.getUserInfoByName(user_name)
+        limit = 100
+        messages, more, anchor = oper.getMessages(limit, god_name=user_name)
         messages = public_db.getMessages(god_name=user_name)
-        self.render(self.template, the_user_info=user_info, messages=messages)
+        self.render(self.template, the_user_info=user_info, messages=messages, more=more, anchor=anchor)
 
 
 class users(tornado_bz.UserInfoHandler):

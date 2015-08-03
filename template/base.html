@@ -29,12 +29,8 @@
         {% module header_m(user_info, 'Follow Center', links, need_login=True) %}
         <br>
         <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-md-12">
-                    {% block body %}
-                    {% end %}
-                </div>
-            </div>
+            {% block body %}
+            {% end %}
         </div>
         {% block js %}
         {% end %}

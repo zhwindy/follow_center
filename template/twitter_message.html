@@ -8,7 +8,6 @@
                     {{message.name}}
                 </div>
             </a>
-
         </h2>
         <div class="box-tools pull-right">
             <a class="a-icon" target="_blank" href="{{message.href}}">
@@ -24,16 +23,12 @@
     <div class="box-body">
         {{ linkify(message.text, {'target': '_blank'}) }}
         {%if message.extended_entities and message.extended_entities.get('media')%}
-        <div class="row">
-            {%for media in message.extended_entities['media']%}
-            <div class="col-md-6">
-                <a href="{{media['media_url_https']}}">
-                    <img src="{{media['media_url_https']}}" class="img-responsive" onerror="this.onerror=null;this.src='/ProxyHandler/{{media['media_url_https']}}';" >
-                    <br>
-                </a>
-            </div>
+        {%for media in message.extended_entities['media']%}
+        <a href="{{media['media_url_https']}}">
+            <img src="{{media['media_url_https']}}" class="img-responsive" onerror="this.onerror=null;this.src='/ProxyHandler/{{media['media_url_https']}}';" >
+            <br>
+        </a>
             {%end%}
-        </div>
-        {%end%}
+            {%end%}
     </div>
 </div>
