@@ -141,7 +141,7 @@ class user(add):
         god_name = self.get_argument('god_name')
         limit = self.get_argument('limit', None)
         if not limit:
-            limit = 10
+            limit = ''
         god_info = public_db.getUserInfoByName(god_name)
         oper.makeSurePicture(god_info)
         messages, more, anchor = oper.getMessages(limit, god_name=god_name)
