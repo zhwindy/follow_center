@@ -21,13 +21,13 @@ def getMessages(limit='', current_user=None, god_name=None):
     '''
     anchor = ''
     if limit == '':
-        limit = 50
-        more = 100
+        limit = 10
+        more = 20
     messages = list(public_db.getMessages(current_user, limit=limit, god_name=god_name))
     if messages:
         anchor_message = messages[-1]
         anchor = '%s_%s' % (anchor_message.m_type, anchor_message.id)
-        more = int(limit) + 50
+        more = int(limit) + 10
     return messages, more, anchor
 
 
