@@ -11,9 +11,6 @@ import time_bz
 try:
     import wechat_sdk
     from wechat_sdk import WechatBasic
-    from wechat_sdk.messages import (
-        TextMessage, VoiceMessage, ImageMessage, VideoMessage, LinkMessage, LocationMessage, EventMessage
-    )
 except ImportError:
     print 'you need install wechat, please run:'
     print 'sudo pip install wechat-sdk'
@@ -166,6 +163,7 @@ def sendGithub(openid, text, user_name, id):
     article.description = text
     articles = [article]
     sendArticle(openid, articles)
+
 
 def sendInstagram(openid, text, img_url, user_name, id):
     '''

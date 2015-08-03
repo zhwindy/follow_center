@@ -22,7 +22,7 @@
     </div>
     <div class="box-body">
         {%set repo_name = message.content['repo']['name'] %}
-        {%set repo_link = '<a href="%s">%s</a>'%(repo_url, repo_name) %}
+        {%set repo_link = '<a href="%s" target="_blank">%s</a>'%(repo_url, repo_name) %}
 
         {%if message.content['type']=='PushEvent'%}
         Push {{repo_link}}
