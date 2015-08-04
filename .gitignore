@@ -14,7 +14,6 @@ static/*_bz
 bin/
 include/
 lib64
-static/upload/*
 .idea/
 .DS_Store
 js_bz
