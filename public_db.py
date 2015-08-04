@@ -8,7 +8,7 @@ user_oper = user_bz.UserOper(pg)
 def getOpenidsByName(type, name):
     sql = '''
         select w.openid from user_info u, follow_who f, user_info u2, wechat_user w
-        where u.%s='%s'
+        where lower(u.%s)=lower('%s')
         and u.id = f.god_id
         and u2.id = f.user_id
         and w.user_name=u2.user_name
