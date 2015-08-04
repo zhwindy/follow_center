@@ -13,6 +13,7 @@ from public_bz import storage
 import public_db
 import json
 import time_bz
+import time
 
 
 def check():
@@ -142,5 +143,6 @@ def saveUser(id, url):
 
 
 if __name__ == '__main__':
-    #getUserEvent('bigzhu', 'test')
-    check()
+    while True:
+        check()
+        time.sleep(300)

@@ -7,6 +7,7 @@ modify by bigzhu at 15/07/17 17:08:38 存进去还是不对,手工来来修正�
 '''
 #import pytz
 #tz = pytz.timezone('Asia/Shanghai')
+import time
 import copy
 from datetime import timedelta
 import tweepy
@@ -67,7 +68,7 @@ def getUserTimeline(screen_name):
             tweet.created_at += timedelta(hours=8)
             # print tweet.created_at
             id = saveTwitter(copy.deepcopy(tweet))
-            if id is not None and len(public_tweets) <=3:  # 新增加消息
+            if id is not None and len(public_tweets) <= 3:  # 新增加消息
                 openids = public_db.getOpenidsByName('twitter', screen_name)
                 print 'new=', tweet.text
                 for data in openids:
@@ -136,5 +137,6 @@ def saveTwitter(tweet):
 
 
 if __name__ == '__main__':
-    # check()
-    getUserTimeline('tualatrix')
+    while True:
+        check()
+        time.sleep(300)
