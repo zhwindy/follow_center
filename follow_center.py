@@ -61,8 +61,21 @@ class login(login_m.login):
         login_m.login.initialize(self)
         # self.oauth2.douban.enabled = True
         #self.oauth2.google.enabled = True
-        #self.oauth2.twitter.enabled = True
+        self.oauth2.github.enabled = True
 
+class github(login_m.github):
+
+    '''
+    github 登录
+    '''
+
+    def initialize(self):
+        login_m.github.initialize(self)
+
+        client_id = 'ee3c1a6f0c56345df334'
+        client_secret = '365f15ac030aeab6188749602810f099c7953eb6'
+        self.settings['github_oauth'] = {'client_secret': client_secret,
+                                         'client_id': client_id, 'redirect_uri': 'http://follow.center/github'}
 
 class main(tornado_bz.UserInfoHandler):
 
