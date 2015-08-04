@@ -1,7 +1,8 @@
 #! /bin/bash
+name="lib"
 while true
 do
-    echo update ${PWD}
     git pull
+    echo "update $name"
     sleep 5
 done
