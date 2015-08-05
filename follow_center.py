@@ -53,8 +53,10 @@ class WechatBaseHandler(tornado_bz.BaseHandler):
 class ProxyHandler(proxy.ProxyHandler):
     pass
 
+
 class instagram_icon(instagram_oper.instagram_icon):
     pass
+
 
 class login(login_m.login):
 
@@ -174,8 +176,6 @@ class users(tornado_bz.UserInfoHandler):
     create by bigzhu at 15/07/12 23:43:54 显示所有的大神, 关联twitter
     modify by bigzhu at 15/07/17 15:20:26 关联其他的,包括 github
     '''
-
-    #@tornado_bz.mustLogin
 
     def get(self):
         #users = public_db.getUserInfoTwitterUser(self.current_user)
