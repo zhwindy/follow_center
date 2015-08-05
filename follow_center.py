@@ -18,7 +18,7 @@ import pg
 import public_db
 import wechat_oper
 import proxy
-import simpleencode
+import base64
 
 
 reload(sys)
