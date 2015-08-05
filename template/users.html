@@ -18,7 +18,7 @@
     {%elif user.twitter_user%}
     {% set avatar_url = user.twitter_user.get('profile_image_url_https') %}
     {%elif user.instagram_user%}
-    {% set avatar_url = user.instagram_user.get('profile_picture') %}
+    {% set avatar_url = '/instagram_icon/'+ user.name %}
     {%end%}
 
     {%if user.slogan %}
