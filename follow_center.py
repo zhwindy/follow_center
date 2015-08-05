@@ -81,7 +81,9 @@ class github(login_m.github):
         client_id = 'ee3c1a6f0c56345df334'
         client_secret = '365f15ac030aeab6188749602810f099c7953eb6'
         self.settings['github_oauth'] = {'client_secret': client_secret,
-                                         'client_id': client_id, 'redirect_uri': 'http://follow.center/github'}
+                                         'client_id': client_id,
+                                         'redirect_uri': 'http://follow.center/github'}
+        self.merge = True
 
 
 class main(tornado_bz.UserInfoHandler):
@@ -347,9 +349,6 @@ if __name__ == "__main__":
 
     application.listen(port)
     ioloop = tornado.ioloop.IOLoop().instance()
-
-    #tornado.ioloop.PeriodicCallback(twitter.check, 60 * 1000).start()
-    #tornado.ioloop.PeriodicCallback(github.check, 60 * 1000).start()
 
     tornado.autoreload.start(ioloop)
     ioloop.start()
