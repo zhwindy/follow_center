@@ -18,6 +18,7 @@ import pg
 import public_db
 import wechat_oper
 import proxy
+import base64
 
 
 reload(sys)
@@ -52,6 +53,15 @@ class WechatBaseHandler(tornado_bz.BaseHandler):
 
 class ProxyHandler(proxy.ProxyHandler):
     pass
+
+class sp(proxy.ProxyHandler):
+    '''
+    create by bigzhu at 15/08/05 22:52:44 加密方式传递url
+    '''
+    def get(self, secret):
+        url = base64.decodestring(secret)
+        return super(sp, self).get(url)
+
 
 
 class instagram_icon(instagram_oper.instagram_icon):
