@@ -22,7 +22,7 @@
     </div>
     <div class="box-body">
         {{message.text or ''}}
-        <a href="{{message.extended_entities['url']}}">
+        <a href="/ProxyHandler/{{message.extended_entities['url']}}">
             <img src="/ProxyHandler/{{message.extended_entities['url']}}" class="img-responsive">
             <br>
         </a>
