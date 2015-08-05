@@ -2,7 +2,7 @@
     <div class="box-header">
         <h2 class="box-title">
             <a href="/user?god_name={{message.user_name}}">
-                <img src="{{message.avatar}}" class="direct-chat-img" onerror="this.onerror=null;this.src='/ProxyHandler/{{message.avatar}}';">
+                <img src="/ProxyHandler/{{message.avatar}}" class="direct-chat-img">
                 <div class="name">
                     {{message.name}}
                 </div>
@@ -23,7 +23,7 @@
     <div class="box-body">
         {{message.text or ''}}
         <a href="{{message.extended_entities['url']}}">
-            <img src="{{message.extended_entities['url']}}" class="img-responsive" onerror="this.onerror=null;this.src='/ProxyHandler/{{message.extended_entities['url']}}';" >
+            <img src="/ProxyHandler/{{message.extended_entities['url']}}" class="img-responsive">
             <br>
         </a>
     </div>
