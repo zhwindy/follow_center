@@ -66,6 +66,7 @@ class login(login_m.login):
         login_m.login.initialize(self)
         # self.oauth2.douban.enabled = True
         #self.oauth2.google.enabled = True
+        self.oauth2.twitter.enabled = True
         self.oauth2.github.enabled = True
 
 
@@ -83,6 +84,21 @@ class github(login_m.github):
         self.settings['github_oauth'] = {'client_secret': client_secret,
                                          'client_id': client_id,
                                          'redirect_uri': 'http://follow.center/github'}
+        self.merge = True
+
+
+class twitter(login_m.twitter):
+
+    '''
+    twitter 登录
+    '''
+
+    def initialize(self):
+        # twitter
+        login_m.twitter.initialize(self)
+
+        self.settings["twitter_consumer_key"] = 'hWAx4nDgCpFzy6dsKai9a59vg'
+        self.settings["twitter_consumer_secret"] = 'MMZETMq1qQWQ4lMBuyjFR5uyuWZxVs6xK4dN9DeHfaW7RpZZtr'
         self.merge = True
 
 
