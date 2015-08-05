@@ -127,7 +127,7 @@ class instagram_icon(proxy.ProxyHandler):
     '''
     def get(self, user_name):
         instagram_user = public_db.getInstagramUser(user_name)
-        return super(instagram_icon, self).get(instagram_user.avatar)
+        return super(instagram_icon, self).get(instagram_user.profile_picture)
 
 if __name__ == '__main__':
     # print getUser('ruanyf')
