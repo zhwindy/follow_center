@@ -41,7 +41,8 @@
         {%set issue_comment_url = payload['comment']['html_url']%}
         {%set issue_comment_body = payload['comment']['body']%}
         <a target="_blank" href="{{issue_comment_url}}" >{{issue_title}}</a>
-        <p class="description_bz">{{issue_comment_body}}</p>
+
+        <xmp class="description_bz">{{issue_comment_body}}</xmp>
 
         {%elif message.content['type']=='WatchEvent'%}
         {%set payload = message.content['payload'] %}
