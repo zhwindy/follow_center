@@ -1,4 +1,5 @@
-{%from base64 import encodestring%}
+{%from simpleencode import encode %}
+{%set img_url = encode(message.extended_entities['url'], 'bigzhu very big')%}
 <div id="instagram_{{message.id}}" class="box box-solid item">
     <div class="box-header">
         <h2 class="box-title">
@@ -23,8 +24,8 @@
     </div>
     <div class="box-body">
         {{message.text or ''}}
-        <a href="/sp/{{encodestring(message.extended_entities['url'])}}">
-            <img src="/sp/{{encodestring(message.extended_entities['url'])}}" class="img-responsive">
+        <a href="/sp/{{img_url}}">
+            <img src="/sp/{{img_url}}" class="img-responsive">
             <br>
         </a>
     </div>

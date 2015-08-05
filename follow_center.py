@@ -18,7 +18,7 @@ import pg
 import public_db
 import wechat_oper
 import proxy
-import base64
+import simpleencode
 
 
 reload(sys)
@@ -59,7 +59,7 @@ class sp(proxy.ProxyHandler):
     create by bigzhu at 15/08/05 22:52:44 加密方式传递url
     '''
     def get(self, secret):
-        url = base64.decodestring(secret)
+        url = simpleencode.decode(secret, 'bigzhu very big')
         return super(sp, self).get(url)
 
 
