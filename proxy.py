@@ -74,8 +74,7 @@ class ProxyHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, url):
         self.url = url
-        logger.debug('Handle %s request to %s', self.request.method,
-                     self.url)
+        logger.debug('Handle %s request to %s', self.request.method, self.url)
 
         def handle_response(response):
             if (response.error and not
@@ -84,7 +83,7 @@ class ProxyHandler(tornado.web.RequestHandler):
                 self.write('Internal server error:\n' + str(response.error))
             else:
                 self.set_status(response.code)
-                for header in ('Date', 'Cache-Control', 'Server','Content-Type', 'Location'):
+                for header in ('Date', 'Cache-Control', 'Server', 'Content-Type', 'Location'):
                     v = response.headers.get(header)
                     if v:
                         self.set_header(header, v)
@@ -99,14 +98,14 @@ class ProxyHandler(tornado.web.RequestHandler):
         body = self.request.body
         if not body:
             body = None
-        #try:
+        # try:
         self.request.headers["Host"] = urlparse(self.url).netloc
         fetch_request(
             self.url, handle_response,
             method=self.request.method, body=body,
             headers=self.request.headers, follow_redirects=False,
             allow_nonstandard_methods=True)
-        #except tornado.httpclient.HTTPError as e:
+        # except tornado.httpclient.HTTPError as e:
         #    if hasattr(e, 'response') and e.response:
         #        handle_response(e.response)
         #    else:

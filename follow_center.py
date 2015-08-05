@@ -11,6 +11,7 @@ import tornado.ioloop
 import tornado.web
 import tornado_bz
 from ui_module import login_m
+import instagram_oper
 
 import oper
 import pg
@@ -52,6 +53,8 @@ class WechatBaseHandler(tornado_bz.BaseHandler):
 class ProxyHandler(proxy.ProxyHandler):
     pass
 
+class instagram_icon(instagram_oper.instagram_icon):
+    pass
 
 class login(login_m.login):
 
@@ -62,6 +65,7 @@ class login(login_m.login):
         # self.oauth2.douban.enabled = True
         #self.oauth2.google.enabled = True
         self.oauth2.github.enabled = True
+
 
 class github(login_m.github):
 
@@ -76,6 +80,7 @@ class github(login_m.github):
         client_secret = '365f15ac030aeab6188749602810f099c7953eb6'
         self.settings['github_oauth'] = {'client_secret': client_secret,
                                          'client_id': client_id, 'redirect_uri': 'http://follow.center/github'}
+
 
 class main(tornado_bz.UserInfoHandler):
 

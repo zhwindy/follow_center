@@ -12,6 +12,7 @@ import db_bz
 import ConfigParser
 import public_db
 import wechat_oper
+import proxy
 config = ConfigParser.ConfigParser()
 
 
@@ -118,6 +119,15 @@ def check():
             print 'check instagram %s' % user.instagram
             getMedia(user.instagram)
 
+
+
+class instagram_icon(proxy.ProxyHandler):
+    '''
+    create by bigzhu at 15/08/05 11:21:51 用来代理 instagram, 为了绕开gfw, 必须隐藏 url 不能暴露出来
+    '''
+    def get(self, user_name):
+        instagram_user = public_db.getInstagramUser(user_name)
+        return super(instagram_icon, self).get(instagram_user.avatar)
 
 if __name__ == '__main__':
     # print getUser('ruanyf')
