@@ -20,7 +20,7 @@
     {%elif user.instagram_user%}
 
     {% from base64 import encodestring %}
-    {%set avatar_url = '/sp/'+encodestring(encodestring(user.instagram.get('profile_picture')))%}
+    {%set avatar_url = '/sp/'+encodestring(encodestring(user.instagram_user.get('profile_picture')))%}
     {%end%}
 
     {%if user.slogan %}
