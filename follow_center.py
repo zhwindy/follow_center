@@ -18,6 +18,7 @@ import public_db
 import wechat_oper
 import proxy
 import base64
+import module
 
 
 reload(sys)
@@ -345,6 +346,7 @@ class qr(WechatBaseHandler, tornado_bz.UserInfoHandler):
         self.render(tornado_bz.getTName(self), url=url)
 
 
+
 if __name__ == "__main__":
 
     the_class = tornado_bz.getAllUIModuleRequestHandlers()
@@ -365,7 +367,7 @@ if __name__ == "__main__":
     url_map.append((r'/static/(.*)', tornado.web.StaticFileHandler, {'path': "./static"}))
 
     settings = tornado_bz.getSettings()
-
+    settings['ui_modules'].append(module)
     settings["pg"] = pg
     #settings, wechat = wechat_oper.initSetting(settings)
     application = tornado.web.Application(url_map, **settings)

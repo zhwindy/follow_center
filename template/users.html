@@ -18,7 +18,9 @@
     {%elif user.twitter_user%}
     {% set avatar_url = user.twitter_user.get('profile_image_url_https') %}
     {%elif user.instagram_user%}
-    {% set avatar_url = '/instagram_icon/'+ user.instagram %}
+
+    {% from base64 import encodestring %}
+    {%set avatar_url = '/sp/'+encodestring(encodestring(user.instagram))%}
     {%end%}
 
     {%if user.slogan %}
@@ -33,7 +35,7 @@
         <div class="box-header">
             <h3 class="box-title">
                 <a href="/user?god_name={{user.user_name}}">
-                    <img src="{{avatar_url}}" onerror="this.onerror=null;this.src='/ProxyHandler/{{avatar_url}}';" class="direct-chat-img">
+                    <img src="{{avatar_url}}" class="direct-chat-img">
                     <div class="name">
                         {{user.user_name}}
                     </div>
@@ -72,16 +74,7 @@
             {{description}}
         </div>
         <div class="box-footer">
-            {%if user.followed == 1%}
-            <button v-on="click:toggleFollow($event, {{user.god_id}})" type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
-                Following
-            </button>
-            {%else%}
-            <button v-on="click:toggleFollow($event, {{user.god_id}})" type="button" class="btn btn-default btn-sm" aria-label="Left Align">
-                <span class="fa fa-heart yellow" aria-hidden="true">+</span>
-                Follow
-            </button>
-            {%end%}
+            <follow followed="{{user.followed}}" god_id="{{user.god_id}}"></follow>
         </div>
     </div>
     {% end %}
