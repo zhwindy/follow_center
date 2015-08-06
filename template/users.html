@@ -1,3 +1,5 @@
+
+{% from base64 import encodestring %}
 {% extends 'base.html' %}
 {% block title %}每个人都是一个品牌{% end %}
 {% block js %}
@@ -17,9 +19,10 @@
     {% set avatar_url = user.github_user.get('avatar_url') %}
     {%elif user.twitter_user%}
     {% set avatar_url = user.twitter_user.get('profile_image_url_https') %}
+    {% set avatar_url = '/sp/'+encodestring(encodestring(avatar_url)) %}
+
     {%elif user.instagram_user%}
 
-    {% from base64 import encodestring %}
     {%set avatar_url = '/sp/'+encodestring(encodestring(user.instagram_user.get('profile_picture')))%}
     {%end%}
 
