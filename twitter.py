@@ -19,7 +19,7 @@ import json
 import public_bz
 import ConfigParser
 config = ConfigParser.ConfigParser()
-with open('twitter.ini', 'r') as cfg_file:
+with open('conf/twitter.ini', 'r') as cfg_file:
     config.readfp(cfg_file)
     consumer_key = config.get('secret', 'consumer_key')
     consumer_secret = config.get('secret', 'consumer_secret')

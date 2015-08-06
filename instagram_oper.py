@@ -16,7 +16,7 @@ import proxy
 config = ConfigParser.ConfigParser()
 
 
-with open('instagram.ini', 'r') as cfg_file:
+with open('conf/instagram.ini', 'r') as cfg_file:
     config.readfp(cfg_file)
     access_token = config.get('secret', 'access_token')
     client_secret = config.get('secret', 'client_secret')

@@ -16,7 +16,7 @@ except ImportError:
     print 'sudo pip install wechat-sdk'
     exit(1)
 config = ConfigParser.ConfigParser()
-with open('wechat.ini', 'r') as cfg_file:
+with open('conf/wechat.ini', 'r') as cfg_file:
     config.readfp(cfg_file)
     appid = config.get('app', 'appid')
     appsecret = config.get('app', 'appsecret')
