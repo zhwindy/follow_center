@@ -11,7 +11,6 @@ import tornado.ioloop
 import tornado.web
 import tornado_bz
 from ui_module import login_m
-import instagram_oper
 
 import oper
 import pg
@@ -54,18 +53,16 @@ class WechatBaseHandler(tornado_bz.BaseHandler):
 class ProxyHandler(proxy.ProxyHandler):
     pass
 
+
 class sp(proxy.ProxyHandler):
+
     '''
     create by bigzhu at 15/08/05 22:52:44 加密方式传递url
     '''
+
     def get(self, secret):
-        url =  base64.decodestring(base64.decodestring(secret))
+        url = base64.decodestring(base64.decodestring(secret))
         return super(sp, self).get(url)
-
-
-
-class instagram_icon(instagram_oper.instagram_icon):
-    pass
 
 
 class login(login_m.login):
