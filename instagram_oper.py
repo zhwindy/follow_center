@@ -81,7 +81,7 @@ def getMedia(user_name=None, with_next_url=None, user=None):
                 comment['user'] = comment['user'].__dict__
         db_media.comments = json.dumps(media.comments, cls=public_bz.ExtEncoder)
         db_media.created_time = media.created_time
-        #8小时的问题
+        # 8小时的问题
         db_media.created_time += timedelta(hours=8)
         db_media.filter = media.filter
         db_media.low_resolution = json.dumps(media.images['low_resolution'].__dict__)
@@ -96,7 +96,7 @@ def getMedia(user_name=None, with_next_url=None, user=None):
         db_media.user_id = user.id
         id = db_bz.insertIfNotExist(pg, 'instagram_media', db_media, "id_str='%s'" % db_media.id_str)
         print 'new=', media.id, user.username
-        if id is not None and len(medias)<=2:  # 新增加消息,微信通知只通知2条以内
+        if id is not None and len(medias) <= 2:  # 新增加消息,微信通知只通知2条以内
             openids = public_db.getOpenidsByName('instagram', user.username)
             for data in openids:
                 if caption != '':
@@ -119,15 +119,6 @@ def check():
             print 'check instagram %s' % user.instagram
             getMedia(user.instagram)
 
-
-
-class instagram_icon(proxy.ProxyHandler):
-    '''
-    create by bigzhu at 15/08/05 11:21:51 用来代理 instagram, 为了绕开gfw, 必须隐藏 url 不能暴露出来
-    '''
-    def get(self, user_name):
-        instagram_user = public_db.getInstagramUser(user_name)
-        return super(instagram_icon, self).get(instagram_user.profile_picture)
 
 if __name__ == '__main__':
     # print getUser('ruanyf')
