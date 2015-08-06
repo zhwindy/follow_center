@@ -1,5 +1,3 @@
-
-{% from base64 import encodestring %}
 {% extends 'base.html' %}
 {% block title %}每个人都是一个品牌{% end %}
 {% block js %}
@@ -11,6 +9,7 @@
 
 {% block body %}
 <div id="v_users">
+    {% from base64 import encodestring %}
     {% for user in users %}
 
     {%if user.picture %}
