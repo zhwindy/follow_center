@@ -2,8 +2,11 @@
 {% block css %}
 <link href="/static/message.css" rel="stylesheet" type="text/css" />
 {% end %}
+{% block js %}
+<script src="/static/user.js"></script>
+{% end %}
 {% block body %}
-<div class="row">
+<div id="v_user" class="row">
     <div class="col-md-8">
         {% for message in messages %}
         {%if message.m_type=='twitter'%}
@@ -29,6 +32,8 @@
     </div>
     <div class="col-md-4">
         {% module user_info_m(god_info, True) %}
+        <hr>
+         <follow followed="{{god_info.followed}}" god_id="{{god_info.god_id}}"></follow>
     </div>
 </div>
 {% end %}

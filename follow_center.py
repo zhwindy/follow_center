@@ -188,7 +188,10 @@ class user(add):
         limit = self.get_argument('limit', None)
         if not limit:
             limit = ''
-        god_info = public_db.getUserInfoByName(god_name)
+        god_info = list(public_db.getGodInfoFollow(self.current_user, god_name))
+        if god_info:
+            god_info = god_info[0]
+
         oper.makeSurePicture(god_info)
         messages, more, anchor = oper.getMessages(limit, god_name=god_name)
         print len(messages)
@@ -344,7 +347,6 @@ class qr(WechatBaseHandler, tornado_bz.UserInfoHandler):
     def get(self):
         url = wechat_oper.getQrUrl(self.wechat, self.get_user_info().user_name)
         self.render(tornado_bz.getTName(self), url=url)
-
 
 
 if __name__ == "__main__":

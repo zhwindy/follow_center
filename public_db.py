@@ -198,12 +198,19 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
     return pg.query(sql)
 
 
-def getGodInfoFollow(user_id=None):
+def getGodInfoFollow(user_id=None, god_name=None):
+    '''
+    modify by bigzhu at 15/08/06 17:05:22 可以根据god_name来取
+    '''
     sql = '''
     select  u.id as god_id, 0 followed,
             u.created_date as u_created_date,
     * from user_info u order by u.created_date desc
     '''
+    if god_name:
+        sql = '''
+        select * from (%s) s where lower(user_name)=lower('%s')
+        ''' % (sql, god_name)
     if user_id:
         sql = '''
             select * from   (%s) ut left join (select god_id followed_god_id, 1 followed from follow_who where user_id=%s) f on ut.god_id=f.followed_god_id
