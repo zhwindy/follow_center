@@ -3,6 +3,7 @@
 import db_bz
 import pg
 import public_db
+import base64
 
 
 def follow(user_id, god_id, make_sure=True):
@@ -53,6 +54,17 @@ def makeSurePicture(user_info):
     if instagram_user:
         user_info.picture = instagram_user.profile_picture
         return
+
+
+def encodeUrl(url):
+    '''
+    create by bigzhu at 15/08/07 10:37:21 加密url
+    '''
+    return base64.encodestring(base64.encodestring(url))
+
+
+def decodeUrl(url):
+    return base64.decodestring(base64.decodestring(url))
 
 if __name__ == '__main__':
     pass

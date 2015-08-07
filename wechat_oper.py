@@ -6,6 +6,7 @@ import wechat_bz
 import public_db
 from public_bz import storage
 import pg
+import oper
 import datetime
 import time_bz
 try:
@@ -172,7 +173,7 @@ def sendInstagram(openid, text, img_url, user_name, id):
     '''
     article = storage()
     article.title = user_name
-    article.picurl = img_url
+    article.picurl = 'http://follow.center/sp/' + oper.encodeUrl(img_url)
     article.url = "http://follow.center/message?t=instagram&id=%s" % id
     articles = [article]
     sendArticle(openid, articles)

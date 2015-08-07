@@ -17,7 +17,6 @@ import pg
 import public_db
 import wechat_oper
 import proxy
-import base64
 import module
 
 
@@ -62,7 +61,7 @@ class sp(proxy.ProxyHandler):
     '''
 
     def get(self, secret):
-        url = base64.decodestring(base64.decodestring(secret))
+        url = oper.decodeUrl(secret)
         return super(sp, self).get(url)
 
 

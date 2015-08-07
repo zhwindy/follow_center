@@ -1,6 +1,6 @@
-{% from base64 import encodestring %}
-{%set img_url = encodestring(encodestring(message.extended_entities['url']))%}
-{%set avatar_url = encodestring(encodestring(message.avatar))%}
+{% import oper %}
+{%set img_url = oper.encodeUrl(message.extended_entities['url']) %}
+{%set avatar_url = oper.encodeUrl(message.avatar)%}
 <div id="instagram_{{message.id}}" class="box box-solid item">
     <div class="box-header">
         <h2 class="box-title">
