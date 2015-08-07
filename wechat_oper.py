@@ -179,4 +179,5 @@ def sendInstagram(openid, text, img_url, user_name, id):
     articles = [article]
     sendArticle(openid, articles)
 if __name__ == '__main__':
-    print getWechat()
+    sendInstagram('oV9tmuDpkxJqabSWWHzrimVZeb0Q', 'test', 'https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/s640x640/sh0.08/e35/11385108_112839725724677_1977777756_n.jpg',
+                  'test', 1)
