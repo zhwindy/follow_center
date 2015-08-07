@@ -14,6 +14,7 @@ import public_db
 import json
 import time_bz
 import time
+import public_bz
 
 
 def check():
@@ -47,8 +48,11 @@ def getUserEvent(user_name, etag):
     modify by bigzhu at 15/07/22 16:20:42 时间同样要加入8小时,否则不正确
     '''
     headers = {'If-None-Match': etag}
-    r = requests.get('https://api.github.com/users/%s/events' % user_name, headers=headers)
-
+    try:
+        r = requests.get('https://api.github.com/users/%s/events' % user_name, headers=headers)
+    except requests.exceptions.ConnectionError:
+        print public_bz.getExpInfoAll()
+        return
     if r.status_code == 200:
         messages = r.json()
         if not messages:
