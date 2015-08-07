@@ -5,6 +5,13 @@ import user_bz
 user_oper = user_bz.UserOper(pg)
 
 
+def delNoName(type, name):
+    sql = '''
+    update user_info set %s=null where lower(%s)=lower('%s')
+    ''' % (type, type, name)
+    pg.query(sql)
+
+
 def getOpenidsByName(type, name):
     sql = '''
         select w.openid from user_info u, follow_who f, user_info u2, wechat_user w

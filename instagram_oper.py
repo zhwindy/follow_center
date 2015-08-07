@@ -3,6 +3,7 @@
 import pg
 from public_bz import storage
 import public_bz
+import instagram
 from instagram.client import InstagramAPI
 
 from datetime import timedelta
@@ -12,7 +13,6 @@ import db_bz
 import ConfigParser
 import public_db
 import wechat_oper
-import proxy
 config = ConfigParser.ConfigParser()
 
 
@@ -57,7 +57,12 @@ def getMedia(user_name=None, with_next_url=None, user=None):
     if user_name:
         user = getUser(user_name)
         # min_id 会查出大于等于这个id的
-        medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
+        try:
+            medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
+        except instagram.bind.InstagramClientError:
+            print public_bz.getExpInfoAll()
+            public_db.delNoName('instagram', user_name)
+            return
         if medias:
             last_id = medias[0].id
             pg.update('instagram_user', where="lower(username)=lower('%s')" % user_name, last_id=last_id)
