@@ -97,39 +97,39 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
     instagram_in = ''
     if god_name is not None:
         twitter_in = '''
-            and u.screen_name in(
-            select twitter from user_info where  user_name='%s'
+            and lower(u.screen_name) in(
+            select lower(twitter) from user_info where  user_name='%s'
             )
         ''' % god_name
         github_in = '''
-            and u.login in(
-            select github from user_info where user_name='%s'
+            and lower(u.login) in(
+            select lower(github) from user_info where user_name='%s'
             )
         ''' % god_name
         instagram_in = '''
-            and u.username in(
-            select instagram from user_info where  user_name='%s'
+            and lower(u.username) in(
+            select lower(instagram) from user_info where  user_name='%s'
             )
         ''' % god_name
 
     if user_id is not None:
         twitter_in = '''
-            and u.screen_name in(
-            select twitter from user_info where id in(
+            and lower(u.screen_name) in(
+            select lower(twitter) from user_info where id in(
                 select god_id from follow_who where user_id=%s
                 )
             )
         ''' % user_id
         github_in = '''
-            and u.login in(
-            select github from user_info where id in(
+            and lower(u.login) in(
+            select lower(github) from user_info where id in(
                 select god_id from follow_who where user_id=%s
                 )
             )
         ''' % user_id
         instagram_in = '''
-            and u.username in(
-            select instagram from user_info where id in(
+            and lower(u.username) in(
+            select lower(instagram) from user_info where id in(
                 select god_id from follow_who where user_id=%s
                 )
             )
