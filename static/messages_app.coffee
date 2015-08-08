@@ -3,6 +3,7 @@ $ ->
     el:'#v_messages'
     data:
       messages:[]
+      loading:true
     ready:->
       $.ajax
         url: '/messages_app'

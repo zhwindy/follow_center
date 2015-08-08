@@ -7,7 +7,7 @@
 
 {% extends 'base.html' %}
 {% block body %}
-<div id="v_messages">
+<div id="v_messages" v-loading="loading">
     <component is="(%message.m_type%)" v-repeat="message:messages" >
     <!-- 不活跃的的组件会被缓存！ -->
     </component>

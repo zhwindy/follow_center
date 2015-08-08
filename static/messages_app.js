@@ -4,7 +4,8 @@
     return v_user = new Vue({
       el: '#v_messages',
       data: {
-        messages: []
+        messages: [],
+        loading: true
       },
       ready: function() {
         return $.ajax({
