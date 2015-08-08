@@ -3,6 +3,7 @@
 # sys.setdefaultencoding() does not exist, here!
 import ConfigParser
 import json
+import public_bz
 import mimetypes
 import sys
 
@@ -121,6 +122,21 @@ class main(tornado_bz.UserInfoHandler):
     def get(self, limit=''):
         messages, more, anchor = oper.getMessages(limit, self.current_user)
         self.render(tornado_bz.getTName(self), messages=messages, more=more, anchor=anchor)
+
+
+class messages_app(tornado_bz.UserInfoHandler):
+
+    '''
+    '''
+
+    def get(self):
+        self.render(tornado_bz.getTName(self))
+
+    def post(self):
+        self.set_header("Content-Type", "application/json")
+        messages, more, anchor = oper.getMessages('', self.current_user)
+
+        self.write(json.dumps({'error': '0', 'messages': messages}, cls=public_bz.ExtEncoder))
 
 
 class Changelog(tornado_bz.UserInfoHandler):

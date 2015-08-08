@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="box-body">
-        <p class="description_bz">{{ linkify(message.text, {'target': '_blank'}) }}</p>
+        <p class="description_bz">{{linkify(message.text, {'target': '_blank'}) }}</p>
         {%if message.extended_entities and message.extended_entities.get('media')%}
         {%for media in message.extended_entities['media']%}
         <a href="{{media['media_url_https']}}">
