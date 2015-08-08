@@ -99,3 +99,5 @@ Vue.component 'twitter',
 
 Vue.component 'github',
   template:''
+Vue.component 'instagram',
+  template:''

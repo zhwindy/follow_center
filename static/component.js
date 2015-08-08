@@ -95,4 +95,8 @@
     template: ''
   });
 
+  Vue.component('instagram', {
+    template: ''
+  });
+
 }).call(this);
