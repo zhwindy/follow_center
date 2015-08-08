@@ -13,8 +13,7 @@
           success: (function(_this) {
             return function(data, status, response) {
               _this.loading = false;
-              _this.messages = data.messages;
-              return log(_this.messages);
+              return _this.messages = data.messages;
             };
           })(this)
         });

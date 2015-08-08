@@ -11,4 +11,3 @@ $ ->
         success: (data, status, response) =>
           @loading=false
           @messages = data.messages
-          log @messages

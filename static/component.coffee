@@ -63,8 +63,11 @@ Vue.component 'twitter',
     #v-attr只接收变量,为了用proxy,这里要处理
     avatar:->
       avatar = btoa(btoa(@message.avatar))
-      log avatar
       return '/sp/'+avatar
+    medias:->
+      return _.map(message.extended_entities.media, (d)->
+        '/sp/'+btoa(btoa(d.media_url_https))
+        )
   template: '
             <div id="twitter_(%message.id%)" class="box box-solid item">
                 <div class="box-header">
@@ -89,8 +92,8 @@ Vue.component 'twitter',
                 </div>
                 <div class="box-body">
                     <p class="description_bz">(%message.text%)</p>
-                    <a v-repeat="meida:message.extended_entities.media" href="(%media.media_url_https%)">
-                        <img v-attr="src:media.media_url_https" class="img-responsive" >
+                    <a v-repeat="url:medias" href="(%url%)">
+                        <img v-attr="src:url" class="img-responsive" >
                         <br>
                     </a>
                 </div>
