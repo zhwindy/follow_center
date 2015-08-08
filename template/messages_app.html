@@ -11,6 +11,15 @@
     <component is="(%message.m_type%)" v-repeat="message:messages" >
     <!-- 不活跃的的组件会被缓存！ -->
     </component>
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4 text-center">
+            <a v-on="click:more" href='javascript:void(0);' class="btn  btn-defalt">更多...</a>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
 </div>
 
 {% end %}

@@ -84,7 +84,7 @@ def getTwitterMessages():
     return pg.query(sql)
 
 
-def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
+def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None, offset=None):
     '''
     create by bigzhu at 15/07/14 15:11:44 查出我 Follow 的用户的twitter message
     create by bigzhu at 15/07/17 01:39:21 过于复杂,合并sql,根据god_name也可以查
@@ -201,7 +201,8 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None):
         select * from (%s) s
         limit %s
         ''' % (sql, limit)
-
+    if offset:
+        sql = sql + ' offset %s' % offset
     return pg.query(sql)
 
 

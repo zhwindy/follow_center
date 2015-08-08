@@ -5,10 +5,26 @@ $ ->
       messages:[]
       loading:true
     ready:->
+      parm = JSON.stringify
+        bigzhu:1
       $.ajax
         url: '/messages_app'
         type: 'POST'
-        #data : parm
+        data : parm
         success: (data, status, response) =>
           @loading=false
           @messages = data.messages
+    methods:
+      more:->
+        @loading=true
+        parm = JSON.stringify
+          offset:@messages.length+1
+        $.ajax
+          url: '/messages_app'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            @loading=false
+            for message in data.messages
+              log message
+              @messages.push(message)

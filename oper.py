@@ -16,7 +16,7 @@ def follow(user_id, god_id, make_sure=True):
         raise Exception('没有正确的Follow, 似乎已经Follow过了呢')
 
 
-def getMessages(limit='', current_user=None, god_name=None):
+def getMessages(limit='', current_user=None, god_name=None, offset=None):
     '''
     create by bigzhu at 15/08/03 13:24:39 分页方式取messages
     '''
@@ -24,7 +24,7 @@ def getMessages(limit='', current_user=None, god_name=None):
     if limit == '':
         limit = 20
         more = 40
-    messages = list(public_db.getMessages(current_user, limit=limit, god_name=god_name))
+    messages = list(public_db.getMessages(current_user, limit=limit, god_name=god_name, offset=offset))
     if messages:
         anchor_message = messages[-1]
         anchor = '%s_%s' % (anchor_message.m_type, anchor_message.id)
