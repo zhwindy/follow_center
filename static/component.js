@@ -87,12 +87,12 @@
         return '/sp/' + avatar;
       },
       medias: function() {
-        return _.map(message.extended_entities.media, function(d) {
+        return _.map(this.message.extended_entities.media, function(d) {
           return '/sp/' + btoa(btoa(d.media_url_https));
         });
       }
     },
-    template: '<div id="twitter_(%message.id%)" class="box box-solid item"> <div class="box-header"> <h2 class="box-title"> <a href="/user?god_name=(%message.user_name%)"> <img v-attr="src:avatar" class="direct-chat-img"> <div class="name"> (%message.name%) </div> </a> </h2> <div class="box-tools pull-right"> <a class="a-icon" target="_blank" href="(%message.href%)"> <span class="round-icon bg-icon-blue"> <i class="fa fa-twitter"></i> </span> </a> <a href="/message?t=(%message.m_type%)&id=(%message.id%)"> <sub>(%message.created_at%)</sub> </a> </div> </div> <div class="box-body"> <p class="description_bz">(%message.text%)</p> <a v-repeat="url:medias" href="(%url%)"> <img v-attr="src:url" class="img-responsive" > <br> </a> </div> </div>'
+    template: '<div id="twitter_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="/user?god_name=(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-blue">\n                    <i class="fa fa-twitter"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz">(%message.text%)</p>\n        <a v-repeat="url:medias" href="(%url%)">\n            <img v-attr="src:url" class="img-responsive" >\n            <br>\n        </a>\n    </div>\n</div>'
   });
 
   Vue.component('github', {

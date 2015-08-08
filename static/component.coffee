@@ -65,10 +65,10 @@ Vue.component 'twitter',
       avatar = btoa(btoa(@message.avatar))
       return '/sp/'+avatar
     medias:->
-      return _.map(message.extended_entities.media, (d)->
+      return _.map(@message.extended_entities.media, (d)->
         '/sp/'+btoa(btoa(d.media_url_https))
         )
-  template: '
+  template: '''
             <div id="twitter_(%message.id%)" class="box box-solid item">
                 <div class="box-header">
                     <h2 class="box-title">
@@ -86,7 +86,7 @@ Vue.component 'twitter',
                             </span>
                         </a>
                         <a href="/message?t=(%message.m_type%)&id=(%message.id%)">
-                            <sub>(%message.created_at%)</sub>
+                            <sub v-dateformat="'yyyy-MM-dd hh:mm:ss': message.created_at"></sub>
                         </a>
                     </div>
                 </div>
@@ -98,7 +98,7 @@ Vue.component 'twitter',
                     </a>
                 </div>
             </div>
-            '
+            '''
 
 Vue.component 'github',
   template:''
