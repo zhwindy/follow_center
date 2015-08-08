@@ -59,12 +59,18 @@ Vue.component 'follow',
 Vue.component 'twitter',
   props: [ 'message' ]
   #template: 'id=(%message.id%), user_name=(%message.user_name%), avatar=(%message.avatar%)<br>'
+  computed:
+    #v-attr只接收变量,为了用proxy,这里要处理
+    avatar:->
+      avatar = btoa(btoa(@message.avatar))
+      log avatar
+      return '/sp/'+avatar
   template: '
             <div id="twitter_(%message.id%)" class="box box-solid item">
                 <div class="box-header">
                     <h2 class="box-title">
                         <a href="/user?god_name=(%message.user_name%)">
-                            <img v-attr="src:message.avatar" class="direct-chat-img">
+                            <img v-attr="src:avatar" class="direct-chat-img">
                             <div class="name">
                                 (%message.name%)
                             </div>

@@ -80,7 +80,15 @@
 
   Vue.component('twitter', {
     props: ['message'],
-    template: '<div id="twitter_(%message.id%)" class="box box-solid item"> <div class="box-header"> <h2 class="box-title"> <a href="/user?god_name=(%message.user_name%)"> <img v-attr="src:message.avatar" class="direct-chat-img"> <div class="name"> (%message.name%) </div> </a> </h2> <div class="box-tools pull-right"> <a class="a-icon" target="_blank" href="(%message.href%)"> <span class="round-icon bg-icon-blue"> <i class="fa fa-twitter"></i> </span> </a> <a href="/message?t=(%message.m_type%)&id=(%message.id%)"> <sub>(%message.created_at%)</sub> </a> </div> </div> <div class="box-body"> <p class="description_bz">(%message.text%)</p> <a v-repeat="meida:message.extended_entities.media" href="(%media.media_url_https%)"> <img v-attr="src:media.media_url_https" class="img-responsive" > <br> </a> </div> </div>'
+    computed: {
+      avatar: function() {
+        var avatar;
+        avatar = btoa(btoa(this.message.avatar));
+        log(avatar);
+        return '/sp/' + avatar;
+      }
+    },
+    template: '<div id="twitter_(%message.id%)" class="box box-solid item"> <div class="box-header"> <h2 class="box-title"> <a href="/user?god_name=(%message.user_name%)"> <img v-attr="src:avatar" class="direct-chat-img"> <div class="name"> (%message.name%) </div> </a> </h2> <div class="box-tools pull-right"> <a class="a-icon" target="_blank" href="(%message.href%)"> <span class="round-icon bg-icon-blue"> <i class="fa fa-twitter"></i> </span> </a> <a href="/message?t=(%message.m_type%)&id=(%message.id%)"> <sub>(%message.created_at%)</sub> </a> </div> </div> <div class="box-body"> <p class="description_bz">(%message.text%)</p> <a v-repeat="meida:message.extended_entities.media" href="(%media.media_url_https%)"> <img v-attr="src:media.media_url_https" class="img-responsive" > <br> </a> </div> </div>'
   });
 
   Vue.component('github', {
