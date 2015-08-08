@@ -173,11 +173,12 @@ def sendInstagram(openid, text, img_url, user_name, id):
     '''
     article = storage()
     article.title = user_name
-    article.picurl = u'http://follow.center/sp/' + oper.encodeUrl(img_url)
+    article.picurl = 'http://follow.center/sp/' + oper.encodeUrl(img_url)
     article.url = "http://follow.center/message?t=instagram&id=%s" % id
     #article.url = article.picurl
     articles = [article]
     sendArticle(openid, articles)
 if __name__ == '__main__':
-    sendInstagram('oV9tmuDpkxJqabSWWHzrimVZeb0Q', 'test', 'https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/s640x640/sh0.08/e35/11385108_112839725724677_1977777756_n.jpg',
+    sendInstagram('oV9tmuDpkxJqabSWWHzrimVZeb0Q', 'test',
+                  'https://pbs.twimg.com/media/CL4f9axUYAApa9h.jpg',
                   'test', 1)

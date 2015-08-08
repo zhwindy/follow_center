@@ -59,8 +59,9 @@ def makeSurePicture(user_info):
 def encodeUrl(url):
     '''
     create by bigzhu at 15/08/07 10:37:21 加密url
+    modify by bigzhu at 15/08/08 19:47:32 加密时会带上换行,要去了, 否则微信会打不开
     '''
-    return base64.encodestring(base64.encodestring(url))
+    return base64.encodestring(base64.encodestring(url).replace('\n', '')).replace('\n', '')
 
 
 def decodeUrl(url):

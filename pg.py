@@ -9,8 +9,8 @@ import psycopg2
 import public_bz
 import time
 
-DB_IP = '127.0.0.1'
-#DB_IP = 'bigzhu.org'
+#DB_IP = '127.0.0.1'
+DB_IP = 'bigzhu.org'
 db = None
 
 
