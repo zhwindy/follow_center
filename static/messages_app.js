@@ -10,7 +10,7 @@
       ready: function() {
         var parm;
         parm = JSON.stringify({
-          limit: 100
+          limit: 30
         });
         return $.ajax({
           url: '/messages_app',
