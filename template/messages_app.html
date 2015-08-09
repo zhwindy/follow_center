@@ -11,7 +11,7 @@
     <component is="(%message.m_type%)" v-repeat="message:messages" >
     <!-- 不活跃的的组件会被缓存！ -->
     </component>
-    <div class="row">
+    <div v-show="messages" class="row">
         <div class="col-md-4">
         </div>
         <div class="col-md-4 text-center">

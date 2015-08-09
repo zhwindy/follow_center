@@ -4,7 +4,7 @@
     return v_user = new Vue({
       el: '#v_messages',
       data: {
-        messages: [],
+        messages: false,
         loading: true
       },
       ready: function() {
@@ -41,7 +41,6 @@
                 ref = data.messages;
                 for (i = 0, len = ref.length; i < len; i++) {
                   message = ref[i];
-                  log(message);
                   _this.messages.push(message);
                 }
                 return _this.loading = false;

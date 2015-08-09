@@ -2,7 +2,7 @@ $ ->
   v_user = new Vue
     el:'#v_messages'
     data:
-      messages:[]
+      messages:false
       loading:true
     ready:->
       parm = JSON.stringify
@@ -25,6 +25,5 @@ $ ->
           data : parm
           success: (data, status, response) =>
             for message in data.messages
-              log message
               @messages.push(message)
             @loading=false
