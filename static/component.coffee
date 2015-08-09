@@ -100,7 +100,7 @@ Vue.component 'twitter',
             <div id="twitter_(%message.id%)" class="box box-solid item">
                 <div class="box-header">
                     <h2 class="box-title">
-                        <a href="/user?god_name=(%message.user_name%)">
+                        <a href="#/god/(%message.user_name%)">
                             <img v-attr="src:avatar" class="direct-chat-img">
                             <div class="name">
                                 (%message.name%)
@@ -149,7 +149,7 @@ Vue.component 'github',
           <div id="github_(%message.id%)" class="box box-solid item">
               <div class="box-header">
                   <h2 class="box-title">
-                      <a href="/user?god_name=(%message.user_name%)">
+                      <a href="#/god/(%message.user_name%)">
                           <img v-attr="src:avatar" class="direct-chat-img">
                           <div class="name">
                               (%message.name%)
@@ -190,7 +190,7 @@ Vue.component 'instagram',
     <div id="instagram_(%message.id%)" class="box box-solid item">
         <div class="box-header">
             <h2 class="box-title">
-                <a href="/user?god_name=(%message.user_name%)">
+                <a href="#/god/(%message.user_name%)">
                     <img v-attr="src:avatar" class="direct-chat-img">
                     <div class="name">
                         (%message.name%)

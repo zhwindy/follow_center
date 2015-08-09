@@ -1,20 +1,21 @@
 $ ->
-  v_user = new Vue
+  v_messages = new Vue
     el:'#v_messages'
     data:
-      messages:false
+      messages:null
       loading:true
     ready:->
-      parm = JSON.stringify
-        limit:30
-      $.ajax
-        url: '/messages_app'
-        type: 'POST'
-        data : parm
-        success: (data, status, response) =>
-          @loading=false
-          @messages = data.messages
     methods:
+      all:->
+        parm = JSON.stringify
+          limit:30
+        $.ajax
+          url: '/messages_app'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            @messages = data.messages
+            @loading=false
       more:->
         @loading=true
         parm = JSON.stringify
@@ -27,3 +28,20 @@ $ ->
             for message in data.messages
               @messages.push(message)
             @loading=false
+      showTheGod:(god_name)->
+        @loading=true
+        parm = JSON.stringify
+          god_name:god_name
+        $.ajax
+          url: '/messages_app'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            log data.messages
+            @messages = data.messages
+            @loading=false
+  routes =
+    '/god/:god_name': v_messages.showTheGod
+    '/': v_messages.all
+  router = Router(routes)
+  router.init()

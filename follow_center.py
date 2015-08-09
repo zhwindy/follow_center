@@ -63,6 +63,7 @@ class sp(proxy.ProxyHandler):
 
     def get(self, secret):
         url = oper.decodeUrl(secret)
+        url = 'http://cn.vuejs.org/images/logo.png'
         return super(sp, self).get(url)
 
 
@@ -138,9 +139,16 @@ class messages_app(tornado_bz.UserInfoHandler):
     def post(self):
         self.set_header("Content-Type", "application/json")
         data = json.loads(self.request.body)
-        offset = data.get('offset', 0)
-        limit = data.get('limit', '')
-        messages, more, anchor = oper.getMessages(limit, self.current_user, offset=offset)
+        offset = data.get('offset', None)
+        limit = data.get('limit', None)
+        god_name = data.get('god_name', None)
+        user_id = self.current_user
+        if god_name is not None:
+            user_id = None
+
+        messages, more, anchor = oper.getMessages(limit, user_id, offset=offset, god_name=god_name)
+        for m in messages:
+            print m.name
 
         self.write(json.dumps({'error': '0', 'messages': messages}, cls=public_bz.ExtEncoder))
 
@@ -207,8 +215,6 @@ class user(add):
     def get(self):
         god_name = self.get_argument('god_name')
         limit = self.get_argument('limit', None)
-        if not limit:
-            limit = ''
         god_info = list(public_db.getGodInfoFollow(self.current_user, god_name))
         if god_info:
             god_info = god_info[0]

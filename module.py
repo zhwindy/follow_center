@@ -13,6 +13,7 @@ class my_base(base_m.base_m):
     def javascript_files(self):
         all_js_files = super(my_base, self).javascript_files()
         self.all_js_files.append('/static/component.js')
+        self.all_js_files.append('/static/director.js')
         return all_js_files
 if __name__ == '__main__':
     pass

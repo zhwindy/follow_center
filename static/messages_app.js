@@ -1,30 +1,31 @@
 (function() {
   $(function() {
-    var v_user;
-    return v_user = new Vue({
+    var router, routes, v_messages;
+    v_messages = new Vue({
       el: '#v_messages',
       data: {
-        messages: false,
+        messages: null,
         loading: true
       },
-      ready: function() {
-        var parm;
-        parm = JSON.stringify({
-          limit: 30
-        });
-        return $.ajax({
-          url: '/messages_app',
-          type: 'POST',
-          data: parm,
-          success: (function(_this) {
-            return function(data, status, response) {
-              _this.loading = false;
-              return _this.messages = data.messages;
-            };
-          })(this)
-        });
-      },
+      ready: function() {},
       methods: {
+        all: function() {
+          var parm;
+          parm = JSON.stringify({
+            limit: 30
+          });
+          return $.ajax({
+            url: '/messages_app',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                _this.messages = data.messages;
+                return _this.loading = false;
+              };
+            })(this)
+          });
+        },
         more: function() {
           var parm;
           this.loading = true;
@@ -47,9 +48,34 @@
               };
             })(this)
           });
+        },
+        showTheGod: function(god_name) {
+          var parm;
+          this.loading = true;
+          parm = JSON.stringify({
+            god_name: god_name
+          });
+          return $.ajax({
+            url: '/messages_app',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                log(data.messages);
+                _this.messages = data.messages;
+                return _this.loading = false;
+              };
+            })(this)
+          });
         }
       }
     });
+    routes = {
+      '/god/:god_name': v_messages.showTheGod,
+      '/': v_messages.all
+    };
+    router = Router(routes);
+    return router.init();
   });
 
 }).call(this);
