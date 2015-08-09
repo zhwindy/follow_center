@@ -94,7 +94,7 @@ Vue.component 'twitter',
         '/sp/'+btoa(btoa(d.media_url_https))
         )
     text:->
-      return @message.text.autoLink()
+      return @message.text.autoLink({ target: "_blank", rel: "外部链接,请谨慎打开"})
   template: '''
             <div id="twitter_(%message.id%)" class="box box-solid item">
                 <div class="box-header">
