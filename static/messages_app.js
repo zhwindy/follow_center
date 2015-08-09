@@ -37,16 +37,14 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
-                var i, len, message, ref, results;
-                _this.loading = false;
+                var i, len, message, ref;
                 ref = data.messages;
-                results = [];
                 for (i = 0, len = ref.length; i < len; i++) {
                   message = ref[i];
                   log(message);
-                  results.push(_this.messages.push(message));
+                  _this.messages.push(message);
                 }
-                return results;
+                return _this.loading = false;
               };
             })(this)
           });

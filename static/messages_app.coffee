@@ -24,7 +24,7 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
-            @loading=false
             for message in data.messages
               log message
               @messages.push(message)
+            @loading=false
