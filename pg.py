@@ -47,7 +47,7 @@ def daemon(method):
     return wrapper
 
 
-@daemon
+#@daemon
 def select(*args, **kwargs):
     return db.select(*args, **kwargs)
 
