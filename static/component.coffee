@@ -90,9 +90,10 @@ Vue.component 'twitter',
       avatar = btoa(btoa(@message.avatar))
       return '/sp/'+avatar
     medias:->
-      return _.map(@message.extended_entities.media, (d)->
-        '/sp/'+btoa(btoa(d.media_url_https))
-        )
+      if @message.extended_entities
+        return _.map(@message.extended_entities.media, (d)->
+          '/sp/'+btoa(btoa(d.media_url_https))
+          )
     text:->
       return @message.text.autoLink({ target: "_blank", rel: "外部链接,请谨慎打开"})
   template: '''

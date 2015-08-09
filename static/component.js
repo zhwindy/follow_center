@@ -120,9 +120,11 @@
         return '/sp/' + avatar;
       },
       medias: function() {
-        return _.map(this.message.extended_entities.media, function(d) {
-          return '/sp/' + btoa(btoa(d.media_url_https));
-        });
+        if (this.message.extended_entities) {
+          return _.map(this.message.extended_entities.media, function(d) {
+            return '/sp/' + btoa(btoa(d.media_url_https));
+          });
+        }
       },
       text: function() {
         return this.message.text.autoLink({
