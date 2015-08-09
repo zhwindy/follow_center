@@ -30,6 +30,8 @@
 
   String.prototype['autoLink'] = autoLink;
 
+  Vue.config.debug = true;
+
   Vue.component('follow', {
     props: ['followed', 'god_id'],
     template: '<button v-on="click:toggleFollow" type="button" class="btn btn-sm" aria-label="Left Align"></button>',
@@ -135,15 +137,30 @@
   Vue.component('github', {
     props: ['message'],
     computed: {
+      avatar: function() {
+        return this.message.avatar;
+      },
       repo_url: function() {
-        var avatar, repo_url;
-        avatar = btoa(btoa(this.message.avatar));
-        repo_url = message.content.repo.url.replace('api.github.com/repos', 'github.com');
-        log(repo_url);
+        var repo_url;
+        repo_url = this.message.content.repo.url.replace('api.github.com/repos', 'github.com');
         return repo_url;
+      },
+      repo_name: function() {
+        return this.message.content.repo.name;
+      },
+      repo_link: function() {
+        var repo_link;
+        repo_link = "<a href='" + this.repo_url + "' target='_blank'>" + this.repo_name + "</a>";
+        return repo_link;
+      },
+      type: function() {
+        return this.message.content.type;
+      },
+      commits: function() {
+        return this.message.content.payload.commits;
       }
     },
-    template: '  '
+    template: '<div id="github_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="/user?god_name=(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%repo_url%)">\n                <span class="round-icon bg-icon-black">\n                    <i class="fa fa-github"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n    (%type%) <a href=\'(%repo_url%)\' target=\'_blank\'>(%repo_name%)</a>\n      <li v-repeat="commits">\n          <a target="_blank" href="(%url.replace(\'api.github.com/repos\', \'github.com\')%)">\n              (%message%)\n          </a>\n      </li>\n    </div>\n</div>'
   });
 
   Vue.component('instagram', {
