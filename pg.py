@@ -47,12 +47,12 @@ def daemon(method):
     return wrapper
 
 
-#@daemon
+@daemon
 def select(*args, **kwargs):
     return db.select(*args, **kwargs)
 
 
-@daemon
+#@daemon
 def query(*args, **kwargs):
     return db.query(*args, **kwargs)
 
