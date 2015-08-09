@@ -44,4 +44,4 @@ $ ->
     '/god/:god_name': v_messages.showTheGod
     '/': v_messages.all
   router = Router(routes)
-  router.init()
+  router.init('/')

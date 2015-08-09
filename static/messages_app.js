@@ -75,7 +75,7 @@
       '/': v_messages.all
     };
     router = Router(routes);
-    return router.init();
+    return router.init('/');
   });
 
 }).call(this);
