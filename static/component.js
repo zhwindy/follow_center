@@ -96,7 +96,7 @@
   });
 
   Vue.component('github', {
-    template: ''
+    template: '  '
   });
 
   Vue.component('instagram', {

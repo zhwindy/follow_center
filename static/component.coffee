@@ -101,7 +101,8 @@ Vue.component 'twitter',
             '''
 
 Vue.component 'github',
-  template:''
+  template:'''
+  '''
 Vue.component 'instagram',
   computed:
     #v-attr只接收变量,为了用proxy,这里要处理
