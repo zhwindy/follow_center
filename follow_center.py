@@ -147,8 +147,6 @@ class messages_app(tornado_bz.UserInfoHandler):
             user_id = None
 
         messages, more, anchor = oper.getMessages(limit, user_id, offset=offset, god_name=god_name)
-        for m in messages:
-            print m.name
 
         self.write(json.dumps({'error': '0', 'messages': messages}, cls=public_bz.ExtEncoder))
 
