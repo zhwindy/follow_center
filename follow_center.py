@@ -139,7 +139,8 @@ class messages_app(tornado_bz.UserInfoHandler):
         self.set_header("Content-Type", "application/json")
         data = json.loads(self.request.body)
         offset = data.get('offset', 0)
-        messages, more, anchor = oper.getMessages('', self.current_user, offset=offset)
+        limit = data.get('limit', '')
+        messages, more, anchor = oper.getMessages(limit, self.current_user, offset=offset)
 
         self.write(json.dumps({'error': '0', 'messages': messages}, cls=public_bz.ExtEncoder))
 

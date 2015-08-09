@@ -10,7 +10,7 @@
       ready: function() {
         var parm;
         parm = JSON.stringify({
-          bigzhu: 1
+          limit: 100
         });
         return $.ajax({
           url: '/messages_app',

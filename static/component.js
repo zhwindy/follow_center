@@ -100,7 +100,19 @@
   });
 
   Vue.component('instagram', {
-    template: ''
+    computed: {
+      avatar: function() {
+        var avatar;
+        avatar = btoa(btoa(this.message.avatar));
+        return '/sp/' + avatar;
+      },
+      img_url: function() {
+        var img_url;
+        img_url = btoa(btoa(this.message.extended_entities.url));
+        return '/sp/' + img_url;
+      }
+    },
+    template: '<div id="instagram_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="/user?god_name=(%message.user_name%)">\n                <img src="/sp/(%avatar%)" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-orange">\n                    <i class="fa fa-instagram"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz">(%message.text%)</p>\n        <a href="(%img_url%)">\n            <img src="(%img_url%)" class="img-responsive">\n            <br>\n        </a>\n    </div>\n</div>'
   });
 
 }).call(this);

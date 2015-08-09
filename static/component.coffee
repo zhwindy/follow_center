@@ -103,4 +103,43 @@ Vue.component 'twitter',
 Vue.component 'github',
   template:''
 Vue.component 'instagram',
-  template:''
+  computed:
+    #v-attr只接收变量,为了用proxy,这里要处理
+    avatar:->
+      avatar = btoa(btoa(@message.avatar))
+      return '/sp/'+avatar
+    img_url:->
+      img_url = btoa(btoa(@message.extended_entities.url))
+      return '/sp/'+img_url
+  template:'''
+    <div id="instagram_(%message.id%)" class="box box-solid item">
+        <div class="box-header">
+            <h2 class="box-title">
+                <a href="/user?god_name=(%message.user_name%)">
+                    <img src="/sp/(%avatar%)" class="direct-chat-img">
+                    <div class="name">
+                        (%message.name%)
+                    </div>
+                </a>
+    
+            </h2>
+            <div class="box-tools pull-right">
+                <a class="a-icon" target="_blank" href="(%message.href%)">
+                    <span class="round-icon bg-icon-orange">
+                        <i class="fa fa-instagram"></i>
+                    </span>
+                </a>
+                <a href="/message?t=(%message.m_type%)&id=(%message.id%)">
+                    <sub v-dateformat="'yyyy-MM-dd hh:mm:ss': message.created_at"></sub>
+                </a>
+            </div>
+        </div>
+        <div class="box-body">
+            <p class="description_bz">(%message.text%)</p>
+            <a href="(%img_url%)">
+                <img src="(%img_url%)" class="img-responsive">
+                <br>
+            </a>
+        </div>
+    </div>
+  '''

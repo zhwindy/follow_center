@@ -6,7 +6,7 @@ $ ->
       loading:true
     ready:->
       parm = JSON.stringify
-        bigzhu:1
+        limit:100
       $.ajax
         url: '/messages_app'
         type: 'POST'
