@@ -83,7 +83,6 @@ Vue.component 'follow',
 
 Vue.component 'twitter',
   props: [ 'message' ]
-  #template: 'id=(%message.id%), user_name=(%message.user_name%), avatar=(%message.avatar%)<br>'
   computed:
     #v-attr只接收变量,为了用proxy,这里要处理
     avatar:->
@@ -128,6 +127,14 @@ Vue.component 'twitter',
             '''
 
 Vue.component 'github',
+  props: [ 'message' ]
+  computed:
+    repo_url:->
+      avatar = btoa(btoa(@message.avatar))
+      repo_url = message.content.repo.url.replace('api.github.com/repos', 'github.com')
+      log repo_url
+      return repo_url
+
   template:'''
   '''
 Vue.component 'instagram',
@@ -144,7 +151,7 @@ Vue.component 'instagram',
         <div class="box-header">
             <h2 class="box-title">
                 <a href="/user?god_name=(%message.user_name%)">
-                    <img src="/sp/(%avatar%)" class="direct-chat-img">
+                    <img v-attr="src:avatar" class="direct-chat-img">
                     <div class="name">
                         (%message.name%)
                     </div>
@@ -168,4 +175,4 @@ Vue.component 'instagram',
             <br>
         </div>
     </div>
-  '''
+    '''
