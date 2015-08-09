@@ -171,7 +171,7 @@ Vue.component 'instagram',
         </div>
         <div class="box-body">
             <p class="description_bz">(%message.text%)</p>
-            <img src="(%img_url%)" class="img-responsive">
+            <img v-attr="src:img_url" class="img-responsive">
             <br>
         </div>
     </div>
