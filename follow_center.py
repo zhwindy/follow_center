@@ -120,10 +120,12 @@ class main(tornado_bz.UserInfoHandler):
 
     #@tornado_bz.mustLogin
 
-    def get(self, limit=''):
+    def get(self, limit=None):
         if self.current_user:
             self.render(tornado_bz.getTName(self, 'messages_app'))
         else:
+            if limit=='':
+                limit = None
             messages, more, anchor = oper.getMessages(limit, self.current_user)
             self.render(tornado_bz.getTName(self), messages=messages, more=more, anchor=anchor)
 
