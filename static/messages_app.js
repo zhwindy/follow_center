@@ -5,12 +5,13 @@
       el: '#v_messages',
       data: {
         messages: null,
-        loading: true
+        loading: false
       },
       ready: function() {},
       methods: {
         all: function() {
           var parm;
+          this.loading = true;
           parm = JSON.stringify({
             limit: 30
           });

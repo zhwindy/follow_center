@@ -3,10 +3,11 @@ $ ->
     el:'#v_messages'
     data:
       messages:null
-      loading:true
+      loading:false
     ready:->
     methods:
       all:->
+        @loading=true
         parm = JSON.stringify
           limit:30
         $.ajax
