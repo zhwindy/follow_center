@@ -1,3 +1,28 @@
+#auto link
+autoLink = (options...) ->
+  pattern = ///
+    (^|[\s\n]|<br\/?>) # Capture the beginning of string or line or leading whitespace
+    (
+      (?:https?|ftp):// # Look for a valid URL protocol (non-captured)
+      [\-A-Z0-9+\u0026\u2019@#/%?=()~_|!:,.;]* # Valid URL characters (any number of times)
+      [\-A-Z0-9+\u0026@#/%=~()_|] # String must end in a valid URL character
+    )
+  ///gi
+
+  return @replace(pattern, "$1<a href='$2'>$2</a>") unless options.length > 0
+
+  option = options[0]
+  linkAttributes = (
+    " #{k}='#{v}'" for k, v of option when k isnt 'callback'
+  ).join('')
+
+  @replace pattern, (match, space, url) ->
+    link = option.callback?(url) or
+      "<a href='#{url}'#{linkAttributes}>#{url}</a>"
+
+    "#{space}#{link}"
+
+String.prototype['autoLink'] = autoLink
 #follow 的按钮
 Vue.component 'follow',
   props: [ 'followed', 'god_id' ]
@@ -68,6 +93,8 @@ Vue.component 'twitter',
       return _.map(@message.extended_entities.media, (d)->
         '/sp/'+btoa(btoa(d.media_url_https))
         )
+    text:->
+      return @message.text.autoLink()
   template: '''
             <div id="twitter_(%message.id%)" class="box box-solid item">
                 <div class="box-header">
@@ -91,7 +118,7 @@ Vue.component 'twitter',
                     </div>
                 </div>
                 <div class="box-body">
-                    <p class="description_bz">(%message.text%)</p>
+                    <p class="description_bz" v-html="text"></p>
                     <template v-repeat="url:medias">
                         <img v-attr="src:url" class="img-responsive" >
                         <br>

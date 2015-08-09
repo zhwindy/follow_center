@@ -1,4 +1,35 @@
 (function() {
+  var autoLink,
+    slice = [].slice;
+
+  autoLink = function() {
+    var k, linkAttributes, option, options, pattern, v;
+    options = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+    pattern = /(^|[\s\n]|<br\/?>)((?:https?|ftp):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi;
+    if (!(options.length > 0)) {
+      return this.replace(pattern, "$1<a href='$2'>$2</a>");
+    }
+    option = options[0];
+    linkAttributes = ((function() {
+      var results;
+      results = [];
+      for (k in option) {
+        v = option[k];
+        if (k !== 'callback') {
+          results.push(" " + k + "='" + v + "'");
+        }
+      }
+      return results;
+    })()).join('');
+    return this.replace(pattern, function(match, space, url) {
+      var link;
+      link = (typeof option.callback === "function" ? option.callback(url) : void 0) || ("<a href='" + url + "'" + linkAttributes + ">" + url + "</a>");
+      return "" + space + link;
+    });
+  };
+
+  String.prototype['autoLink'] = autoLink;
+
   Vue.component('follow', {
     props: ['followed', 'god_id'],
     template: '<button v-on="click:toggleFollow" type="button" class="btn btn-sm" aria-label="Left Align"></button>',
@@ -90,9 +121,12 @@
         return _.map(this.message.extended_entities.media, function(d) {
           return '/sp/' + btoa(btoa(d.media_url_https));
         });
+      },
+      text: function() {
+        return this.message.text.autoLink();
       }
     },
-    template: '<div id="twitter_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="/user?god_name=(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-blue">\n                    <i class="fa fa-twitter"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz">(%message.text%)</p>\n        <template v-repeat="url:medias">\n            <img v-attr="src:url" class="img-responsive" >\n            <br>\n        </template>\n    </div>\n</div>'
+    template: '<div id="twitter_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="/user?god_name=(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-blue">\n                    <i class="fa fa-twitter"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz" v-html="text"></p>\n        <template v-repeat="url:medias">\n            <img v-attr="src:url" class="img-responsive" >\n            <br>\n        </template>\n    </div>\n</div>'
   });
 
   Vue.component('github', {
