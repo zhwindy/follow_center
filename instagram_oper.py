@@ -37,6 +37,10 @@ def getUser(user_name):
             if this_user.username.lower() == user_name.lower():
                 user = this_user
                 break
+        #如果没有这个用户
+        if user is None:
+            public_db.delNoName('instagram', user_name)
+        return
         #user = api.user_search(user_name, 1)[0]
         user = api.user(user.id)
 
@@ -56,6 +60,8 @@ def getUser(user_name):
 def getMedia(user_name=None, with_next_url=None, user=None):
     if user_name:
         user = getUser(user_name)
+        if user is None:
+            return
         # min_id 会查出大于等于这个id的
         try:
             medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
