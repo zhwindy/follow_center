@@ -34,16 +34,17 @@ def daemon(method):
     '''
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
-        try:
-            return method(self, *args, **kwargs)
+        return method(self, *args, **kwargs)
+        #try:
+        #    return method(self, *args, **kwargs)
         #except(psycopg2.OperationalError, psycopg2.InterfaceError, psycopg2.DatabaseError):
         #except(psycopg2.InterfaceError, psycopg2.DatabaseError):
-        except (psycopg2.InterfaceError, psycopg2.OperationalError):
-            print public_bz.getExpInfoAll()
-            connect()
-            time.sleep(5)
-            print '重新连接数据库'
-            return wrapper(self, *args, **kwargs)
+        #except (psycopg2.InterfaceError, psycopg2.OperationalError):
+        #    print public_bz.getExpInfoAll()
+        #    connect()
+        #    time.sleep(5)
+        #    print '重新连接数据库'
+        #    return wrapper(self, *args, **kwargs)
     return wrapper
 
 
