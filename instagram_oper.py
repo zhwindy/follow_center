@@ -128,7 +128,10 @@ def check():
     for user in users:
         if user.instagram and user.instagram != '':
             print 'check instagram %s' % user.instagram
-            getMedia(user.instagram)
+            try:
+                getMedia(user.instagram)
+            except Exception:
+                print public_bz.getExpInfoAll()
 
 
 if __name__ == '__main__':

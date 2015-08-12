@@ -46,3 +46,11 @@ $ ->
     '/': v_messages.all
   router = Router(routes)
   router.init('/')
+
+  $(window).scroll ->
+    $top = $('#v_messages').offset().top
+  
+    $('#v_messages .box').each ->
+      if $(this).offset().top >= $top + $(window).scrollTop()
+        log $(this).attr('id')
+        return false
