@@ -1,6 +1,5 @@
 node_modules/
 bower.json
-package.json
 gulpfile.js
 static/js/node_modules/
 static/css/node_modules/

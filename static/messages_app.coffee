@@ -7,6 +7,7 @@ $ ->
       message_id:null
     ready:->
       @bindScroll()
+      @all()
     methods:
       all:->
         @loading=true
@@ -53,8 +54,8 @@ $ ->
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod
-    '/': v_messages.all
+    #'/': v_messages.all
   router = Router(routes)
-  router.init('/')
+  router.init()
 
 
