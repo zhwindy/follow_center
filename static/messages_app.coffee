@@ -4,7 +4,9 @@ $ ->
     data:
       messages:null
       loading:false
+      message_id:null
     ready:->
+      @bindScroll()
     methods:
       all:->
         @loading=true
@@ -41,16 +43,18 @@ $ ->
             log data.messages
             @messages = data.messages
             @loading=false
+      bindScroll:->
+        $(window).scroll ->
+          $top = $('#v_messages').offset().top
+        
+          $('#v_messages .box').each ->
+            if $(this).offset().top >= $top + $(window).scrollTop()
+              log $(this).attr('id')
+              return false
   routes =
     '/god/:god_name': v_messages.showTheGod
     '/': v_messages.all
   router = Router(routes)
   router.init('/')
 
-  $(window).scroll ->
-    $top = $('#v_messages').offset().top
-  
-    $('#v_messages .box').each ->
-      if $(this).offset().top >= $top + $(window).scrollTop()
-        log $(this).attr('id')
-        return false
+

@@ -5,9 +5,12 @@
       el: '#v_messages',
       data: {
         messages: null,
-        loading: false
+        loading: false,
+        message_id: null
       },
-      ready: function() {},
+      ready: function() {
+        return this.bindScroll();
+      },
       methods: {
         all: function() {
           var parm;
@@ -68,6 +71,18 @@
               };
             })(this)
           });
+        },
+        bindScroll: function() {
+          return $(window).scroll(function() {
+            var $top;
+            $top = $('#v_messages').offset().top;
+            return $('#v_messages .box').each(function() {
+              if ($(this).offset().top >= $top + $(window).scrollTop()) {
+                log($(this).attr('id'));
+                return false;
+              }
+            });
+          });
         }
       }
     });
@@ -76,17 +91,7 @@
       '/': v_messages.all
     };
     router = Router(routes);
-    router.init('/');
-    return $(window).scroll(function() {
-      var $top;
-      $top = $('#v_messages').offset().top;
-      return $('#v_messages .box').each(function() {
-        if ($(this).offset().top >= $top + $(window).scrollTop()) {
-          log($(this).attr('id'));
-          return false;
-        }
-      });
-    });
+    return router.init('/');
   });
 
 }).call(this);
