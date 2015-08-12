@@ -7,22 +7,27 @@
 
 {% extends 'base.html' %}
 {% block body %}
-<div id="v_messages" v-loading="loading">
-    <component is="(%message.m_type%)" v-repeat="message:messages" >
-    <!-- 不活跃的的组件会被缓存！ -->
-    </component>
-    <div v-show="messages" class="row">
-        <div class="col-md-4">
+
+<div class="row">
+    <div id="v_messages" v-loading="loading" class="col-md-8">
+        <component is="(%message.m_type%)" v-repeat="message:messages" v-transition stagger="100">
+        </component>
+        <div v-show="messages" class="row">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4 text-center">
+                <a v-on="click:more" v-btn-loading="loading" href='javascript:void(0);' class="btn btn-defalt">更多...</a>
+            </div>
+            <div class="col-md-4">
+            </div>
         </div>
-        <div class="col-md-4 text-center">
-            <a v-on="click:more" v-btn-loading="loading" href='javascript:void(0);' class="btn  btn-defalt">更多...</a>
-        </div>
-        <div class="col-md-4">
-        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+    <div id="v_user" class="col-md-4">
+        <hr>
     </div>
 </div>
-<br>
-<br>
-<br>
-<br>
 {% end %}
