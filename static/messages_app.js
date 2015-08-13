@@ -6,7 +6,8 @@
       data: {
         messages: null,
         loading: false,
-        message_id: null
+        message_id: null,
+        god_name: null
       },
       ready: function() {
         this.bindScroll();
@@ -15,6 +16,7 @@
       methods: {
         all: function() {
           var parm;
+          this.god_name = null;
           this.loading = true;
           parm = JSON.stringify({
             limit: 30
@@ -35,7 +37,8 @@
           var parm;
           this.loading = true;
           parm = JSON.stringify({
-            offset: this.messages.length + 1
+            offset: this.messages.length + 1,
+            god_name: this.god_name
           });
           return $.ajax({
             url: '/messages_app',
@@ -56,6 +59,7 @@
         },
         showTheGod: function(god_name) {
           var parm;
+          this.god_name = god_name;
           this.loading = true;
           parm = JSON.stringify({
             god_name: god_name

@@ -5,11 +5,13 @@ $ ->
       messages:null
       loading:false
       message_id:null
+      god_name:null
     ready:->
       @bindScroll()
       @all()
     methods:
       all:->
+        @god_name = null
         @loading=true
         parm = JSON.stringify
           limit:30
@@ -24,6 +26,7 @@ $ ->
         @loading=true
         parm = JSON.stringify
           offset:@messages.length+1
+          god_name:@god_name
         $.ajax
           url: '/messages_app'
           type: 'POST'
@@ -33,6 +36,7 @@ $ ->
               @messages.push(message)
             @loading=false
       showTheGod:(god_name)->
+        @god_name = god_name
         @loading=true
         parm = JSON.stringify
           god_name:god_name
