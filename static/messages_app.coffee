@@ -53,7 +53,7 @@ $ ->
           $('#v_messages .box').each ->
             if $(this).offset().top >= $top + $(window).scrollTop()
               #从jquery对像又取到 vue 对象
-              log $(this)[0].__vue__
+              log $(this)[0].__vue__.message.user_name
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod

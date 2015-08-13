@@ -78,7 +78,7 @@
             $top = $('#v_messages').offset().top;
             return $('#v_messages .box').each(function() {
               if ($(this).offset().top >= $top + $(window).scrollTop()) {
-                log($(this)[0].__vue__);
+                log($(this)[0].__vue__.message.user_name);
                 return false;
               }
             });
