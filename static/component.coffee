@@ -45,7 +45,22 @@ Vue.component 'follow',
     toggleFollow:->
       target = @$el
 
-      if @followed == 0 #还没follow
+      if @followed == 1
+        parm = JSON.stringify
+          god_id:@god_id
+        $.ajax
+          url: '/unfollow'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            @loading=false
+            if data.error != '0'
+              throw new Error(data.error)
+            else
+              bz.showSuccess5('Unfollow 成功')
+              @showUnfollow()
+              @followed = 0
+      else
         parm = JSON.stringify
           god_id:@god_id
         $.ajax
@@ -64,23 +79,6 @@ Vue.component 'follow',
               bz.showSuccess5('Follow 成功')
               @showFollow()
               @followed = 1
-          error: ->
-      else
-        parm = JSON.stringify
-          god_id:@god_id
-        $.ajax
-          url: '/unfollow'
-          type: 'POST'
-          data : parm
-          success: (data, status, response) =>
-            @loading=false
-            if data.error != '0'
-              throw new Error(data.error)
-            else
-              bz.showSuccess5('Unfollow 成功')
-              @showUnfollow()
-              @followed = 0
-          error: ->
 
 Vue.component 'twitter',
   props: [ 'message' ]
