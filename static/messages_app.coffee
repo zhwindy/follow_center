@@ -67,7 +67,7 @@ $ ->
           #选出当前正在看的message
           $top = $('#v_messages').offset().top
           $('#v_messages .box').each ->
-            if $(this).offset().top >= $top + $(window).scrollTop()
+            if $(this).offset().top+$(this).height() >= $top + $(window).scrollTop()
               #从jquery对像又取到 vue 对象
               user_name = $(this)[0].__vue__.message.user_name
               v.getUserInfo(user_name)

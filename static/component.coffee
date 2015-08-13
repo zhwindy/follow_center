@@ -32,11 +32,8 @@ Vue.component 'follow',
   ready:->
     @$watch 'followed',->
       if @followed == 1
-        log @followed
-        log 'run showFollow'
         @showFollow()
       else
-        log 'run showUnfollow'
         @showUnfollow()
   methods:
     showFollow:->

@@ -102,7 +102,7 @@
             $top = $('#v_messages').offset().top;
             return $('#v_messages .box').each(function() {
               var user_name;
-              if ($(this).offset().top >= $top + $(window).scrollTop()) {
+              if ($(this).offset().top + $(this).height() >= $top + $(window).scrollTop()) {
                 user_name = $(this)[0].__vue__.message.user_name;
                 v.getUserInfo(user_name);
                 return false;

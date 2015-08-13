@@ -38,11 +38,8 @@
     ready: function() {
       return this.$watch('followed', function() {
         if (this.followed === 1) {
-          log(this.followed);
-          log('run showFollow');
           return this.showFollow();
         } else {
-          log('run showUnfollow');
           return this.showUnfollow();
         }
       });
