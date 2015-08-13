@@ -9,7 +9,8 @@
         message_id: null
       },
       ready: function() {
-        return this.bindScroll();
+        this.bindScroll();
+        return this.all();
       },
       methods: {
         all: function() {
@@ -87,11 +88,10 @@
       }
     });
     routes = {
-      '/god/:god_name': v_messages.showTheGod,
-      '/': v_messages.all
+      '/god/:god_name': v_messages.showTheGod
     };
     router = Router(routes);
-    return router.init('/');
+    return router.init();
   });
 
 }).call(this);
