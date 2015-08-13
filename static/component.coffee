@@ -253,7 +253,7 @@ Vue.component 'c_user_info',
           <img v-attr="src:avatar" id="profile-image" class="img-responsive center-block avatar" />
       </a>
       <div class="text-center">
-          <sub>点击更换头像</sub>
+          <sub v-show="!disable_edit" >点击更换头像</sub>
       </div>
       <div v-html="user_info.slogan">
       </div>
