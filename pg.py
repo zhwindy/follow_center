@@ -55,7 +55,12 @@ def select(*args, **kwargs):
 
 @daemon
 def query(*args, **kwargs):
-    return db.query(*args, **kwargs)
+    try:
+        return db.query(*args, **kwargs)
+    except Exception:
+        print public_bz.getExpInfoAll()
+        print args
+        print kwargs
 
 
 @daemon
