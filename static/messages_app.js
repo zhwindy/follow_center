@@ -4,6 +4,8 @@
     v_messages = new Vue({
       el: '#v_messages',
       data: {
+        user_info: '',
+        user_infos: {},
         messages: null,
         loading: false,
         current_message_id: null,
@@ -67,6 +69,28 @@
           });
           return this.freshData(parm);
         },
+        getUserInfo: function(user_name) {
+          var parm;
+          if (this.user_infos[user_name]) {
+            this.user_info = this.user_infos[user_name];
+            return;
+          }
+          parm = JSON.stringify({
+            user_name: user_name
+          });
+          return $.ajax({
+            url: '/user_info',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                _this.user_info = data.user_info;
+                _this.user_infos[user_name] = data.user_info;
+                return _this.loading = false;
+              };
+            })(this)
+          });
+        },
         bindScroll: function() {
           var v;
           v = this;
@@ -77,8 +101,10 @@
             }
             $top = $('#v_messages').offset().top;
             return $('#v_messages .box').each(function() {
+              var user_name;
               if ($(this).offset().top >= $top + $(window).scrollTop()) {
-                log($(this)[0].__vue__.message.user_name);
+                user_name = $(this)[0].__vue__.message.user_name;
+                v.getUserInfo(user_name);
                 return false;
               }
             });

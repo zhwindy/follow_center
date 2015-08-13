@@ -2,13 +2,14 @@ $ ->
   v_messages = new Vue
     el:'#v_messages'
     data:
+      user_info:''
+      user_infos:{}
       messages:null
       loading:false
       current_message_id:null
       god_name:null
     ready:->
       @bindScroll()
-      #@all()
     methods:
       freshData:(parm)->
         @loading=true
@@ -42,6 +43,21 @@ $ ->
         parm = JSON.stringify
           god_name:god_name
         @freshData(parm)
+      getUserInfo:(user_name)->
+        if @user_infos[user_name]
+          @user_info = @user_infos[user_name]
+          return
+        parm = JSON.stringify
+          user_name:user_name
+        $.ajax
+          url: '/user_info'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            @user_info = data.user_info
+            @user_infos[user_name] = data.user_info
+            @loading=false
+
       bindScroll:->
         v = @
         $(window).scroll ->
@@ -53,7 +69,8 @@ $ ->
           $('#v_messages .box').each ->
             if $(this).offset().top >= $top + $(window).scrollTop()
               #从jquery对像又取到 vue 对象
-              log $(this)[0].__vue__.message.user_name
+              user_name = $(this)[0].__vue__.message.user_name
+              v.getUserInfo(user_name)
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod

@@ -1,5 +1,6 @@
 {% block css %}
 <link href="/static/message.css" rel="stylesheet" type="text/css" />
+<link href="/static/message_app.css" rel="stylesheet" type="text/css" />
 {% end %}
 {% block js %}
 <script src="/static/messages_app.js"></script>
@@ -23,7 +24,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <user_info user_info="user_info"></user_info>
+        <c_user_info user_info="(%user_info%)"></c_user_info>
     </div>
 </div>
 {% end %}

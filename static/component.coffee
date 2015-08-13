@@ -27,13 +27,17 @@ String.prototype['autoLink'] = autoLink
 Vue.config.debug = true
 
 Vue.component 'follow',
-  props: [ 'followed', 'god_id' ]
+  props: [ 'followed', 'god_id']
   template: '<button v-on="click:toggleFollow" type="button" class="btn btn-sm" aria-label="Left Align"></button>'
   ready:->
-    if @followed == 1
-      @showFollow()
-    else
-      @showUnfollow()
+    @$watch 'followed',->
+      if @followed == 1
+        log @followed
+        log 'run showFollow'
+        @showFollow()
+      else
+        log 'run showUnfollow'
+        @showUnfollow()
   methods:
     showFollow:->
       target = @$el
@@ -217,87 +221,87 @@ Vue.component 'instagram',
     </div>
     '''
 
-Vue.component 'user_info',
+Vue.component 'c_user_info',
   props: [ 'user_info' ]
+  computed:
+    avatar:->
+      if @user_info.picture
+        return @user_info.picture
+      else
+        return '/lib_static/images/avatar.svg'
+
   template:'''
-    <h3 class="box-title text-center">(%user_info.user_name%)</h3>
-    <input v-disable="disable_edit" id="profile-image-upload" class="hide" type="file" v-on="change:previewImg" accept="image/*"/>
-    <a v-on="click:changeImg" href="javascript:void(0)">
-        <img id="profile-image" class="img-responsive center-block" src="{{user_info.picture or '/lib_static/images/avatar.svg' }}" />
-    </a>
-    <div class="text-center">
-        <sub>点击更换头像</sub>
-    </div>
-    <div v-html="user_info.slogan">
-    </div>
-    <hr>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <label for="user_name" class="col-sm-3 control-label min-form-lable">用户名</label>
-            <div class="col-sm-9">
-                <input v-disable="disable_edit" type="text"  class="form-control {%if change_user_name%}editable{%end%}" id="user_name" value="{{user_info.user_name}}"  v-model="user_info.user_name" v-on="keypress:modify">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="blog" class="col-sm-3 control-label min-form-lable">个人博客</label>
-            <div class="col-sm-9">
-                <input v-disable="disable_edit" type="text"  class="form-control editable" id="blog" placeholder="这个人很懒，什么也没留下"  v-model="user_info.blog" value="{{user_info.blog or ''}}" v-on="focus:autoInsert('blog')">
-            </div>
-        </div>
-        <div v-show="!disable_edit" class="form-group" id="slogan-group">
-            <label for="editor" class="col-sm-3 control-label min-form-lable">个性签名</label>
-            <div class="col-sm-9">
-                <textarea id="editor" placeholder="这个人很懒, 什么也没留下" v-model="user_info.slogan">{{ user_info.slogan or ''}}</textarea>
-            </div>
-        </div>
-        <hr>
-        <!--
-            <div class="form-group">
-            <label for="dribbble" class="col-sm-5 control-label"><span class="round-icon bg-icon-red"><i class="fa fa-dribbble"></i></span> Dribbble</label>
-            <div class="col-sm-7">
-            <input v-disable="disable_edit" type="text" class="form-control editable" id="dribbble" placeholder="这个人很懒，什么也没留下"  v-model="user_info.dribbble" value="{{user_info.dribbble or ''}}" v-on="keypress:modify">
-            </div>
-            </div>
-        -->
-        <div class="form-group">
-            <a href="https://twitter.com/(%user_info.twitter%)" target="_blank">
-                <label class="col-sm-5 control-label">
-                    <span class="round-icon bg-icon-blue">
-                        <i class="fa fa-twitter"></i>
-                    </span>
-                    Twitter
-                </label>
-            </a>
-            <div class="col-sm-7">
-                <input v-disable="disable_edit" type="text" class="form-control editable" id="twitter" placeholder="这个人很懒，什么也没留下"   v-model="user_info.twitter" value="{{user_info.twitter or ''}}" v-on="keypress:modify, focus:autoInsert('twitter', user_info.user_name)">
-            </div>
-        </div>
-        <div class="form-group">
-            <a href="https://github.com/(%user_info.github%)" target="_blank">
-                <label class="col-sm-5 control-label"><span class="round-icon bg-icon-black"><i class="fa fa-github"></i></span> Github</label>
-            </a>
-            <div class="col-sm-7">
-                <input v-disable="disable_edit" type="text" class="form-control editable" placeholder="这个人很懒，什么也没留下"  v-model="user_info.github" value="{{user_info.github or ''}}" v-on="keypress:modify, focus:autoInsert('github', user_info.user_name)">
-            </div>
-        </div>
-        <div class="form-group">
-            <a href="https://instagram.com/(%user_info.instagram%)" target="_blank">
-                <label class="col-sm-5 control-label"><span class="round-icon bg-icon-orange"><i class="fa fa-instagram"></i></span> Instagram</label>
-            </a>
-            <div class="col-sm-7">
-                <input v-disable="disable_edit" type="text" class="form-control editable" placeholder="这个人很懒，什么也没留下"  v-model="user_info.instagram" value="{{user_info.instagram or ''}}" v-on="keypress:modify, focus:autoInsert('instagram', user_info.user_name)">
-            </div>
-        </div>
-    </form>
-    <div class="text-center">
-        <button id="btn-edit" v-btn-loading="loading" type="submit" class="btn btn-primary btn-flat btn-border" v-on="click:save">编辑</button>
-        <div>
-        </div>
-    </div>
+  <div id="user_info" class="fixed" v-show="user_info">
+      <h3 class="box-title text-center">(%user_info.user_name%)</h3>
+      <input v-disable="disable_edit" id="profile-image-upload" class="hide" type="file" v-on="change:previewImg" accept="image/*"/>
+      <a v-on="click:changeImg" href="javascript:void(0)">
+          <img v-attr="src:avatar" id="profile-image" class="img-responsive center-block avatar" />
+      </a>
+      <div class="text-center">
+          <sub>点击更换头像</sub>
+      </div>
+      <div v-html="user_info.slogan">
+      </div>
+      <hr>
+      <form class="form-horizontal">
+          <div class="form-group">
+              <label for="user_name" class="col-sm-3 control-label min-form-lable">用户名</label>
+              <div class="col-sm-9">
+                  <input v-disable="disable_edit" type="text"  class="form-control" id="user_name" v-model="user_info.user_name">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="blog" class="col-sm-3 control-label min-form-lable">个人博客</label>
+              <div class="col-sm-9">
+                  <input v-disable="disable_edit" type="text"  class="form-control editable" id="blog" placeholder="这个人很懒，什么也没留下"  v-model="user_info.blog"  v-on="focus:autoInsert('blog')">
+              </div>
+          </div>
+          <div v-show="!disable_edit" class="form-group" id="slogan-group">
+              <label for="editor" class="col-sm-3 control-label min-form-lable">个性签名</label>
+              <div class="col-sm-9">
+                  <textarea id="editor" placeholder="这个人很懒, 什么也没留下" v-model="user_info.slogan"></textarea>
+              </div>
+          </div>
+          <hr>
+          <div class="form-group">
+              <a href="https://twitter.com/(%user_info.twitter%)" target="_blank">
+                  <label class="col-sm-5 control-label">
+                      <span class="round-icon bg-icon-blue">
+                          <i class="fa fa-twitter"></i>
+                      </span>
+                      Twitter
+                  </label>
+              </a>
+              <div class="col-sm-7">
+                  <input v-disable="disable_edit" type="text" class="form-control editable" id="twitter" placeholder="这个人很懒，什么也没留下"   v-model="user_info.twitter" v-on="focus:autoInsert('twitter', user_info.user_name)">
+              </div>
+          </div>
+          <div class="form-group">
+              <a href="https://github.com/(%user_info.github%)" target="_blank">
+                  <label class="col-sm-5 control-label"><span class="round-icon bg-icon-black"><i class="fa fa-github"></i></span> Github</label>
+              </a>
+              <div class="col-sm-7">
+                  <input v-disable="disable_edit" type="text" class="form-control editable" placeholder="这个人很懒，什么也没留下"  v-model="user_info.github" v-on="focus:autoInsert('github', user_info.user_name)">
+              </div>
+          </div>
+          <div class="form-group">
+              <a href="https://instagram.com/(%user_info.instagram%)" target="_blank">
+                  <label class="col-sm-5 control-label"><span class="round-icon bg-icon-orange"><i class="fa fa-instagram"></i></span> Instagram</label>
+              </a>
+              <div class="col-sm-7">
+                  <input v-disable="disable_edit" type="text" class="form-control editable" placeholder="这个人很懒，什么也没留下"  v-model="user_info.instagram" v-on="focus:autoInsert('instagram', user_info.user_name)">
+              </div>
+          </div>
+      </form>
+      <div class="text-center">
+          <follow followed="(%@ user_info.followed%)" god_id="(%user_info.god_id%)"></follow>
+          <button id="btn-edit" v-btn-loading="loading" type="submit" class="btn btn-primary btn-flat btn-border" v-on="click:save">编辑</button>
+      </div>
+  </div>
   '''
   ready:->
     bz.setOnErrorVm(@)
-  data:
+  data:->
     loading: false
     disable_edit: true # 禁止编辑
     button_text:'修改资料'
@@ -333,7 +337,6 @@ Vue.component 'user_info',
           success: (data, status, response) =>
             #为了兼容 simditor 这里的返回值不太一样
             @loading=false
-            console.log data
             if not data.success
               throw new Error(data.msg)
             else

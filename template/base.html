@@ -16,8 +16,7 @@
             <![endif]-->
             {% block js %}
             {% end %}
-            {% block css %}
-            {% end %}
+
     </head>
     <body class="skin-black layout-top-nav">
         {% from public_bz import storage%}
@@ -35,6 +34,8 @@
         </div>
 
     </body>
+            {% block css %}
+            {% end %}
 </html>
 
 {% module my_base() %}
