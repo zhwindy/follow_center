@@ -10,8 +10,7 @@
         god_name: null
       },
       ready: function() {
-        this.bindScroll();
-        return this.all();
+        return this.bindScroll();
       },
       methods: {
         all: function() {
@@ -70,7 +69,6 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
-                log(data.messages);
                 _this.messages = data.messages;
                 return _this.loading = false;
               };
@@ -96,10 +94,11 @@
       }
     });
     routes = {
-      '/god/:god_name': v_messages.showTheGod
+      '/god/:god_name': v_messages.showTheGod,
+      '/': v_messages.all
     };
     router = Router(routes);
-    return router.init();
+    return router.init('/');
   });
 
 }).call(this);

@@ -8,7 +8,7 @@ $ ->
       god_name:null
     ready:->
       @bindScroll()
-      @all()
+      #@all()
     methods:
       all:->
         @god_name = null
@@ -45,7 +45,6 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
-            log data.messages
             @messages = data.messages
             @loading=false
       bindScroll:->
@@ -61,8 +60,6 @@ $ ->
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod
-    #'/': v_messages.all
+    '/': v_messages.all
   router = Router(routes)
-  router.init()
-
-
+  router.init('/')
