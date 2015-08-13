@@ -6,20 +6,15 @@
       data: {
         messages: null,
         loading: false,
-        message_id: null,
+        current_message_id: null,
         god_name: null
       },
       ready: function() {
         return this.bindScroll();
       },
       methods: {
-        all: function() {
-          var parm;
-          this.god_name = null;
+        freshData: function(parm) {
           this.loading = true;
-          parm = JSON.stringify({
-            limit: 30
-          });
           return $.ajax({
             url: '/messages_app',
             type: 'POST',
@@ -27,10 +22,19 @@
             success: (function(_this) {
               return function(data, status, response) {
                 _this.messages = data.messages;
+                log(data.messages[0]);
                 return _this.loading = false;
               };
             })(this)
           });
+        },
+        all: function() {
+          var parm;
+          this.god_name = null;
+          parm = JSON.stringify({
+            limit: 30
+          });
+          return this.freshData(parm);
         },
         more: function() {
           var parm;
@@ -59,21 +63,10 @@
         showTheGod: function(god_name) {
           var parm;
           this.god_name = god_name;
-          this.loading = true;
           parm = JSON.stringify({
             god_name: god_name
           });
-          return $.ajax({
-            url: '/messages_app',
-            type: 'POST',
-            data: parm,
-            success: (function(_this) {
-              return function(data, status, response) {
-                _this.messages = data.messages;
-                return _this.loading = false;
-              };
-            })(this)
-          });
+          return this.freshData(parm);
         },
         bindScroll: function() {
           var v;
@@ -86,6 +79,7 @@
             $top = $('#v_messages').offset().top;
             return $('#v_messages .box').each(function() {
               if ($(this).offset().top >= $top + $(window).scrollTop()) {
+                log($(this).attr('id'));
                 return false;
               }
             });

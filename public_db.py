@@ -87,115 +87,32 @@ def getTwitterMessages():
 def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None, offset=None):
     '''
     create by bigzhu at 15/07/14 15:11:44 查出我 Follow 的用户的twitter message
-    create by bigzhu at 15/07/17 01:39:21 过于复杂,合并sql,根据god_name也可以查
+    modify by bigzhu at 15/07/17 01:39:21 过于复杂,合并sql,根据god_name也可以查
     modify by bigzhu at 15/07/19 15:30:55 可以根据type和id查出某一条记录
     modify by bigzhu at 15/07/22 12:49:35 limit 设定取多少条
+    modify by bigzhu at 15/08/13 17:20:15 建立view,查询简化得不行
     '''
-
-    twitter_in = ''
-    github_in = ''
-    instagram_in = ''
-    if god_name is not None:
-        twitter_in = '''
-            and lower(u.screen_name) in(
-            select lower(twitter) from user_info where  user_name='%s'
-            )
-        ''' % god_name
-        github_in = '''
-            and lower(u.login) in(
-            select lower(github) from user_info where user_name='%s'
-            )
-        ''' % god_name
-        instagram_in = '''
-            and lower(u.username) in(
-            select lower(instagram) from user_info where  user_name='%s'
-            )
-        ''' % god_name
-
-    if user_id is not None:
-        twitter_in = '''
-            and lower(u.screen_name) in(
-            select lower(twitter) from user_info where id in(
-                select god_id from follow_who where user_id=%s
-                )
-            )
-        ''' % user_id
-        github_in = '''
-            and lower(u.login) in(
-            select lower(github) from user_info where id in(
-                select god_id from follow_who where user_id=%s
-                )
-            )
-        ''' % user_id
-        instagram_in = '''
-            and lower(u.username) in(
-            select lower(instagram) from user_info where id in(
-                select god_id from follow_who where user_id=%s
-                )
-            )
-        ''' % user_id
-
-    sql = '''
-    select * from (
-        select
-            ui.user_name,
-            m.id,
-            'twitter' as m_type,
-            m.created_at,
-            u.screen_name as name,
-            u.profile_image_url_https as avatar,
-            null as content,
-            m.text,
-            m.extended_entities,
-            'https://twitter.com/'||u.screen_name||'/status/'||m.id_str as href,
-            null as type
-                from twitter_message m, twitter_user u, user_info ui
-                where m.t_user_id=u.id_str
-                and lower(u.screen_name) = lower(ui.twitter)
-            %s
-            union
-        select
-            ui.user_name,
-            m.id,
-            'github' as m_type,
-            m.created_at,
-            u.login as name,
-            u.avatar_url as avatar,
-            m.content,
-            null as text,
-            null as extended_entities,
-            null as href,
-            null as type
-                from github_message m, github_user u, user_info ui
-                where m.actor=u.id
-                and lower(u.login) = lower(ui.github)
-            %s
-            union
-        select
-            ui.user_name,
-            m.id,
-            'instagram' as m_type,
-            m.created_time as created_at,
-            u.username as name,
-            u.profile_picture as avatar,
-            m.comments as content,
-            (m.caption->>'text')::text as text,
-            m.standard_resolution as extended_entities,
-            m.link as href,
-            m.type as type
-                from instagram_media m, instagram_user u, user_info ui
-                where m.user_id=u.id
-                and lower(u.username) = lower(ui.instagram)
-            %s
-            ) as t order by created_at desc
-
-        ''' % (twitter_in, github_in, instagram_in)
+    sql = "select * from messages"
     if type and id:
         sql = '''
         select * from (%s) s
         where s.m_type='%s'
         and s.id = %s
         ''' % (sql, type, id)
+    if god_name:
+        sql = '''
+        select * from (%s) s
+        where lower(s.user_name)=lower('%s')
+        ''' % (sql, god_name)
+    if user_id:
+        sql = '''
+        select * from (%s) s
+        where lower(s.user_name) in (
+            select lower(user_name) from user_info where id in(
+                    select god_id from follow_who where user_id=%s
+                )
+        )
+        ''' % (sql, user_id)
     if limit:
         sql = '''
         select * from (%s) s

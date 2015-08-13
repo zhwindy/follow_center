@@ -4,24 +4,27 @@ $ ->
     data:
       messages:null
       loading:false
-      message_id:null
+      current_message_id:null
       god_name:null
     ready:->
       @bindScroll()
       #@all()
     methods:
-      all:->
-        @god_name = null
+      freshData:(parm)->
         @loading=true
-        parm = JSON.stringify
-          limit:30
         $.ajax
           url: '/messages_app'
           type: 'POST'
           data : parm
           success: (data, status, response) =>
             @messages = data.messages
+            log data.messages[0]
             @loading=false
+      all:->
+        @god_name = null
+        parm = JSON.stringify
+          limit:30
+        @freshData(parm)
       more:->
         @loading=true
         parm = JSON.stringify
@@ -37,26 +40,20 @@ $ ->
             @loading=false
       showTheGod:(god_name)->
         @god_name = god_name
-        @loading=true
         parm = JSON.stringify
           god_name:god_name
-        $.ajax
-          url: '/messages_app'
-          type: 'POST'
-          data : parm
-          success: (data, status, response) =>
-            @messages = data.messages
-            @loading=false
+        @freshData(parm)
       bindScroll:->
         v = @
         $(window).scroll ->
           #当滚动到最底部以上100像素时， 加载新内容
           if ($(document).height() - $(this).scrollTop() - $(this).height()) == 0
             v.more()
+          #选出当前正在看的message
           $top = $('#v_messages').offset().top
           $('#v_messages .box').each ->
             if $(this).offset().top >= $top + $(window).scrollTop()
-              #log $(this).attr('id')
+              log $(this).attr('id')
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod
