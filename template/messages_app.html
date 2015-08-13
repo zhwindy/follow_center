@@ -8,8 +8,8 @@
 {% extends 'base.html' %}
 {% block body %}
 
-<div class="row">
-    <div id="v_messages" v-loading="loading" class="col-md-8">
+<div id="v_messages" v-loading="loading" class="row">
+    <div  class="col-md-8">
         <component is="(%message.m_type%)" v-repeat="message:messages">
         </component>
         <div v-show="messages" class="row">
@@ -22,8 +22,8 @@
             </div>
         </div>
     </div>
-    <div id="v_user" class="col-md-4">
-        <hr>
+    <div class="col-md-4">
+        <user_info user_info="user_info"></user_info>
     </div>
 </div>
 {% end %}

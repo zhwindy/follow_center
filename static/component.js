@@ -179,4 +179,106 @@
     template: '<div id="instagram_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="#/god/(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-orange">\n                    <i class="fa fa-instagram"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz">(%message.text%)</p>\n        <img v-attr="src:img_url" class="img-responsive">\n        <br>\n    </div>\n</div>'
   });
 
+  Vue.component('user_info', {
+    props: ['user_info'],
+    template: '<h3 class="box-title text-center">(%user_info.user_name%)</h3>\n<input v-disable="disable_edit" id="profile-image-upload" class="hide" type="file" v-on="change:previewImg" accept="image/*"/>\n<a v-on="click:changeImg" href="javascript:void(0)">\n    <img id="profile-image" class="img-responsive center-block" src="{{user_info.picture or \'/lib_static/images/avatar.svg\' }}" />\n</a>\n<div class="text-center">\n    <sub>点击更换头像</sub>\n</div>\n<div v-html="user_info.slogan">\n</div>\n<hr>\n<form class="form-horizontal">\n    <div class="form-group">\n        <label for="user_name" class="col-sm-3 control-label min-form-lable">用户名</label>\n        <div class="col-sm-9">\n            <input v-disable="disable_edit" type="text"  class="form-control {%if change_user_name%}editable{%end%}" id="user_name" value="{{user_info.user_name}}"  v-model="user_info.user_name" v-on="keypress:modify">\n        </div>\n    </div>\n    <div class="form-group">\n        <label for="blog" class="col-sm-3 control-label min-form-lable">个人博客</label>\n        <div class="col-sm-9">\n            <input v-disable="disable_edit" type="text"  class="form-control editable" id="blog" placeholder="这个人很懒，什么也没留下"  v-model="user_info.blog" value="{{user_info.blog or \'\'}}" v-on="focus:autoInsert(\'blog\')">\n        </div>\n    </div>\n    <div v-show="!disable_edit" class="form-group" id="slogan-group">\n        <label for="editor" class="col-sm-3 control-label min-form-lable">个性签名</label>\n        <div class="col-sm-9">\n            <textarea id="editor" placeholder="这个人很懒, 什么也没留下" v-model="user_info.slogan">{{ user_info.slogan or \'\'}}</textarea>\n        </div>\n    </div>\n    <hr>\n    <!--\n        <div class="form-group">\n        <label for="dribbble" class="col-sm-5 control-label"><span class="round-icon bg-icon-red"><i class="fa fa-dribbble"></i></span> Dribbble</label>\n        <div class="col-sm-7">\n        <input v-disable="disable_edit" type="text" class="form-control editable" id="dribbble" placeholder="这个人很懒，什么也没留下"  v-model="user_info.dribbble" value="{{user_info.dribbble or \'\'}}" v-on="keypress:modify">\n        </div>\n        </div>\n    -->\n    <div class="form-group">\n        <a href="https://twitter.com/(%user_info.twitter%)" target="_blank">\n            <label class="col-sm-5 control-label">\n                <span class="round-icon bg-icon-blue">\n                    <i class="fa fa-twitter"></i>\n                </span>\n                Twitter\n            </label>\n        </a>\n        <div class="col-sm-7">\n            <input v-disable="disable_edit" type="text" class="form-control editable" id="twitter" placeholder="这个人很懒，什么也没留下"   v-model="user_info.twitter" value="{{user_info.twitter or \'\'}}" v-on="keypress:modify, focus:autoInsert(\'twitter\', user_info.user_name)">\n        </div>\n    </div>\n    <div class="form-group">\n        <a href="https://github.com/(%user_info.github%)" target="_blank">\n            <label class="col-sm-5 control-label"><span class="round-icon bg-icon-black"><i class="fa fa-github"></i></span> Github</label>\n        </a>\n        <div class="col-sm-7">\n            <input v-disable="disable_edit" type="text" class="form-control editable" placeholder="这个人很懒，什么也没留下"  v-model="user_info.github" value="{{user_info.github or \'\'}}" v-on="keypress:modify, focus:autoInsert(\'github\', user_info.user_name)">\n        </div>\n    </div>\n    <div class="form-group">\n        <a href="https://instagram.com/(%user_info.instagram%)" target="_blank">\n            <label class="col-sm-5 control-label"><span class="round-icon bg-icon-orange"><i class="fa fa-instagram"></i></span> Instagram</label>\n        </a>\n        <div class="col-sm-7">\n            <input v-disable="disable_edit" type="text" class="form-control editable" placeholder="这个人很懒，什么也没留下"  v-model="user_info.instagram" value="{{user_info.instagram or \'\'}}" v-on="keypress:modify, focus:autoInsert(\'instagram\', user_info.user_name)">\n        </div>\n    </div>\n</form>\n<div class="text-center">\n    <button id="btn-edit" v-btn-loading="loading" type="submit" class="btn btn-primary btn-flat btn-border" v-on="click:save">编辑</button>\n    <div>\n    </div>\n</div>',
+    ready: function() {
+      return bz.setOnErrorVm(this);
+    },
+    data: {
+      loading: false,
+      disable_edit: true,
+      button_text: '修改资料'
+    },
+    methods: {
+      autoInsert: function(key, scheme) {
+        if (scheme == null) {
+          scheme = 'http://';
+        }
+        if (!this.user_info[key]) {
+          return this.user_info.$set(key, scheme);
+        }
+      },
+      changeImg: function() {
+        return $('#profile-image-upload').click();
+      },
+      previewImg: function(e) {
+        var file, reader;
+        file = e.target.files[0];
+        if (!file) {
+          return;
+        }
+        if (file.size > (10 * 1024 * 1024)) {
+          throw new Error("图片大小只能小于10m哦~");
+        }
+        reader = new FileReader();
+        reader.onload = function(e) {
+          return $("#profile-image-upload").attr("src", e.target.result);
+        };
+        reader.readAsDataURL(file);
+        return this.uploadImage();
+      },
+      uploadImage: function() {
+        var fd, file;
+        fd = new FormData();
+        file = $("#profile-image-upload")[0].files[0];
+        if (file) {
+          fd.append("img", file);
+          return $.ajax({
+            url: '/upload_image',
+            type: 'POST',
+            data: fd,
+            processData: false,
+            contentType: false,
+            success: (function(_this) {
+              return function(data, status, response) {
+                _this.loading = false;
+                console.log(data);
+                if (!data.success) {
+                  throw new Error(data.msg);
+                } else {
+                  bz.showSuccess5("保存成功");
+                  _this.user_info.picture = data.file_path;
+                  return $("#profile-image").attr("src", _this.user_info.picture);
+                }
+              };
+            })(this),
+            error: function(error_info) {
+              this.loading = false;
+              throw new Error(error_info);
+            }
+          });
+        }
+      },
+      save: function() {
+        var parm, path;
+        if (this.disable_edit) {
+          this.disable_edit = false;
+          return $("#btn-edit").text('保存');
+        } else {
+          this.loading = true;
+          parm = JSON.stringify(this.user_info);
+          path = bz.getUrlPath(1);
+          return $.ajax({
+            url: '/' + path,
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                _this.loading = false;
+                _this.disable_edit = true;
+                $("#btn-edit").text('编辑');
+                if (data.error !== '0') {
+                  throw new Error(data.error);
+                } else {
+                  return bz.showSuccess5("保存成功");
+                }
+              };
+            })(this)
+          });
+        }
+      }
+    }
+  });
+
 }).call(this);

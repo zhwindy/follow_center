@@ -25,6 +25,7 @@ autoLink = (options...) ->
 String.prototype['autoLink'] = autoLink
 #follow 的按钮
 Vue.config.debug = true
+
 Vue.component 'follow',
   props: [ 'followed', 'god_id' ]
   template: '<button v-on="click:toggleFollow" type="button" class="btn btn-sm" aria-label="Left Align"></button>'
@@ -175,6 +176,7 @@ Vue.component 'github',
               </div>
           </div>
   '''
+
 Vue.component 'instagram',
   computed:
     #v-attr只接收变量,为了用proxy,这里要处理
@@ -214,3 +216,151 @@ Vue.component 'instagram',
         </div>
     </div>
     '''
+
+Vue.component 'user_info',
+  props: [ 'user_info' ]
+  template:'''
+    <h3 class="box-title text-center">(%user_info.user_name%)</h3>
+    <input v-disable="disable_edit" id="profile-image-upload" class="hide" type="file" v-on="change:previewImg" accept="image/*"/>
+    <a v-on="click:changeImg" href="javascript:void(0)">
+        <img id="profile-image" class="img-responsive center-block" src="{{user_info.picture or '/lib_static/images/avatar.svg' }}" />
+    </a>
+    <div class="text-center">
+        <sub>点击更换头像</sub>
+    </div>
+    <div v-html="user_info.slogan">
+    </div>
+    <hr>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="user_name" class="col-sm-3 control-label min-form-lable">用户名</label>
+            <div class="col-sm-9">
+                <input v-disable="disable_edit" type="text"  class="form-control {%if change_user_name%}editable{%end%}" id="user_name" value="{{user_info.user_name}}"  v-model="user_info.user_name" v-on="keypress:modify">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="blog" class="col-sm-3 control-label min-form-lable">个人博客</label>
+            <div class="col-sm-9">
+                <input v-disable="disable_edit" type="text"  class="form-control editable" id="blog" placeholder="这个人很懒，什么也没留下"  v-model="user_info.blog" value="{{user_info.blog or ''}}" v-on="focus:autoInsert('blog')">
+            </div>
+        </div>
+        <div v-show="!disable_edit" class="form-group" id="slogan-group">
+            <label for="editor" class="col-sm-3 control-label min-form-lable">个性签名</label>
+            <div class="col-sm-9">
+                <textarea id="editor" placeholder="这个人很懒, 什么也没留下" v-model="user_info.slogan">{{ user_info.slogan or ''}}</textarea>
+            </div>
+        </div>
+        <hr>
+        <!--
+            <div class="form-group">
+            <label for="dribbble" class="col-sm-5 control-label"><span class="round-icon bg-icon-red"><i class="fa fa-dribbble"></i></span> Dribbble</label>
+            <div class="col-sm-7">
+            <input v-disable="disable_edit" type="text" class="form-control editable" id="dribbble" placeholder="这个人很懒，什么也没留下"  v-model="user_info.dribbble" value="{{user_info.dribbble or ''}}" v-on="keypress:modify">
+            </div>
+            </div>
+        -->
+        <div class="form-group">
+            <a href="https://twitter.com/(%user_info.twitter%)" target="_blank">
+                <label class="col-sm-5 control-label">
+                    <span class="round-icon bg-icon-blue">
+                        <i class="fa fa-twitter"></i>
+                    </span>
+                    Twitter
+                </label>
+            </a>
+            <div class="col-sm-7">
+                <input v-disable="disable_edit" type="text" class="form-control editable" id="twitter" placeholder="这个人很懒，什么也没留下"   v-model="user_info.twitter" value="{{user_info.twitter or ''}}" v-on="keypress:modify, focus:autoInsert('twitter', user_info.user_name)">
+            </div>
+        </div>
+        <div class="form-group">
+            <a href="https://github.com/(%user_info.github%)" target="_blank">
+                <label class="col-sm-5 control-label"><span class="round-icon bg-icon-black"><i class="fa fa-github"></i></span> Github</label>
+            </a>
+            <div class="col-sm-7">
+                <input v-disable="disable_edit" type="text" class="form-control editable" placeholder="这个人很懒，什么也没留下"  v-model="user_info.github" value="{{user_info.github or ''}}" v-on="keypress:modify, focus:autoInsert('github', user_info.user_name)">
+            </div>
+        </div>
+        <div class="form-group">
+            <a href="https://instagram.com/(%user_info.instagram%)" target="_blank">
+                <label class="col-sm-5 control-label"><span class="round-icon bg-icon-orange"><i class="fa fa-instagram"></i></span> Instagram</label>
+            </a>
+            <div class="col-sm-7">
+                <input v-disable="disable_edit" type="text" class="form-control editable" placeholder="这个人很懒，什么也没留下"  v-model="user_info.instagram" value="{{user_info.instagram or ''}}" v-on="keypress:modify, focus:autoInsert('instagram', user_info.user_name)">
+            </div>
+        </div>
+    </form>
+    <div class="text-center">
+        <button id="btn-edit" v-btn-loading="loading" type="submit" class="btn btn-primary btn-flat btn-border" v-on="click:save">编辑</button>
+        <div>
+        </div>
+    </div>
+  '''
+  ready:->
+    bz.setOnErrorVm(@)
+  data:
+    loading: false
+    disable_edit: true # 禁止编辑
+    button_text:'修改资料'
+  methods:
+    # 协议可以配置
+    autoInsert:(key, scheme='http://')->
+      if not @user_info[key]
+        @user_info.$set(key, scheme)
+    changeImg:->
+      $('#profile-image-upload').click()
+    previewImg:(e)->
+      file = e.target.files[0]
+      if not file
+        return
+      if file.size > (10 * 1024 * 1024)
+        throw new Error("图片大小只能小于10m哦~")
+      reader = new FileReader()
+      reader.onload = (e)->
+        $("#profile-image-upload").attr("src", e.target.result)
+      reader.readAsDataURL(file)
+      @uploadImage()
+    uploadImage:->
+      fd = new FormData()
+      file = $("#profile-image-upload")[0].files[0]
+      if file
+        fd.append("img", file)
+        $.ajax
+          url: '/upload_image'
+          type: 'POST'
+          data : fd
+          processData: false
+          contentType: false
+          success: (data, status, response) =>
+            #为了兼容 simditor 这里的返回值不太一样
+            @loading=false
+            console.log data
+            if not data.success
+              throw new Error(data.msg)
+            else
+              bz.showSuccess5("保存成功")
+              @user_info.picture = data.file_path
+              $("#profile-image").attr("src", @user_info.picture)
+          error: (error_info)->
+            @loading=false
+            throw new Error(error_info)
+    save:->
+      if @disable_edit
+        @disable_edit = false
+        $("#btn-edit").text('保存')
+      else
+        @loading = true
+        parm = JSON.stringify @user_info
+        #如果url path不同,则向对应后台url发请求,以应对重载又要留着原本profile的情况(follow_center)
+        path = bz.getUrlPath(1)
+        $.ajax
+          url: '/'+path
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            @loading=false
+            @disable_edit=true
+            $("#btn-edit").text('编辑')
+            if data.error != '0'
+              throw new Error(data.error)
+            else
+              bz.showSuccess5("保存成功")
