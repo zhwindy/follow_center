@@ -53,6 +53,10 @@ Vue.component 'follow',
         @showFollow()
       else
         @showUnfollow()
+    if @followed == 1
+      @showFollow()
+    else
+      @showUnfollow()
   methods:
     showFollow:->
       target = @$el

@@ -55,13 +55,18 @@
     props: ['followed', 'god_id'],
     template: '<button v-on="click:toggleFollow" type="button" class="btn btn-sm" aria-label="Left Align"></button>',
     ready: function() {
-      return this.$watch('followed', function() {
+      this.$watch('followed', function() {
         if (this.followed === 1) {
           return this.showFollow();
         } else {
           return this.showUnfollow();
         }
       });
+      if (this.followed === 1) {
+        return this.showFollow();
+      } else {
+        return this.showUnfollow();
+      }
     },
     methods: {
       showFollow: function() {
