@@ -26,6 +26,24 @@ String.prototype['autoLink'] = autoLink
 #follow 的按钮
 Vue.config.debug = true
 
+Vue.transition 'fade',
+  enter: (el, done) ->
+    # 此时元素已被插入 DOM
+    # 动画完成时调用 done 回调
+    $(el).css('opacity', 0).animate { opacity: 1 }, 2000, done
+    return
+  enterCancelled: (el) ->
+    $(el).stop()
+    #$(el).animate { opacity: 0 }, 2000, done
+    return
+  leave: (el, done) ->
+    # 与 enter 钩子同理
+    $(el).animate { opacity: 0 }, 2000, done
+    return
+  leaveCancelled: (el) ->
+    $(el).stop()
+    return
+
 Vue.component 'follow',
   props: [ 'followed', 'god_id']
   template: '<button v-on="click:toggleFollow" type="button" class="btn btn-sm" aria-label="Left Align"></button>'
@@ -228,7 +246,7 @@ Vue.component 'c_user_info',
         return '/lib_static/images/avatar.svg'
 
   template:'''
-  <div id="user_info" class="fixed" v-show="user_info">
+  <div id="user_info" class="fixed" v-show="user_info" v-transition="fade">
       <h3 class="box-title text-center">(%user_info.user_name%)</h3>
       <input v-disable="disable_edit" id="profile-image-upload" class="hide" type="file" v-on="change:previewImg" accept="image/*"/>
       <a v-on="click:changeImg" href="javascript:void(0)">

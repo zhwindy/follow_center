@@ -104,7 +104,9 @@
               var user_name;
               if ($(this).offset().top + $(this).height() >= $top + $(window).scrollTop()) {
                 user_name = $(this)[0].__vue__.message.user_name;
-                v.getUserInfo(user_name);
+                if (user_name !== v.user_info.user_name) {
+                  v.getUserInfo(user_name);
+                }
                 return false;
               }
             });

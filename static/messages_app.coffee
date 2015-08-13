@@ -70,7 +70,8 @@ $ ->
             if $(this).offset().top+$(this).height() >= $top + $(window).scrollTop()
               #从jquery对像又取到 vue 对象
               user_name = $(this)[0].__vue__.message.user_name
-              v.getUserInfo(user_name)
+              if user_name !=v.user_info.user_name
+                v.getUserInfo(user_name)
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod
