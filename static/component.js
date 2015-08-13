@@ -58,7 +58,28 @@
       toggleFollow: function() {
         var parm, target;
         target = this.$el;
-        if (this.followed === 0) {
+        if (this.followed === 1) {
+          parm = JSON.stringify({
+            god_id: this.god_id
+          });
+          return $.ajax({
+            url: '/unfollow',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                _this.loading = false;
+                if (data.error !== '0') {
+                  throw new Error(data.error);
+                } else {
+                  bz.showSuccess5('Unfollow 成功');
+                  _this.showUnfollow();
+                  return _this.followed = 0;
+                }
+              };
+            })(this)
+          });
+        } else {
           parm = JSON.stringify({
             god_id: this.god_id
           });
@@ -81,30 +102,7 @@
                   return _this.followed = 1;
                 }
               };
-            })(this),
-            error: function() {}
-          });
-        } else {
-          parm = JSON.stringify({
-            god_id: this.god_id
-          });
-          return $.ajax({
-            url: '/unfollow',
-            type: 'POST',
-            data: parm,
-            success: (function(_this) {
-              return function(data, status, response) {
-                _this.loading = false;
-                if (data.error !== '0') {
-                  throw new Error(data.error);
-                } else {
-                  bz.showSuccess5('Unfollow 成功');
-                  _this.showUnfollow();
-                  return _this.followed = 0;
-                }
-              };
-            })(this),
-            error: function() {}
+            })(this)
           });
         }
       }
