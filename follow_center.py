@@ -63,7 +63,7 @@ class sp(proxy.ProxyHandler):
 
     def get(self, secret):
         url = oper.decodeUrl(secret)
-        url = 'http://cn.vuejs.org/images/logo.png'
+        #url = 'http://cn.vuejs.org/images/logo.png'
         return super(sp, self).get(url)
 
 
