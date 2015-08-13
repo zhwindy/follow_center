@@ -10,7 +10,7 @@
 
 <div class="row">
     <div id="v_messages" v-loading="loading" class="col-md-8">
-        <component is="(%message.m_type%)" v-repeat="message:messages" v-transition stagger="100">
+        <component is="(%message.m_type%)" v-repeat="message:messages">
         </component>
         <div v-show="messages" class="row">
             <div class="col-md-4">
@@ -21,10 +21,6 @@
             <div class="col-md-4">
             </div>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
     </div>
     <div id="v_user" class="col-md-4">
         <hr>

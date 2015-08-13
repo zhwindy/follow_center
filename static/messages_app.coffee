@@ -45,12 +45,15 @@ $ ->
             @messages = data.messages
             @loading=false
       bindScroll:->
+        v = @
         $(window).scroll ->
+          #当滚动到最底部以上100像素时， 加载新内容
+          if ($(document).height() - $(this).scrollTop() - $(this).height()) == 0
+            v.more()
           $top = $('#v_messages').offset().top
-        
           $('#v_messages .box').each ->
             if $(this).offset().top >= $top + $(window).scrollTop()
-              log $(this).attr('id')
+              #log $(this).attr('id')
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod

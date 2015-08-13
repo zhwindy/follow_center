@@ -74,12 +74,16 @@
           });
         },
         bindScroll: function() {
+          var v;
+          v = this;
           return $(window).scroll(function() {
             var $top;
+            if (($(document).height() - $(this).scrollTop() - $(this).height()) === 0) {
+              v.more();
+            }
             $top = $('#v_messages').offset().top;
             return $('#v_messages .box').each(function() {
               if ($(this).offset().top >= $top + $(window).scrollTop()) {
-                log($(this).attr('id'));
                 return false;
               }
             });
