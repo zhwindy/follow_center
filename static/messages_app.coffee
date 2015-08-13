@@ -18,7 +18,6 @@ $ ->
           data : parm
           success: (data, status, response) =>
             @messages = data.messages
-            log data.messages[0]
             @loading=false
       all:->
         @god_name = null
@@ -53,7 +52,8 @@ $ ->
           $top = $('#v_messages').offset().top
           $('#v_messages .box').each ->
             if $(this).offset().top >= $top + $(window).scrollTop()
-              log $(this).attr('id')
+              #从jquery对像又取到 vue 对象
+              log $(this)[0].__vue__
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod

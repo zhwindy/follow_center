@@ -22,7 +22,6 @@
             success: (function(_this) {
               return function(data, status, response) {
                 _this.messages = data.messages;
-                log(data.messages[0]);
                 return _this.loading = false;
               };
             })(this)
@@ -79,7 +78,7 @@
             $top = $('#v_messages').offset().top;
             return $('#v_messages .box').each(function() {
               if ($(this).offset().top >= $top + $(window).scrollTop()) {
-                log($(this).attr('id'));
+                log($(this)[0].__vue__);
                 return false;
               }
             });
