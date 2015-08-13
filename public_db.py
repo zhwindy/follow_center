@@ -120,8 +120,8 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None, off
         ''' % (sql, limit)
     if offset:
         sql = sql + ' offset %s' % offset
-    sql = "SET statement_timeout = '2s';"+sql
-    return pg.query(sql)
+    #sql = "SET statement_timeout = '2s';"+sql
+    return pg.db.query(sql)
 
 
 def getGodInfoFollow(user_id=None, god_name=None):
