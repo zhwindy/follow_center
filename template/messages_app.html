@@ -11,7 +11,7 @@
 
 <div id="v_messages" v-loading="loading" class="row">
     <div  class="col-md-8">
-        <component is="(%message.m_type%)" v-repeat="message:messages">
+        <component is="(%message.m_type%)" v-repeat="message:messages" v-transition="fade">
         </component>
         <div v-show="messages" class="row">
             <div class="col-md-4">
