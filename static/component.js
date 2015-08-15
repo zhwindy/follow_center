@@ -136,7 +136,7 @@
   });
 
   Vue.component('twitter', {
-    props: ['message'],
+    props: ['message', 'f_a_hover'],
     computed: {
       avatar: function() {
         var avatar;
@@ -157,11 +157,11 @@
         });
       }
     },
-    template: '<div id="twitter_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="#/god/(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-blue">\n                    <i class="fa fa-twitter"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz" v-html="text"></p>\n        <template v-repeat="url:medias">\n            <img v-attr="src:url" class="img-responsive" >\n            <br>\n        </template>\n    </div>\n</div>'
+    template: '<div id="twitter_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a v-on="mouseover:f_a_hover" href="#/god/(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-blue">\n                    <i class="fa fa-twitter"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz" v-html="text"></p>\n        <template v-repeat="url:medias">\n            <img v-attr="src:url" class="img-responsive" >\n            <br>\n        </template>\n    </div>\n</div>'
   });
 
   Vue.component('github', {
-    props: ['message'],
+    props: ['message', 'f_a_hover'],
     computed: {
       avatar: function() {
         return this.message.avatar;
@@ -190,6 +190,7 @@
   });
 
   Vue.component('instagram', {
+    props: ['message', 'f_a_hover'],
     computed: {
       avatar: function() {
         var avatar;

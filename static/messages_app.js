@@ -67,7 +67,8 @@
           parm = JSON.stringify({
             god_name: god_name
           });
-          return this.freshData(parm);
+          this.freshData(parm);
+          return this.getUserInfo(god_name);
         },
         getUserInfo: function(user_name) {
           var parm;
@@ -96,17 +97,12 @@
           v = this;
           return $(window).scroll(function() {
             var $top;
-            if (($(document).height() - $(this).scrollTop() - $(this).height()) < 10) {
+            if (($(document).height() - $(this).scrollTop() - $(this).height()) === 0) {
               v.more();
             }
             $top = $('#v_messages').offset().top;
             return $('#v_messages .box').each(function() {
-              var user_name;
               if ($(this).offset().top + $(this).height() >= $top + $(window).scrollTop()) {
-                user_name = $(this)[0].__vue__.message.user_name;
-                if (user_name !== v.user_info.user_name) {
-                  v.getUserInfo(user_name);
-                }
                 return false;
               }
             });
