@@ -376,7 +376,7 @@ Vue.component 'c_user_info',
         #如果url path不同,则向对应后台url发请求,以应对重载又要留着原本profile的情况(follow_center)
         path = bz.getUrlPath(1)
         $.ajax
-          url: '/'+path
+          url: '/add'
           type: 'POST'
           data : parm
           success: (data, status, response) =>

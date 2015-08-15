@@ -297,7 +297,7 @@
           parm = JSON.stringify(this.user_info);
           path = bz.getUrlPath(1);
           return $.ajax({
-            url: '/' + path,
+            url: '/add',
             type: 'POST',
             data: parm,
             success: (function(_this) {

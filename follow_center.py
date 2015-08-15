@@ -124,7 +124,7 @@ class main(tornado_bz.UserInfoHandler):
         if self.current_user:
             self.render(tornado_bz.getTName(self, 'messages_app'))
         else:
-            if limit=='':
+            if limit == '':
                 limit = None
             messages, more, anchor = oper.getMessages(limit, self.current_user)
             self.render(tornado_bz.getTName(self), messages=messages, more=more, anchor=anchor)
@@ -152,7 +152,9 @@ class messages_app(tornado_bz.UserInfoHandler):
 
         self.write(json.dumps({'error': '0', 'messages': messages}, cls=public_bz.ExtEncoder))
 
+
 class user_info(tornado_bz.UserInfoHandler):
+
     def post(self):
         self.set_header("Content-Type", "application/json")
         data = json.loads(self.request.body)
@@ -163,6 +165,7 @@ class user_info(tornado_bz.UserInfoHandler):
             god_info = god_info[0]
         oper.makeSurePicture(god_info)
         self.write(json.dumps({'error': '0', 'user_info': god_info}, cls=public_bz.ExtEncoder))
+
 
 class Changelog(tornado_bz.UserInfoHandler):
 
