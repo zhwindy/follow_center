@@ -46,7 +46,8 @@
           this.loading = true;
           parm = JSON.stringify({
             offset: this.messages.length + 1,
-            god_name: this.god_name
+            god_name: this.god_name,
+            limit: 50
           });
           return $.ajax({
             url: '/messages_app',

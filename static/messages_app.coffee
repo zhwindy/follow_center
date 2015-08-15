@@ -34,6 +34,7 @@ $ ->
         parm = JSON.stringify
           offset:@messages.length+1
           god_name:@god_name
+          limit:50
         $.ajax
           url: '/messages_app'
           type: 'POST'
