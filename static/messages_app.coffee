@@ -22,6 +22,7 @@ $ ->
             @loading=false
       all:->
         @god_name = null
+        @user_info = ''
         parm = JSON.stringify
           limit:30
         @freshData(parm)

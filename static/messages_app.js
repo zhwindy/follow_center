@@ -32,6 +32,7 @@
         all: function() {
           var parm;
           this.god_name = null;
+          this.user_info = '';
           parm = JSON.stringify({
             limit: 30
           });
