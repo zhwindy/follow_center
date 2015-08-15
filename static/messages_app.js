@@ -40,6 +40,9 @@
         },
         more: function() {
           var parm;
+          if (this.loading) {
+            return;
+          }
           this.loading = true;
           parm = JSON.stringify({
             offset: this.messages.length + 1,

@@ -27,6 +27,9 @@ $ ->
           limit:30
         @freshData(parm)
       more:->
+        #避免重复加载
+        if @loading
+          return
         @loading=true
         parm = JSON.stringify
           offset:@messages.length+1
