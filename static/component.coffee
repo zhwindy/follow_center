@@ -105,7 +105,7 @@ Vue.component 'follow',
               @followed = 1
 
 Vue.component 'twitter',
-  props: [ 'message', 'f_a_hover' ]
+  props: [ 'message' ]
   computed:
     #v-attr只接收变量,为了用proxy,这里要处理
     avatar:->
@@ -122,7 +122,7 @@ Vue.component 'twitter',
             <div id="twitter_(%message.id%)" class="box box-solid item">
                 <div class="box-header">
                     <h2 class="box-title">
-                        <a v-on="mouseover:f_a_hover" href="#/god/(%message.user_name%)">
+                        <a href="#/god/(%message.user_name%)">
                             <img v-attr="src:avatar" class="direct-chat-img">
                             <div class="name">
                                 (%message.name%)
@@ -151,7 +151,7 @@ Vue.component 'twitter',
             '''
 
 Vue.component 'github',
-  props: [ 'message', 'f_a_hover' ]
+  props: [ 'message']
   computed:
     avatar:->
       return @message.avatar
@@ -201,7 +201,7 @@ Vue.component 'github',
   '''
 
 Vue.component 'instagram',
-  props: [ 'message', 'f_a_hover' ]
+  props: [ 'message' ]
   computed:
     #v-attr只接收变量,为了用proxy,这里要处理
     avatar:->
