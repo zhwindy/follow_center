@@ -219,7 +219,7 @@ class instagram_user(model_oper_bz.base):
     #    "followed_by": 3410
     #}
     counts = BinaryJSONField(null=True)
-    last_id = TextField(null=True) #已经取过的最后一个id
+    last_id = TextField(null=True)  # 已经取过的最后一个id
 
 
 class instagram_media(model_oper_bz.base):
@@ -239,6 +239,17 @@ class instagram_media(model_oper_bz.base):
     likes = BinaryJSONField(null=True)
     link = TextField()
     type = TextField()
+
+
+class last(model_oper_bz.base):
+
+    '''
+    记录上次看到的那条message
+    '''
+    user_id = IntegerField()
+    last_time = DateTimeField()
+    last_message_id = TextField()
+
 if __name__ == '__main__':
     # 需要用户登录模块
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
@@ -247,6 +258,5 @@ if __name__ == '__main__':
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
-    model_oper_bz.reCreateTable(instagram_user, db_name)
-    model_oper_bz.reCreateTable(instagram_media, db_name)
+    model_oper_bz.reCreateTable(last, db_name)
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
