@@ -55,13 +55,13 @@ def getUserEvent(user_name, etag):
         return
     if r.status_code == 200:
         messages = r.json()
-        print messages
         if not messages:
             delGithubUser(user_name)
             # 没有这个github用户,取消
             return
         actor = messages[0]['actor']
         user_id = saveUser(actor['id'], actor['url'])
+        print user_id
 
         # 更新etag
         etag = r.headers['etag']
