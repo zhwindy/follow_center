@@ -196,7 +196,12 @@
         return issue_comment_link;
       },
       issue_comment_body: function() {
-        return this.payload['comment']['body'];
+        var body;
+        body = this.payload['comment']['body'];
+        return body.autoLink({
+          target: "_blank",
+          rel: "外部链接,请谨慎打开"
+        });
       }
     },
     template: '<div id="github_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="#/god/(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%repo_url%)">\n                <span class="round-icon bg-icon-black">\n                    <i class="fa fa-github"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n    (%type%) <a href=\'(%repo_url%)\' target=\'_blank\'>(%repo_name%)</a>\n      <li v-repeat="commits">\n          <a target="_blank" href="(%url.replace(\'api.github.com/repos\', \'github.com\')%)">\n              (%message%)\n          </a>\n      </li>\n      <p v-html="issue_comment_link">\n      </p>\n      <p v-show="issue_comment_body" class=\'description_bz\'>\n        (%issue_comment_body%)\n      </p>\n    </div>\n</div>'
