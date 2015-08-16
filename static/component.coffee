@@ -175,8 +175,7 @@ Vue.component 'github',
       issue_comment_link = "<a target='_blank' href='#{issue_comment_url}' >#{issue_title}</a>"
       return issue_comment_link
     issue_comment_body:->
-      issue_comment_body = @payload['comment']['body']
-      return "<xmp class='description_bz'>#{issue_comment_body}</xmp>"
+      return @payload['comment']['body']
   template:'''
           <div id="github_(%message.id%)" class="box box-solid item">
               <div class="box-header">
@@ -208,7 +207,8 @@ Vue.component 'github',
                 </li>
                 <p v-html="issue_comment_link">
                 </p>
-                <p v-html="issue_comment_body">
+                <p v-show="issue_comment_body" class='description_bz'>
+                  (%issue_comment_body%)
                 </p>
               </div>
           </div>
