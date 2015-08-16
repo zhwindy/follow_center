@@ -249,7 +249,6 @@ Vue.component 'c_user_info',
         return @user_info.picture
       else
         return '/lib_static/images/avatar.svg'
-
   template:'''
     <div id="user_info" class="fixed" v-show="user_info" v-transition="fade">
         <h3 class="box-title text-center">(%user_info.user_name%)</h3>
@@ -329,7 +328,6 @@ Vue.component 'c_user_info',
     button_text:'修改资料'
   methods:
     initSimditor:->
-      log 'initSimditor'
       toolbar = [
         'title'
         'bold'
@@ -383,6 +381,10 @@ Vue.component 'c_user_info',
           connectionCount: 3
           leaveConfirm: '正在上传文件，如果离开上传会自动取消'
       )
+      v = @
+      editor.on 'valuechanged', (e, src) ->
+        #vue如果要双向绑定,要定义这个函数
+        v.$set('user_info.slogan', editor.getValue())
     # 协议可以配置
     autoInsert:(key, scheme='http://')->
       if not @user_info[key]
@@ -429,7 +431,14 @@ Vue.component 'c_user_info',
         $("#btn-edit").text('保存')
       else
         @loading = true
-        parm = JSON.stringify @user_info
+        user_info = _.clone(@user_info)
+        parm = JSON.stringify
+          user_name:@user_info.user_name
+          blog:@user_info.blog
+          twitter:@user_info.twitter
+          github:@user_info.github
+          instagram:@user_info.instagram
+          slogan:@user_info.slogan
         #如果url path不同,则向对应后台url发请求,以应对重载又要留着原本profile的情况(follow_center)
         path = bz.getUrlPath(1)
         $.ajax

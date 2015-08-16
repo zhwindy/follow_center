@@ -231,15 +231,14 @@
     },
     methods: {
       initSimditor: function() {
-        var mobileToolbar, small_tool_bar, toolbar;
-        log('initSimditor');
+        var mobileToolbar, small_tool_bar, toolbar, v;
         toolbar = ['title', 'bold', 'italic', 'underline', 'strikethrough', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'indent', 'outdent', 'alignment'];
         mobileToolbar = ['bold', 'underline', 'strikethrough', 'color', 'ul', 'ol'];
         small_tool_bar = ['title', 'link', 'image', 'bold'];
         if (bz.mobilecheck()) {
           toolbar = mobileToolbar;
         }
-        return window.editor = new Simditor({
+        window.editor = new Simditor({
           textarea: $('#editor'),
           placeholder: '这里输入文字...',
           toolbar: small_tool_bar,
@@ -253,6 +252,10 @@
             connectionCount: 3,
             leaveConfirm: '正在上传文件，如果离开上传会自动取消'
           }
+        });
+        v = this;
+        return editor.on('valuechanged', function(e, src) {
+          return v.$set('user_info.slogan', editor.getValue());
         });
       },
       autoInsert: function(key, scheme) {
@@ -314,13 +317,21 @@
         }
       },
       save: function() {
-        var parm, path;
+        var parm, path, user_info;
         if (this.disable_edit) {
           this.disable_edit = false;
           return $("#btn-edit").text('保存');
         } else {
           this.loading = true;
-          parm = JSON.stringify(this.user_info);
+          user_info = _.clone(this.user_info);
+          parm = JSON.stringify({
+            user_name: this.user_info.user_name,
+            blog: this.user_info.blog,
+            twitter: this.user_info.twitter,
+            github: this.user_info.github,
+            instagram: this.user_info.instagram,
+            slogan: this.user_info.slogan
+          });
           path = bz.getUrlPath(1);
           return $.ajax({
             url: '/add',
