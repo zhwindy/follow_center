@@ -55,6 +55,7 @@ def getUserEvent(user_name, etag):
         return
     if r.status_code == 200:
         messages = r.json()
+        print messages
         if not messages:
             delGithubUser(user_name)
             # 没有这个github用户,取消
