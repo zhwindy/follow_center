@@ -133,6 +133,9 @@
             return $('#v_messages .box').each(function() {
               var message;
               if ($(this).offset().top + $(this).height() >= $top + $(window).scrollTop()) {
+                if (v.god_name !== null) {
+                  return false;
+                }
                 message = $(this)[0].__vue__.message;
                 if (v.last === null || v.last.created_at < message.created_at) {
                   v.last = message;

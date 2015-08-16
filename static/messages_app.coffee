@@ -94,6 +94,9 @@ $ ->
           $top = $('#v_messages').offset().top
           $('#v_messages .box').each ->
             if $(this).offset().top+$(this).height() >= $top + $(window).scrollTop()
+              #如果在god页面，不要记录消息
+              if v.god_name != null
+                return false
               #从jquery对像又取到 vue 对象
               message = $(this)[0].__vue__.message
               if v.last == null or v.last.created_at<message.created_at
