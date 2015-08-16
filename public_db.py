@@ -5,6 +5,12 @@ import user_bz
 user_oper = user_bz.UserOper(pg)
 
 
+def getLastMessageId(user_id):
+    result = list(pg.select('last', where="user_id=%s" % user_id))
+    if result:
+        return result[0].last_message_id
+
+
 def delNoName(type, name):
     sql = '''
     update user_info set %s=null where lower(%s)=lower('%s')

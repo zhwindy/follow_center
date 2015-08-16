@@ -12,10 +12,17 @@
         god_name: null,
         last: null
       },
-      ready: function() {
+      created: function() {
         return this.bindScroll();
       },
       methods: {
+        dumpToLast: function(last_message_id) {
+          var target, y;
+          log(last_message_id);
+          target = $('#' + last_message_id);
+          y = $(target).offset().top;
+          return window.scrollTo(0, y);
+        },
         saveLast: function() {
           var parm;
           parm = JSON.stringify({
@@ -39,9 +46,13 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
+                var last_message_id;
                 _this.messages = data.messages;
                 _this.loading = false;
-                return window.location.hash = "#twitter_8730";
+                last_message_id = data.last_message_id;
+                if (last_message_id) {
+                  return _.delay(_this.dumpToLast, 1000, last_message_id);
+                }
               };
             })(this)
           });

@@ -9,9 +9,14 @@ $ ->
       current_message_id:null
       god_name:null
       last:null#用来放上次看到的message
-    ready:->
+    created:->
       @bindScroll()
     methods:
+      dumpToLast:(last_message_id)->#跳到上一次的message
+        log last_message_id
+        target = $('#'+last_message_id)
+        y = $(target).offset().top
+        window.scrollTo(0, y)
       saveLast:->
         parm = JSON.stringify
           last_time:@last.created_at
@@ -30,7 +35,10 @@ $ ->
           success: (data, status, response) =>
             @messages = data.messages
             @loading=false
-            window.location.hash = "#twitter_8730"
+
+            last_message_id = data.last_message_id
+            if last_message_id
+              _.delay(@dumpToLast, 1000, last_message_id)
       all:->
         @god_name = null
         @user_info = ''
