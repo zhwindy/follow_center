@@ -60,8 +60,10 @@ def getUserEvent(user_name, etag):
             # 没有这个github用户,取消
             return
         actor = messages[0]['actor']
+        print actor
+        print actor['id']
+
         user_id = saveUser(actor['id'], actor['url'])
-        print user_id
 
         # 更新etag
         etag = r.headers['etag']
