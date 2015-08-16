@@ -124,7 +124,7 @@ def check():
     '''
     create by bigzhu at 15/07/31 14:28:30
     '''
-    users = pg.select('user_info', what='instagram', where='instagram is not null')
+    users = pg.select('user_info', what='instagram', where="instagram is not null and instagram!=''")
     for user in users:
         if user.instagram and user.instagram != '':
             print 'check instagram %s' % user.instagram
