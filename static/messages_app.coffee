@@ -30,13 +30,13 @@ $ ->
           success: (data, status, response) =>
             @messages = data.messages
             @loading=false
+            window.location.hash = "#twitter_8730"
       all:->
         @god_name = null
         @user_info = ''
         parm = JSON.stringify
           limit:30
         @freshData(parm)
-        window.location.hash = "#twitter_8730"
       more:->
         #避免重复加载
         if @loading

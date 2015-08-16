@@ -40,7 +40,8 @@
             success: (function(_this) {
               return function(data, status, response) {
                 _this.messages = data.messages;
-                return _this.loading = false;
+                _this.loading = false;
+                return window.location.hash = "#twitter_8730";
               };
             })(this)
           });
@@ -52,8 +53,7 @@
           parm = JSON.stringify({
             limit: 30
           });
-          this.freshData(parm);
-          return window.location.hash = "#twitter_8730";
+          return this.freshData(parm);
         },
         more: function() {
           var parm;
