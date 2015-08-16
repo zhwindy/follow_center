@@ -67,6 +67,8 @@ def getUserEvent(user_name, etag):
             org = messages[0]['org']
             if org['login'].lower() == user_name.lower():
                 the_user = org
+                #如果是org，那么url不同
+                the_user['url']="https://api.github.com/users/"+user_name
             else:
                 raise("in this github can't find user_name=%s" % user_name)
 
