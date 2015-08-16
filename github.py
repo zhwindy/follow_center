@@ -60,10 +60,17 @@ def getUserEvent(user_name, etag):
             # 没有这个github用户,取消
             return
         actor = messages[0]['actor']
-        print actor
-        print actor['id']
+        #actor不定是作者名字，有可能org才是
+        if actor['login'].lower() == user_name.lower():
+            the_user = actor
+        else:
+            org = messages[0]['org']
+            if org['login'].lower() == user_name.lower():
+                the_user = org
+            else:
+                raise("in this github can't find user_name=%s" % user_name)
 
-        user_id = saveUser(actor['id'], actor['url'])
+        user_id = saveUser(the_user['id'], the_user['url'])
 
         # 更新etag
         etag = r.headers['etag']
