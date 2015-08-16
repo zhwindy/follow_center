@@ -88,6 +88,7 @@ $ ->
               if v.last == null or v.last.created_at<message.created_at
                 v.last = message
                 v.saveLast()
+                log v.last
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod

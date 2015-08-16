@@ -129,6 +129,7 @@
                 if (v.last === null || v.last.created_at < message.created_at) {
                   v.last = message;
                   v.saveLast();
+                  log(v.last);
                 }
                 return false;
               }
