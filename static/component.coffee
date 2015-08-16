@@ -206,8 +206,10 @@ Vue.component 'github',
                         (%message%)
                     </a>
                 </li>
-                (%issue_comment_link%)
-                (%issue_comment_body%)
+                <p v-html="issue_comment_link">
+                </p>
+                <p v-html="issue_comment_body">
+                </p>
               </div>
           </div>
   '''
