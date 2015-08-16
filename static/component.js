@@ -182,19 +182,22 @@
       type: function() {
         return this.message.content.type;
       },
+      payload: function() {
+        return this.message.content.payload;
+      },
       commits: function() {
-        return this.message.content.payload.commits;
+        return this.payload.commits;
       },
       issue_comment_link: function() {
         var issue_comment_link, issue_comment_url, issue_title;
-        issue_title = payload['issue']['title'];
-        issue_comment_url = payload['comment']['html_url'];
+        issue_title = this.payload['issue']['title'];
+        issue_comment_url = this.payload['comment']['html_url'];
         issue_comment_link = "<a target='_blank' href='" + issue_comment_url + "' >" + issue_title + "</a>";
         return issue_comment_link;
       },
       issue_comment_body: function() {
         var issue_comment_body;
-        issue_comment_body = payload['comment']['body'];
+        issue_comment_body = this.payload['comment']['body'];
         return "<xmp class='description_bz'>" + issue_comment_body + "</xmp>";
       }
     },

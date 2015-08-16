@@ -165,17 +165,18 @@ Vue.component 'github',
       return repo_link
     type:->
       return @message.content.type
+    payload:->
+      return @message.content.payload
     commits:->
-      return @message.content.payload.commits
+      return @payload.commits
     issue_comment_link:->
-      issue_title = payload['issue']['title']
-      issue_comment_url = payload['comment']['html_url']
+      issue_title = @payload['issue']['title']
+      issue_comment_url = @payload['comment']['html_url']
       issue_comment_link = "<a target='_blank' href='#{issue_comment_url}' >#{issue_title}</a>"
       return issue_comment_link
     issue_comment_body:->
-      issue_comment_body = payload['comment']['body']
+      issue_comment_body = @payload['comment']['body']
       return "<xmp class='description_bz'>#{issue_comment_body}</xmp>"
-
   template:'''
           <div id="github_(%message.id%)" class="box box-solid item">
               <div class="box-header">
