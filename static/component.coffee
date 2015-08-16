@@ -175,8 +175,7 @@ Vue.component 'github',
       issue_comment_link = "<a target='_blank' href='#{issue_comment_url}' >#{issue_title}</a>"
       return issue_comment_link
     issue_comment_body:->
-      body = @payload['comment']['body']
-      return body.autoLink({ target: "_blank", rel: "外部链接,请谨慎打开"})
+      return @payload['comment']['body']
   template:'''
           <div id="github_(%message.id%)" class="box box-solid item">
               <div class="box-header">
