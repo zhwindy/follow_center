@@ -8,9 +8,19 @@ $ ->
       loading:false
       current_message_id:null
       god_name:null
+      last:null#用来放上次看到的message
     ready:->
       @bindScroll()
     methods:
+      saveLast:->
+        parm = JSON.stringify
+          last_time:@last.created_at
+          last_message_id:@last.m_type+'_'+@last.id
+        $.ajax
+          url: '/save_last'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
       freshData:(parm)->
         @loading=true
         $.ajax
@@ -74,9 +84,10 @@ $ ->
           $('#v_messages .box').each ->
             if $(this).offset().top+$(this).height() >= $top + $(window).scrollTop()
               #从jquery对像又取到 vue 对象
-              #user_name = $(this)[0].__vue__.message.user_name
-              #if user_name !=v.user_info.user_name
-              #  v.getUserInfo(user_name)
+              message = $(this)[0].__vue__.message
+              if v.last == null or v.last.created_at<message.created_at
+                v.last = message
+                v.saveLast()
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod

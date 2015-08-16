@@ -9,12 +9,28 @@
         messages: null,
         loading: false,
         current_message_id: null,
-        god_name: null
+        god_name: null,
+        last: null
       },
       ready: function() {
         return this.bindScroll();
       },
       methods: {
+        saveLast: function() {
+          var parm;
+          parm = JSON.stringify({
+            last_time: this.last.created_at,
+            last_message_id: this.last.m_type + '_' + this.last.id
+          });
+          return $.ajax({
+            url: '/save_last',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {};
+            })(this)
+          });
+        },
         freshData: function(parm) {
           this.loading = true;
           return $.ajax({
@@ -107,7 +123,13 @@
             }
             $top = $('#v_messages').offset().top;
             return $('#v_messages .box').each(function() {
+              var message;
               if ($(this).offset().top + $(this).height() >= $top + $(window).scrollTop()) {
+                message = $(this)[0].__vue__.message;
+                if (v.last === null || v.last.created_at < message.created_at) {
+                  v.last = message;
+                  v.saveLast();
+                }
                 return false;
               }
             });
