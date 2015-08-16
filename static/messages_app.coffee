@@ -58,8 +58,10 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
-            for message in data.messages
-              @messages.push(message)
+            @messages = _.uniq _.union(@messages, data.messages), false, (item, key, a) ->
+              item.row_num
+            #for message in data.messages
+            #  @messages.push(message)
             @loading=false
       showTheGod:(god_name)->
         @god_name = god_name

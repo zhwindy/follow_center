@@ -82,12 +82,9 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
-                var i, len, message, ref;
-                ref = data.messages;
-                for (i = 0, len = ref.length; i < len; i++) {
-                  message = ref[i];
-                  _this.messages.push(message);
-                }
+                _this.messages = _.uniq(_.union(_this.messages, data.messages), false, function(item, key, a) {
+                  return item.row_num;
+                });
                 return _this.loading = false;
               };
             })(this)
