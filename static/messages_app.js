@@ -67,7 +67,7 @@
         },
         more: function() {
           var parm;
-          if (this.loading) {
+          if (this.loading || this.message === null) {
             return;
           }
           this.loading = true;

@@ -46,8 +46,9 @@ $ ->
         @freshData(parm)
       more:->
         #避免重复加载
-        if @loading
+        if @loading or @message == null
           return
+
         @loading=true
         parm = JSON.stringify
           offset:@messages.length+1
