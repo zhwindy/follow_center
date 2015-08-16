@@ -52,7 +52,8 @@
           parm = JSON.stringify({
             limit: 30
           });
-          return this.freshData(parm);
+          this.freshData(parm);
+          return this.location.hash = "#twitter_8730";
         },
         more: function() {
           var parm;

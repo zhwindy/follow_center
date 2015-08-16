@@ -36,6 +36,7 @@ $ ->
         parm = JSON.stringify
           limit:30
         @freshData(parm)
+        @location.hash = "#twitter_8730"
       more:->
         #避免重复加载
         if @loading
