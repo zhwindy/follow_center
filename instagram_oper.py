@@ -136,7 +136,7 @@ def check():
 
 
 if __name__ == '__main__':
-    # print getUser('ruanyf')
-    while True:
-        check()
-        time.sleep(300)
+    print getMedia('jackieechen')
+    #while True:
+    #    check()
+    #    time.sleep(300)
