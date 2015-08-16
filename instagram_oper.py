@@ -40,7 +40,6 @@ def getUser(user_name):
         #如果没有这个用户
         if user is None:
             public_db.delNoName('instagram', user_name)
-        return
         #user = api.user_search(user_name, 1)[0]
         user = api.user(user.id)
 
@@ -136,7 +135,6 @@ def check():
 
 
 if __name__ == '__main__':
-    print getMedia('jackieechen')
-    #while True:
-    #    check()
-    #    time.sleep(300)
+    while True:
+        check()
+        time.sleep(300)
