@@ -32,7 +32,7 @@ def check():
 def updateEtag(user_name, etag):
     count = pg.update('github_user', where="lower(login)=lower('%s')" % user_name, etag=etag)
     if count != 1:
-        raise Exception('更新etag 失败, %s' % count)
+        raise Exception('更新etag 失败, %s, user_name=%s' % (count, user_name))
 
 
 def delGithubUser(user_name):
