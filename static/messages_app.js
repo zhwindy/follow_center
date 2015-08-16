@@ -53,7 +53,7 @@
             limit: 30
           });
           this.freshData(parm);
-          return this.location.hash = "#twitter_8730";
+          return window.location.hash = "#twitter_8730";
         },
         more: function() {
           var parm;
