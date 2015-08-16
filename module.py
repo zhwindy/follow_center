@@ -11,10 +11,30 @@ class my_base(base_m.base_m):
     '''
 
     def javascript_files(self):
-        all_js_files = super(my_base, self).javascript_files()
+        self.all_js_files = super(my_base, self).javascript_files()
+
+        simditor_path = self.LIB_PATH + 'simditor-2.1.14/'
+        simditor_script = simditor_path + 'scripts/'
+        simditor_js_files = [
+            simditor_script + 'module.js',
+            simditor_script + 'hotkeys.js',
+            simditor_script + 'uploader.js',
+            simditor_script + 'simditor.js',
+        ]
+        self.all_js_files += simditor_js_files
+
         self.all_js_files.append('/static/component.js')
         self.all_js_files.append('/static/director.js')
         self.all_js_files.append('/static/GreenSock-JS/src/minified/TimelineLite.min.js')
-        return all_js_files
+        return self.all_js_files
+
+    def css_files(self):
+        simditor_path = self.LIB_PATH + 'simditor-2.1.14/'
+        simditor_styles = simditor_path + 'styles/'
+        my_css_files = [
+            simditor_styles + 'simditor.css',
+        ]
+        self.all_css_files += my_css_files
+        return self.all_css_files
 if __name__ == '__main__':
     pass

@@ -262,6 +262,7 @@ Vue.component 'c_user_info',
         </div>
         <div v-html="user_info.slogan">
         </div>
+        <br>
         <hr>
         <form class="form-horizontal">
             <div class="form-group">
@@ -321,11 +322,67 @@ Vue.component 'c_user_info',
   '''
   ready:->
     bz.setOnErrorVm(@)
+    @initSimditor()
   data:->
     loading: false
     disable_edit: true # 禁止编辑
     button_text:'修改资料'
   methods:
+    initSimditor:->
+      log 'initSimditor'
+      toolbar = [
+        'title'
+        'bold'
+        'italic'
+        'underline'
+        'strikethrough'
+        'color'
+        '|'
+        'ol'
+        'ul'
+        'blockquote'
+        'code'
+        'table'
+        '|'
+        'link'
+        'image'
+        'hr'
+        '|'
+        'indent'
+        'outdent'
+        'alignment'
+      ]
+      mobileToolbar = [
+        'bold'
+        'underline'
+        'strikethrough'
+        'color'
+        'ul'
+        'ol'
+      ]
+      small_tool_bar = [
+        'title'
+        'link'
+        'image'
+        'bold'
+      ]
+      if bz.mobilecheck()
+        toolbar = mobileToolbar
+      window.editor = new Simditor(
+        textarea: $('#editor')
+        placeholder: '这里输入文字...'
+        #toolbar: toolbar
+        toolbar: small_tool_bar
+        toolbarFloat:false
+        pasteImage: true
+        defaultImage: 'assets/images/image.png'
+        upload:
+          url: '/upload_image'
+          params: null
+          fileKey: 'upload_file'
+          connectionCount: 3
+          leaveConfirm: '正在上传文件，如果离开上传会自动取消'
+      )
     # 协议可以配置
     autoInsert:(key, scheme='http://')->
       if not @user_info[key]

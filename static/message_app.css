@@ -40,14 +40,6 @@
 .bg-icon-green {
   background: #33b332;
 }
-#user_info {
-  position: fixed;
-  width: 360px;
-  top: 0px;
-}
-.avatar {
-  max-width: 60%;
-}
 @media screen and (max-width: 768px) {
   #user_info {
     display: none;
