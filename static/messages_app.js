@@ -49,7 +49,7 @@
                 _this.messages = data.messages;
                 _this.loading = false;
                 last_message_id = data.last_message_id;
-                if (last_message_id && god_name === null) {
+                if (last_message_id && _this.god_name === null) {
                   return _.delay(_this.dumpToLast, 1000, last_message_id);
                 }
               };

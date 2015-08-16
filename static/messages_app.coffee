@@ -36,7 +36,7 @@ $ ->
             @loading=false
 
             last_message_id = data.last_message_id
-            if last_message_id and god_name == null
+            if last_message_id and @god_name == null
               _.delay(@dumpToLast, 1000, last_message_id)
       all:->
         @god_name = null
