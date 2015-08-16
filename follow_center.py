@@ -157,12 +157,15 @@ class messages_app(tornado_bz.UserInfoHandler):
         god_name = data.get('god_name', None)
         user_id = self.current_user
 
+        last = public_db.getLast(self.current_user)
+        last_message_id = last.last_message_id
+        last_time = last.last_time
+
         if god_name is not None:
             user_id = None
 
-        messages, more, anchor = oper.getMessages(limit, user_id, offset=offset, god_name=god_name)
+        messages, more, anchor = oper.getMessages(limit, user_id, offset=offset, god_name=god_name, last_time=last_time)
 
-        last_message_id = public_db.getLastMessageId(self.current_user)
 
         self.write(json.dumps({'error': '0', 'messages': messages, 'last_message_id':last_message_id}, cls=public_bz.ExtEncoder))
 

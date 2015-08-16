@@ -18,7 +18,6 @@
       methods: {
         dumpToLast: function(last_message_id) {
           var target, y;
-          log(last_message_id);
           target = $('#' + last_message_id);
           y = $(target).offset().top;
           return window.scrollTo(0, y);

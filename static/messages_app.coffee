@@ -13,7 +13,6 @@ $ ->
       @bindScroll()
     methods:
       dumpToLast:(last_message_id)->#跳到上一次的message
-        log last_message_id
         target = $('#'+last_message_id)
         y = $(target).offset().top
         window.scrollTo(0, y)

@@ -5,10 +5,10 @@ import user_bz
 user_oper = user_bz.UserOper(pg)
 
 
-def getLastMessageId(user_id):
+def getLast(user_id):
     result = list(pg.select('last', where="user_id=%s" % user_id))
     if result:
-        return result[0].last_message_id
+        return result[0]
 
 
 def delNoName(type, name):
@@ -90,15 +90,21 @@ def getTwitterMessages():
     return pg.query(sql)
 
 
-def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None, offset=None):
+def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None, offset=None, last_time=None):
     '''
     create by bigzhu at 15/07/14 15:11:44 查出我 Follow 的用户的twitter message
     modify by bigzhu at 15/07/17 01:39:21 过于复杂,合并sql,根据god_name也可以查
     modify by bigzhu at 15/07/19 15:30:55 可以根据type和id查出某一条记录
     modify by bigzhu at 15/07/22 12:49:35 limit 设定取多少条
     modify by bigzhu at 15/08/13 17:20:15 建立view,查询简化得不行
+    modify by bigzhu at 15/08/16 18:09:53 支持对last_time的查询
     '''
     sql = "select * from messages"
+    if offset is None and god_name is None and type is None and id is None and limit is None and last_time is not None:
+        last_time = time_bz.datetimeToTimestamp(last_time) #转为timestamp
+        last_time = last_time - 600 # 后10分钟的也取出来
+        where = ' where created_at>to_timestamp(%s)' % last_time
+
     if type and id:
         sql = '''
         select * from (%s) s
