@@ -426,10 +426,10 @@
           avatar_url = this.god.picture;
         } else if (this.god.github_user) {
           avatar_url = this.god.github_user.avatar_url;
-        } else if (this.god.twitter_user) {
-          avatar_url = this.god.twitter_user.profile_image_url_https;
         } else if (this.god.instagram_user) {
           avatar_url = this.god.instagram_user.profile_picture;
+        } else if (this.god.twitter_user) {
+          avatar_url = this.god.twitter_user.profile_image_url_https;
         }
         avatar_url = btoa(btoa(avatar_url));
         return '/sp/' + avatar_url;
