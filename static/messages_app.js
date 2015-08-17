@@ -19,7 +19,6 @@
       methods: {
         childElDone: function(message_id, el) {
           if (this.god_name === null && this.last_message_id === message_id) {
-            log(el);
             return this.scrollToLastMessage(el);
           }
         },
@@ -41,6 +40,7 @@
         scrollToLastMessage: function(target) {
           var y;
           y = $(target).offset().top;
+          log(y);
           return window.scrollTo(0, y);
         },
         freshData: function(parm) {
