@@ -12,6 +12,7 @@ class my_base(base_m.base_m):
 
     def javascript_files(self):
         self.all_js_files = super(my_base, self).javascript_files()
+        self.version = 1
 
         simditor_path = self.LIB_PATH + 'simditor-2.1.14/'
         simditor_script = simditor_path + 'scripts/'
@@ -23,7 +24,7 @@ class my_base(base_m.base_m):
         ]
         self.all_js_files += simditor_js_files
 
-        self.all_js_files.append('/static/component.js')
+        self.all_js_files.append('/static/component.js?v=%s' % self.version)
         self.all_js_files.append('/static/director.js')
         self.all_js_files.append('/static/GreenSock-JS/src/minified/TimelineLite.min.js')
         return self.all_js_files
