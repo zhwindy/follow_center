@@ -103,7 +103,7 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=50, offse
     sql = "select * from messages"
     if last_time is not None:
         last_time = time_bz.datetimeToTimestamp(last_time)  # 转为timestamp
-        last_time = last_time - 600  # 后10分钟的也取出来
+        last_time = last_time - 30*10*10  # 后30分钟的也取出来
         where = ' where created_at>to_timestamp(%s)' % last_time
         sql += where
 
