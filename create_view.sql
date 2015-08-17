@@ -1,4 +1,4 @@
-    CREATE VIEW messages AS
+    CREATE MATERIALIZED VIEW messages AS
     select * ,ROW_NUMBER() OVER(ORDER BY Id) row_num from (
         select
             ui.user_name,
