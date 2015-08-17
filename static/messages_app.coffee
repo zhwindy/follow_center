@@ -14,7 +14,11 @@ $ ->
       @bindScroll()
     methods:
       childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
+        log message_id
+        log @last_message_id
         if @god_name == null and @last_message_id==message_id
+          log 'yes this message '
+          log el
           @scrollToLastMessage(el)
       saveLast:->
         parm = JSON.stringify
@@ -28,7 +32,6 @@ $ ->
       scrollToLastMessage:(target)->#到上一次的message
         #target = $('#'+last_message_id)
         y = $(target).offset().top
-        log y
         window.scrollTo(0, y)
       freshData:(parm)->
         @loading=true
