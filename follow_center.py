@@ -131,6 +131,7 @@ class main(tornado_bz.UserInfoHandler):
 
 
 class save_last(tornado_bz.UserInfoHandler):
+
     def post(self):
         self.set_header("Content-Type", "application/json")
         data = json.loads(self.request.body)
@@ -141,6 +142,8 @@ class save_last(tornado_bz.UserInfoHandler):
         oper.saveLast(last_time, last_message_id, user_id)
 
         self.write(json.dumps({'error': '0'}, cls=public_bz.ExtEncoder))
+
+
 class messages_app(tornado_bz.UserInfoHandler):
 
     '''
@@ -164,10 +167,11 @@ class messages_app(tornado_bz.UserInfoHandler):
         if god_name is not None:
             user_id = None
 
-        messages, more, anchor = oper.getMessages(limit, user_id, offset=offset, god_name=god_name, last_time=last_time)
+        messages = public_db.getMessages(user_id, limit=limit, god_name=god_name, offset=offset, last_time=last_time)
 
+        #messages, more, anchor = oper.getMessages(limit, user_id, offset=offset, god_name=god_name, last_time=last_time)
 
-        self.write(json.dumps({'error': '0', 'messages': messages, 'last_message_id':last_message_id}, cls=public_bz.ExtEncoder))
+        self.write(json.dumps({'error': '0', 'messages': messages, 'last_message_id': last_message_id}, cls=public_bz.ExtEncoder))
 
 
 class user_info(tornado_bz.UserInfoHandler):
