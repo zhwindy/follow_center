@@ -44,12 +44,13 @@
           y = $(target).offset().top;
           return window.scrollTo(0, y);
         },
-        freshData: function(parm) {
+        all: function() {
+          this.god_name = null;
+          this.user_info = '';
           this.loading = true;
           return $.ajax({
-            url: '/messages_app',
+            url: '/all',
             type: 'POST',
-            data: parm,
             success: (function(_this) {
               return function(data, status, response) {
                 _this.last_message_id = data.last_message_id;
@@ -59,28 +60,26 @@
             })(this)
           });
         },
-        all: function() {
-          var parm;
-          this.god_name = null;
-          this.user_info = '';
-          parm = JSON.stringify({
-            limit: 30
-          });
-          return this.freshData(parm);
-        },
         more: function() {
-          var parm;
+          var parm, url;
           if (this.loading || this.message === null) {
             return;
           }
+          if (this.god_name) {
+            url = '/god';
+            parm = JSON.stringify({
+              offset: this.messages.length + 1,
+              god_name: this.god_name
+            });
+          } else {
+            url = '/more';
+            parm = JSON.stringify({
+              offset: this.messages.length + 1
+            });
+          }
           this.loading = true;
-          parm = JSON.stringify({
-            offset: this.messages.length + 1,
-            god_name: this.god_name,
-            limit: 50
-          });
           return $.ajax({
-            url: '/messages_app',
+            url: url,
             type: 'POST',
             data: parm,
             success: (function(_this) {
@@ -93,13 +92,24 @@
             })(this)
           });
         },
-        showTheGod: function(god_name) {
+        god: function(god_name) {
           var parm;
           this.god_name = god_name;
           parm = JSON.stringify({
             god_name: god_name
           });
-          this.freshData(parm);
+          this.loading = true;
+          $.ajax({
+            url: '/god',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                _this.messages = data.messages;
+                return _this.loading = false;
+              };
+            })(this)
+          });
           return this.getUserInfo(god_name);
         },
         getUserInfo: function(user_name) {
@@ -152,7 +162,7 @@
       }
     });
     routes = {
-      '/god/:god_name': v_messages.showTheGod,
+      '/god/:god_name': v_messages.god,
       '/': v_messages.all
     };
     router = Router(routes);

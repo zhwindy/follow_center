@@ -152,31 +152,64 @@ class messages_app(tornado_bz.UserInfoHandler):
     def get(self):
         self.render(tornado_bz.getTName(self))
 
+
+class all(tornado_bz.UserInfoHandler):
+
+    '''
+    create by bigzhu at 15/08/17 11:12:24 查看我订阅了的message，要定位到上一次看的那条
+    '''
+
     def post(self):
         self.set_header("Content-Type", "application/json")
-        data = json.loads(self.request.body)
-        offset = data.get('offset', None)
-        limit = data.get('limit', None)
-        god_name = data.get('god_name', None)
         user_id = self.current_user
-
-        last = public_db.getLast(self.current_user)
+        # 上次看到哪条？
+        last = public_db.getLast(user_id)
         if last:
             last_message_id = last.last_message_id
             last_time = last.last_time
-            limit = None #如果有上次记录，那么不要限定limit
         else:
             last_message_id = None
             last_time = None
 
-        if god_name is not None:
-            user_id = None
-
-        messages = public_db.getMessages(user_id, limit=limit, god_name=god_name, offset=offset, last_time=last_time)
-
-        #messages, more, anchor = oper.getMessages(limit, user_id, offset=offset, god_name=god_name, last_time=last_time)
+        messages = public_db.getMessages(user_id=user_id, last_time=last_time, limit=None)
 
         self.write(json.dumps({'error': '0', 'messages': messages, 'last_message_id': last_message_id}, cls=public_bz.ExtEncoder))
+
+
+class more(tornado_bz.UserInfoHandler):
+
+    '''
+    create by bigzhu at 15/08/17 11:06:40 用来查all的更多,不需要定位
+    '''
+
+    def post(self):
+        self.set_header("Content-Type", "application/json")
+        data = json.loads(self.request.body)
+
+        offset = data.get('offset')
+        user_id = self.current_user  # 当前用户关注了的
+
+        messages = public_db.getMessages(user_id=user_id, offset=offset)
+
+        self.write(json.dumps({'error': '0', 'messages': messages}, cls=public_bz.ExtEncoder))
+
+
+class god(tornado_bz.UserInfoHandler):
+
+    '''
+    create by bigzhu at 15/08/17 11:06:40 只看这个god的
+    '''
+
+    def post(self):
+        self.set_header("Content-Type", "application/json")
+        data = json.loads(self.request.body)
+
+        god_name = data.get('god_name')
+        offset = data.get('offset', None)
+
+        messages = public_db.getMessages(god_name=god_name, offset=offset)
+
+        self.write(json.dumps({'error': '0', 'messages': messages}, cls=public_bz.ExtEncoder))
 
 
 class user_info(tornado_bz.UserInfoHandler):

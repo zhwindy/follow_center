@@ -91,7 +91,7 @@ def getTwitterMessages():
     return pg.query(sql)
 
 
-def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None, offset=None, last_time=None):
+def getMessages(user_id=None, god_name=None, type=None, id=None, limit=50, offset=None, last_time=None):
     '''
     create by bigzhu at 15/07/14 15:11:44 查出我 Follow 的用户的twitter message
     modify by bigzhu at 15/07/17 01:39:21 过于复杂,合并sql,根据god_name也可以查
@@ -101,8 +101,7 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None, off
     modify by bigzhu at 15/08/16 18:09:53 支持对last_time的查询
     '''
     sql = "select * from messages"
-    print 'offset=', offset, 'god_name=', god_name, 'type=', type, 'id=', id, 'limit=', limit
-    if offset is None and god_name is None and type is None and id is None and limit is None and last_time is not None:
+    if last_time is not None:
         last_time = time_bz.datetimeToTimestamp(last_time)  # 转为timestamp
         last_time = last_time - 600  # 后10分钟的也取出来
         where = ' where created_at>to_timestamp(%s)' % last_time

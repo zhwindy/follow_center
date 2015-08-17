@@ -28,36 +28,34 @@ $ ->
           data : parm
           success: (data, status, response) =>
       scrollToLastMessage:(target)->#到上一次的message
-        #target = $('#'+last_message_id)
         y = $(target).offset().top
         window.scrollTo(0, y)
-      freshData:(parm)->
+      all:-> #查自己订阅了的所有的
+        @god_name = null
+        @user_info = ''
         @loading=true
         $.ajax
-          url: '/messages_app'
+          url: '/all'
           type: 'POST'
-          data : parm
           success: (data, status, response) =>
             @last_message_id = data.last_message_id
             @messages = data.messages
             @loading=false
-      all:->
-        @god_name = null
-        @user_info = ''
-        parm = JSON.stringify
-          limit:30
-        @freshData(parm)
       more:->
-        #避免重复加载
-        if @loading or @message == null
+        if @loading or @message == null #避免重复加载
           return
+        if @god_name
+          url = '/god'
+          parm = JSON.stringify
+            offset:@messages.length+1
+            god_name:@god_name
+        else
+          url = '/more'
+          parm = JSON.stringify
+            offset:@messages.length+1
         @loading=true
-        parm = JSON.stringify
-          offset:@messages.length+1
-          god_name:@god_name
-          limit:50
         $.ajax
-          url: '/messages_app'
+          url: url
           type: 'POST'
           data : parm
           success: (data, status, response) =>
@@ -66,11 +64,18 @@ $ ->
             #for message in data.messages
             #  @messages.push(message)
             @loading=false
-      showTheGod:(god_name)->
+      god:(god_name)->
         @god_name = god_name
         parm = JSON.stringify
           god_name:god_name
-        @freshData(parm)
+        @loading=true
+        $.ajax
+          url: '/god'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            @messages = data.messages
+            @loading=false
         @getUserInfo(god_name)
       getUserInfo:(user_name)->
         if @user_infos[user_name]
@@ -106,7 +111,7 @@ $ ->
                 v.saveLast()
               return false
   routes =
-    '/god/:god_name': v_messages.showTheGod
+    '/god/:god_name': v_messages.god
     '/': v_messages.all
   router = Router(routes)
   router.init('/')
