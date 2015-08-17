@@ -15,6 +15,7 @@ $ ->
     methods:
       childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
         if @god_name == null and @last_message_id==message_id
+          log el
           _.delay(@scrollToLastMessage, 2000, el)
           bz.showNotice5('正在定位到上次查看的信息,请不要操作')
       saveLast:->
