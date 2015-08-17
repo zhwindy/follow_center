@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import pg
 import user_bz
+import time_bz
 user_oper = user_bz.UserOper(pg)
 
 
@@ -100,11 +101,12 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=None, off
     modify by bigzhu at 15/08/16 18:09:53 支持对last_time的查询
     '''
     sql = "select * from messages"
-    print 'offset=',offset,'god_name=',god_name,'type=',type,'id=',id,'limit=',limit
+    print 'offset=', offset, 'god_name=', god_name, 'type=', type, 'id=', id, 'limit=', limit
     if offset is None and god_name is None and type is None and id is None and limit is None and last_time is not None:
-        last_time = time_bz.datetimeToTimestamp(last_time) #转为timestamp
-        last_time = last_time - 600 # 后10分钟的也取出来
+        last_time = time_bz.datetimeToTimestamp(last_time)  # 转为timestamp
+        last_time = last_time - 600  # 后10分钟的也取出来
         where = ' where created_at>to_timestamp(%s)' % last_time
+        sql += where
 
     if type and id:
         sql = '''
