@@ -12,7 +12,7 @@ class my_base(base_m.base_m):
 
     def javascript_files(self):
         self.all_js_files = super(my_base, self).javascript_files()
-        self.version = 1
+        self.version = 2
 
         simditor_path = self.LIB_PATH + 'simditor-2.1.14/'
         simditor_script = simditor_path + 'scripts/'
