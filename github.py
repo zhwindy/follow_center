@@ -68,7 +68,7 @@ def getUserEvent(user_name, etag):
             if org['login'].lower() == user_name.lower():
                 the_user = org
                 #如果是org，那么url不同
-                the_user['url']="https://api.github.com/users/"+user_name
+                the_user['url'] = "https://api.github.com/users/"+user_name
             else:
                 raise("in this github can't find user_name=%s" % user_name)
 
@@ -161,4 +161,5 @@ def saveUser(id, url):
 if __name__ == '__main__':
     while True:
         check()
+        pg.refresh('messages')
         time.sleep(300)
