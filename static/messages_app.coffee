@@ -65,10 +65,10 @@ $ ->
             #  @messages.push(message)
             @loading=false
       god:(god_name)->
+        @loading=true
         @god_name = god_name
         parm = JSON.stringify
           god_name:god_name
-        @loading=true
         $.ajax
           url: '/god'
           type: 'POST'

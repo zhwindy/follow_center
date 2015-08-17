@@ -94,11 +94,11 @@
         },
         god: function(god_name) {
           var parm;
+          this.loading = true;
           this.god_name = god_name;
           parm = JSON.stringify({
             god_name: god_name
           });
-          this.loading = true;
           $.ajax({
             url: '/god',
             type: 'POST',

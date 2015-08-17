@@ -243,7 +243,6 @@ Vue.component 'instagram',
                         (%message.name%)
                     </div>
                 </a>
-    
             </h2>
             <div class="box-tools pull-right">
                 <a class="a-icon" target="_blank" href="(%message.href%)">
@@ -257,9 +256,9 @@ Vue.component 'instagram',
             </div>
         </div>
         <div class="box-body">
-            <p class="description_bz">(%message.text%)</p>
             <img v-attr="src:img_url" class="img-responsive">
             <br>
+            <p class="description_bz">(%message.text%)</p>
         </div>
     </div>
     '''
