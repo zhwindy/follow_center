@@ -63,7 +63,7 @@ class sp(proxy.ProxyHandler):
 
     def get(self, secret):
         url = oper.decodeUrl(secret)
-        #url = 'http://cn.vuejs.org/images/logo.png'
+        url = 'http://cn.vuejs.org/images/logo.png'
         return super(sp, self).get(url)
 
 
@@ -212,6 +212,18 @@ class god(tornado_bz.UserInfoHandler):
         self.write(json.dumps({'error': '0', 'messages': messages}, cls=public_bz.ExtEncoder))
 
 
+class gods(tornado_bz.UserInfoHandler):
+
+    '''
+    create by bigzhu at 15/08/17 13:57:14 查看gods列表
+    '''
+
+    def post(self):
+        self.set_header("Content-Type", "application/json")
+        gods = oper.getGods(self.current_user)
+        self.write(json.dumps({'error': '0', 'gods': gods}, cls=public_bz.ExtEncoder))
+
+
 class user_info(tornado_bz.UserInfoHandler):
 
     def post(self):
@@ -307,18 +319,8 @@ class users(tornado_bz.UserInfoHandler):
 
     def get(self):
         #users = public_db.getUserInfoTwitterUser(self.current_user)
-        users = list(public_db.getGodInfoFollow(self.current_user))
-        will_del = []
-        for user in users:
-            user.twitter_user = public_db.getTwitterUser(user.twitter)
-            user.github_user = public_db.getGithubUser(user.github)
-            user.instagram_user = public_db.getInstagramUser(user.instagram)
-            if user.twitter_user is None and user.github_user is None and user.instagram_user is None:
-                will_del.append(user)
-        for user in will_del:
-            users.remove(user)
-
-        self.render(self.template, users=users)
+        gods = oper.getGods(self.current_user)
+        self.render(self.template, users=gods)
 
 
 class follow(tornado_bz.UserInfoHandler):

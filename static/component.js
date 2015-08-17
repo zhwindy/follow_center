@@ -383,4 +383,45 @@
     }
   });
 
+  Vue.component('c_god', {
+    props: ['god'],
+    computed: {
+      twitter_link: function() {
+        if (this.god.twitter_user) {
+          return "<a class='a-icon' target='_blank' href='https://twitter.com/" + this.god.twitter + "'> <span class='round-icon bg-icon-blue'> <i class='fa fa-twitter'></i> </span> </a> " + this.god.twitter_user.followers_count;
+        } else {
+          return '';
+        }
+      },
+      github_link: function() {
+        if (this.god.github_user) {
+          return "<a class='a-icon' target='_blank' href='https://github.com/" + this.god.github + "'> <span class='round-icon bg-icon-black'> <i class='fa fa-github'></i> </span> </a> " + this.god.github_user.followers;
+        } else {
+          return '';
+        }
+      },
+      instagram_link: function() {
+        if (this.god.instagram_user) {
+          return "<a class='a-icon' target='_blank' href='https://instagram.com/" + this.god.instagram + "'> <span class='round-icon bg-icon-orange'> <i class='fa fa-instagram'></i> </span> </a> " + this.god.instagram_user.counts.followed_by;
+        } else {
+          return '';
+        }
+      },
+      all_link: function() {
+        return this.twitter_link + this.github_link + this.instagram_link;
+      },
+      description: function() {
+        var description;
+        description = '';
+        if (this.god.slogan) {
+          description = this.god.slogan;
+        } else if (this.god.twitter_user) {
+          description = this.god.twitter_user.description;
+        }
+        return description;
+      }
+    },
+    template: '<div  class="box box-solid item">\n    <div class="box-header">\n        <h3 class="box-title">\n            <a href="/#/god/(%god.user_name%)">\n                <img src="(%avatar_url%)" class="direct-chat-img">\n                <div class="name">\n                    (%god.user_name%)\n                </div>\n            </a>\n        </h3>\n        <div class="box-tools pull-right" v-html="all_link">\n        </div>\n    </div>\n    <div class="box-body" v-html="description">\n    </div>\n    <div class="box-footer">\n        <follow followed="(%god.followed%)" god_id="(%god.god_id%)"></follow>\n    </div>\n</div>'
+  });
+
 }).call(this);

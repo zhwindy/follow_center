@@ -11,12 +11,28 @@
         current_message_id: null,
         god_name: null,
         last: null,
-        last_messsage_id: ''
+        last_messsage_id: '',
+        gods: null
       },
       created: function() {
-        return this.bindScroll();
+        this.bindScroll();
+        return this.getGods();
       },
       methods: {
+        getGods: function() {
+          if (this.gods) {
+            return;
+          }
+          return $.ajax({
+            url: '/gods',
+            type: 'POST',
+            success: (function(_this) {
+              return function(data, status, response) {
+                return _this.gods = data.gods;
+              };
+            })(this)
+          });
+        },
         childElDone: function(message_id, el) {
           if (this.god_name === null && this.last_message_id === message_id) {
             log(el);

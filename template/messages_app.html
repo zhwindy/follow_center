@@ -3,7 +3,7 @@
 <link href="/static/message_app.css" rel="stylesheet" type="text/css" />
 {% end %}
 {% block js %}
-<script src="/static/messages_app.js"></script>
+<script src="/static/messages_app.js?v=1"></script>
 {% end %}
 
 {% extends 'base.html' %}
@@ -11,7 +11,7 @@
 
 <div id="v_messages" v-loading="loading" class="row">
     <div  class="col-md-8">
-        <component is="(%message.m_type%)" v-repeat="message:messages" v-transition="fade">
+        <component is="(%message.m_type%)" v-repeat="message in messages" v-transition="fade">
         </component>
         <div v-show="messages" class="row">
             <div class="col-md-4">
@@ -24,6 +24,7 @@
         </div>
     </div>
     <div class="col-md-4">
+        <c_god v-show="!god_name" v-repeat="god in gods"></c_god>
         <c_user_info user_info="(%user_info%)"></c_user_info>
     </div>
 </div>

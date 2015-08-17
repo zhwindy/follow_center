@@ -10,9 +10,19 @@ $ ->
       god_name:null
       last:null#用来放上次看到的message
       last_messsage_id:''#db中查出的上次看到的message_id用来定位
+      gods:null
     created:->
       @bindScroll()
+      @getGods()
     methods:
+      getGods:->
+        if @gods
+          return
+        $.ajax
+          url: '/gods'
+          type: 'POST'
+          success: (data, status, response) =>
+            @gods = data.gods
       childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
         if @god_name == null and @last_message_id==message_id
           log el

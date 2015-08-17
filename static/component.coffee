@@ -475,3 +475,73 @@ Vue.component 'c_user_info',
               throw new Error(data.error)
             else
               bz.showSuccess5("保存成功")
+
+Vue.component 'c_god', #显示god旳list
+  props: [ 'god']
+  computed:
+    twitter_link:->
+      if @god.twitter_user
+        return "
+                  <a class='a-icon' target='_blank' href='https://twitter.com/#{@god.twitter}'>
+                      <span class='round-icon bg-icon-blue'>
+                          <i class='fa fa-twitter'></i>
+                      </span>
+                  </a>
+                  #{@god.twitter_user.followers_count}
+        "
+      else
+        return ''
+    github_link:->
+      if @god.github_user
+        return "
+                  <a class='a-icon' target='_blank' href='https://github.com/#{@god.github}'>
+                      <span class='round-icon bg-icon-black'>
+                          <i class='fa fa-github'></i>
+                      </span>
+                  </a>
+                  #{@god.github_user.followers}
+        "
+      else
+        return ''
+    instagram_link:->
+      if @god.instagram_user
+        return "
+                  <a class='a-icon' target='_blank' href='https://instagram.com/#{@god.instagram}'>
+                      <span class='round-icon bg-icon-orange'>
+                          <i class='fa fa-instagram'></i>
+                      </span>
+                  </a>
+                #{@god.instagram_user.counts.followed_by}
+        "
+      else
+        return ''
+    all_link:->
+      return @twitter_link + @github_link + @instagram_link
+    description:->
+      description = ''
+      if @god.slogan
+        description = @god.slogan
+      else if @god.twitter_user
+        description = @god.twitter_user.description
+      return description
+  template: '''
+    <div  class="box box-solid item">
+        <div class="box-header">
+            <h3 class="box-title">
+                <a href="/#/god/(%god.user_name%)">
+                    <img src="(%avatar_url%)" class="direct-chat-img">
+                    <div class="name">
+                        (%god.user_name%)
+                    </div>
+                </a>
+            </h3>
+            <div class="box-tools pull-right" v-html="all_link">
+            </div>
+        </div>
+        <div class="box-body" v-html="description">
+        </div>
+        <div class="box-footer">
+            <follow followed="(%god.followed%)" god_id="(%god.god_id%)"></follow>
+        </div>
+    </div>
+  '''
