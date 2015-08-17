@@ -18,7 +18,8 @@
       },
       methods: {
         childElDone: function(message_id, el) {
-          if (this.last_message_id && this.god_name === null && this.last_messsage_id === message_id) {
+          if (this.god_name === null && this.last_message_id === message_id) {
+            log(el);
             return this.scrollToLastMessage(el);
           }
         },
@@ -50,6 +51,8 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
+                log(data.last_message_id);
+                _this.last_message_id = data.last_message_id;
                 _this.messages = data.messages;
                 return _this.loading = false;
               };
