@@ -122,7 +122,8 @@
             success: (function(_this) {
               return function(data, status, response) {
                 _this.messages = data.messages;
-                return _this.loading = false;
+                _this.loading = false;
+                return window.scrollTo(0, 0);
               };
             })(this)
           });

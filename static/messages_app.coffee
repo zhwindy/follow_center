@@ -86,6 +86,7 @@ $ ->
           success: (data, status, response) =>
             @messages = data.messages
             @loading=false
+            window.scrollTo(0, 0) #回到顶端
         @getUserInfo(god_name)
       getUserInfo:(user_name)->
         if @user_infos[user_name]
