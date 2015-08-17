@@ -14,11 +14,7 @@ $ ->
       @bindScroll()
     methods:
       childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
-        log message_id
-        log @last_message_id
         if @god_name == null and @last_message_id==message_id
-          log 'yes this message '
-          log el
           @scrollToLastMessage(el)
       saveLast:->
         parm = JSON.stringify
@@ -40,7 +36,6 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
-            log data.last_message_id
             @last_message_id = data.last_message_id
             @messages = data.messages
             @loading=false

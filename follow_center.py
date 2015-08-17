@@ -161,8 +161,13 @@ class messages_app(tornado_bz.UserInfoHandler):
         user_id = self.current_user
 
         last = public_db.getLast(self.current_user)
-        last_message_id = last.last_message_id
-        last_time = last.last_time
+        if last:
+            last_message_id = last.last_message_id
+            last_time = last.last_time
+            limit = None #如果有上次记录，那么不要限定limit
+        else:
+            last_message_id = None
+            last_time = None
 
         if god_name is not None:
             user_id = None
