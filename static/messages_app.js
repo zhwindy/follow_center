@@ -19,7 +19,7 @@
       methods: {
         childElDone: function(message_id, el) {
           if (this.god_name === null && this.last_message_id === message_id) {
-            log(this.last_message_id);
+            log(el);
             return this.scrollToLastMessage(el);
           }
         },
