@@ -37,7 +37,7 @@
           if (this.god_name === null && this.last_message_id === message_id) {
             log(el);
             _.delay(this.scrollToLastMessage, 2000, el);
-            return bz.showNotice5('正在定位到上次查看的信息,请不要操作');
+            return bz.showNotice5('定位上次的信息...');
           }
         },
         saveLast: function() {

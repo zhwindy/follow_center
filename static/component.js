@@ -419,9 +419,23 @@
           description = this.god.twitter_user.description;
         }
         return description;
+      },
+      avatar: function() {
+        var avatar_url;
+        if (this.god.picture) {
+          avatar_url = this.god.picture;
+        } else if (this.god.github_user) {
+          avatar_url = this.god.github_user.avatar_url;
+        } else if (this.god.twitter_user) {
+          avatar_url = this.god.twitter_user.profile_image_url_https;
+        } else if (this.god.instagram_user) {
+          avatar_url = this.god.instagram_user.profile_picture;
+        }
+        avatar_url = btoa(btoa(avatar_url));
+        return '/sp/' + avatar_url;
       }
     },
-    template: '<div  class="box box-solid item">\n    <div class="box-header">\n        <h3 class="box-title">\n            <a href="/#/god/(%god.user_name%)">\n                <img src="(%avatar_url%)" class="direct-chat-img">\n                <div class="name">\n                    (%god.user_name%)\n                </div>\n            </a>\n        </h3>\n        <div class="box-tools pull-right" v-html="all_link">\n        </div>\n    </div>\n    <div class="box-body" v-html="description">\n    </div>\n    <div class="box-footer">\n        <follow followed="(%god.followed%)" god_id="(%god.god_id%)"></follow>\n    </div>\n</div>'
+    template: '<div  class="box box-solid item">\n    <div class="box-header">\n        <h3 class="box-title">\n            <a href="/#/god/(%god.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%god.user_name%)\n                </div>\n            </a>\n        </h3>\n        <div class="box-tools pull-right" v-html="all_link">\n        </div>\n    </div>\n    <div class="box-body" v-html="description">\n    </div>\n    <div class="box-footer">\n        <follow followed="(%god.followed%)" god_id="(%god.god_id%)"></follow>\n    </div>\n</div>'
   });
 
 }).call(this);

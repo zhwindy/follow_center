@@ -524,12 +524,27 @@ Vue.component 'c_god', #显示god旳list
       else if @god.twitter_user
         description = @god.twitter_user.description
       return description
+    avatar:->
+      if @god.picture
+        avatar_url = @god.picture
+      else if @god.github_user
+        avatar_url = @god.github_user.avatar_url
+      else if @god.twitter_user
+        avatar_url = @god.twitter_user.profile_image_url_https
+      else if @god.instagram_user
+        avatar_url = @god.instagram_user.profile_picture
+
+      avatar_url = btoa(btoa(avatar_url))
+      return '/sp/'+avatar_url
+
+
+
   template: '''
     <div  class="box box-solid item">
         <div class="box-header">
             <h3 class="box-title">
                 <a href="/#/god/(%god.user_name%)">
-                    <img src="(%avatar_url%)" class="direct-chat-img">
+                    <img v-attr="src:avatar" class="direct-chat-img">
                     <div class="name">
                         (%god.user_name%)
                     </div>
