@@ -9,13 +9,13 @@ $ ->
       current_message_id:null
       god_name:null
       last:null#用来放上次看到的message
+      last_messsage_id:''#db中查出的上次看到的message_id用来定位
     created:->
       @bindScroll()
     methods:
-      dumpToLast:(last_message_id)->#跳到上一次的message
-        target = $('#'+last_message_id)
-        y = $(target).offset().top
-        window.scrollTo(0, y)
+      childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
+        if @last_message_id and @god_name == null and @last_messsage_id==message_id
+          @scrollToLastMessage(el)
       saveLast:->
         parm = JSON.stringify
           last_time:@last.created_at
@@ -25,6 +25,10 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
+      scrollToLastMessage:(target)->#到上一次的message
+        #target = $('#'+last_message_id)
+        y = $(target).offset().top
+        window.scrollTo(0, y)
       freshData:(parm)->
         @loading=true
         $.ajax
@@ -34,10 +38,6 @@ $ ->
           success: (data, status, response) =>
             @messages = data.messages
             @loading=false
-
-            last_message_id = data.last_message_id
-            if last_message_id and @god_name == null
-              _.delay(@dumpToLast, 1000, last_message_id)
       all:->
         @god_name = null
         @user_info = ''
@@ -48,7 +48,6 @@ $ ->
         #避免重复加载
         if @loading or @message == null
           return
-
         @loading=true
         parm = JSON.stringify
           offset:@messages.length+1
@@ -102,7 +101,6 @@ $ ->
               if v.last == null or v.last.created_at<message.created_at
                 v.last = message
                 v.saveLast()
-                log v.last
               return false
   routes =
     '/god/:god_name': v_messages.showTheGod

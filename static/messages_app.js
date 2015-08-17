@@ -10,17 +10,17 @@
         loading: false,
         current_message_id: null,
         god_name: null,
-        last: null
+        last: null,
+        last_messsage_id: ''
       },
       created: function() {
         return this.bindScroll();
       },
       methods: {
-        dumpToLast: function(last_message_id) {
-          var target, y;
-          target = $('#' + last_message_id);
-          y = $(target).offset().top;
-          return window.scrollTo(0, y);
+        childElDone: function(message_id, el) {
+          if (this.last_message_id && this.god_name === null && this.last_messsage_id === message_id) {
+            return this.scrollToLastMessage(el);
+          }
         },
         saveLast: function() {
           var parm;
@@ -37,6 +37,11 @@
             })(this)
           });
         },
+        scrollToLastMessage: function(target) {
+          var y;
+          y = $(target).offset().top;
+          return window.scrollTo(0, y);
+        },
         freshData: function(parm) {
           this.loading = true;
           return $.ajax({
@@ -45,13 +50,8 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
-                var last_message_id;
                 _this.messages = data.messages;
-                _this.loading = false;
-                last_message_id = data.last_message_id;
-                if (last_message_id && _this.god_name === null) {
-                  return _.delay(_this.dumpToLast, 1000, last_message_id);
-                }
+                return _this.loading = false;
               };
             })(this)
           });
@@ -140,7 +140,6 @@
                 if (v.last === null || v.last.created_at < message.created_at) {
                   v.last = message;
                   v.saveLast();
-                  log(v.last);
                 }
                 return false;
               }
