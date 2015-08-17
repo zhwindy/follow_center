@@ -15,6 +15,7 @@ $ ->
     methods:
       childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
         if @god_name == null and @last_message_id==message_id
+          log @last_message_id
           @scrollToLastMessage(el)
       saveLast:->
         parm = JSON.stringify
