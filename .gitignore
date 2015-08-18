@@ -20,3 +20,4 @@ agent.conf
 agent.log
 *.orig
 *.swo
+conf/
