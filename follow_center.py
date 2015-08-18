@@ -160,6 +160,8 @@ class all(tornado_bz.UserInfoHandler):
     '''
 
     def post(self):
+        #import datetime
+        #print datetime.datetime.now()
         self.set_header("Content-Type", "application/json")
         user_id = self.current_user
         # 上次看到哪条？
@@ -173,6 +175,7 @@ class all(tornado_bz.UserInfoHandler):
 
         messages = public_db.getMessages(user_id=user_id, last_time=last_time, limit=None)
 
+        #print datetime.datetime.now()
         self.write(json.dumps({'error': '0', 'messages': messages, 'last_message_id': last_message_id}, cls=public_bz.ExtEncoder))
 
 

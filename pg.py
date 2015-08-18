@@ -71,6 +71,10 @@ def query(*args, **kwargs):
         print kwargs
 
 
+def refresh(view_name):
+    db.query('REFRESH MATERIALIZED VIEW %s' % view_name)
+
+
 @daemon
 def update(*args, **kwargs):
     return db.update(*args, **kwargs)
