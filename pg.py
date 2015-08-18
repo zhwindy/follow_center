@@ -9,8 +9,16 @@ import psycopg2
 import public_bz
 import time
 
-DB_IP = '127.0.0.1'
-#DB_IP = 'bigzhu.org'
+import ConfigParser
+config = ConfigParser.ConfigParser()
+with open('conf/db.ini', 'r') as cfg_file:
+    config.readfp(cfg_file)
+    host = config.get('db', 'host')
+    port = config.get('db', 'port')
+    the_db = config.get('db', 'db')
+    user = config.get('db', 'user')
+    pw = config.get('db', 'pw')
+
 db = None
 
 
@@ -18,12 +26,12 @@ def connect():
     global db
     db = webpy_db.database(
         port=5432,
-        host=DB_IP,
+        host=host,
         dbn='postgres',
-        db='follow_center',
-        user='follow_center',
-        pw='follow_center')
-    print '开始连接数据库 %s' % DB_IP
+        db=the_db,
+        user=user,
+        pw=pw)
+    print '开始连接数据库 %s' % host
 
 connect()
 
