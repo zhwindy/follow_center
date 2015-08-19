@@ -105,12 +105,11 @@ $ ->
       bindScroll:->
         v = @
         $(window).scroll ->
+          $top = $('#v_messages').offset().top
           #当滚动到最底部以上100像素时， 加载新内容
-          log $(document).height() - $(this).scrollTop() - $(this).height()
-          if ($(document).height() - $(this).scrollTop() - $(this).height()) == 0
+          if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0
             v.more()
           #选出当前正在看的message
-          $top = $('#v_messages').offset().top
           $('#v_messages .col-md-8 .box').each ->
             if $(this).offset().top+$(this).height() >= $top + $(window).scrollTop()
               #log 'this:'+$(this).offset().top+$(this).height()
