@@ -156,11 +156,12 @@
           v = this;
           return $(window).scroll(function() {
             var $top;
+            log($(document).height() - $(this).scrollTop() - $(this).height());
             if (($(document).height() - $(this).scrollTop() - $(this).height()) === 0) {
               v.more();
             }
             $top = $('#v_messages').offset().top;
-            return $('#v_messages .box').each(function() {
+            return $('#v_messages .col-md-8 .box').each(function() {
               var message;
               if ($(this).offset().top + $(this).height() >= $top + $(window).scrollTop()) {
                 if (v.god_name !== null) {

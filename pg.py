@@ -25,7 +25,7 @@ db = None
 def connect():
     global db
     db = webpy_db.database(
-        port=5432,
+        port=port,
         host=host,
         dbn='postgres',
         db=the_db,

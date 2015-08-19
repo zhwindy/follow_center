@@ -250,6 +250,15 @@ class last(model_oper_bz.base):
     last_time = DateTimeField()
     last_message_id = TextField()
 
+
+class user_info(model_oper_bz.user_info):
+
+    '''
+    create by bigzhu at 15/08/19 09:27:08 增加18+
+    '''
+    porn = IntegerField()  # 1 荤的，0 素的
+
+
 if __name__ == '__main__':
     # 需要用户登录模块
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name, user='follow_center', password='follow_center', host='bigzhu.org')
