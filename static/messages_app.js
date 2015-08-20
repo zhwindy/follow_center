@@ -18,6 +18,7 @@
         this.bindScroll();
         return this.getGods();
       },
+      ready: function() {},
       methods: {
         getGods: function() {
           if (this.gods) {
@@ -35,7 +36,6 @@
         },
         childElDone: function(message_id, el) {
           if (this.god_name === null && this.last_message_id === message_id) {
-            log(el);
             _.delay(this.scrollToLastMessage, 2000, el);
             return bz.showNotice5('定位上次的信息...');
           }

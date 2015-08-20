@@ -8,11 +8,12 @@ class my_base(base_m.base_m):
 
     '''
     create by bigzhu at 15/08/06 15:32:30 为了自定义自已的js
+    modify by bigzhu at 15/08/20 09:58:41 add layzr.min.js
     '''
 
     def javascript_files(self):
         self.all_js_files = super(my_base, self).javascript_files()
-        self.version = 6
+        self.version = 11
 
         simditor_path = self.LIB_PATH + 'simditor-2.1.14/'
         simditor_script = simditor_path + 'scripts/'
@@ -27,6 +28,7 @@ class my_base(base_m.base_m):
         self.all_js_files.append('/static/component.js?v=%s' % self.version)
         self.all_js_files.append('/static/director.js')
         self.all_js_files.append('/static/GreenSock-JS/src/minified/TimelineLite.min.js')
+        self.all_js_files.append('/lib_static/lib/layzr.js/dist/layzr.min.js')  # 图片延迟加载，用来占位，保证定位正确
         return self.all_js_files
 
     def css_files(self):
