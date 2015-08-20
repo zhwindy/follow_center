@@ -140,7 +140,8 @@
     ready: function() {
       var message_id;
       message_id = this.message.m_type + '_' + this.message.id;
-      return this.$parent.childElDone(message_id, this.$el);
+      this.$parent.childElDone(message_id, this.$el);
+      return this.is_mobile = bz.mobilecheck();
     },
     computed: {
       avatar: function() {
@@ -151,12 +152,20 @@
       medias: function() {
         if (this.message.extended_entities) {
           return _.map(this.message.extended_entities.media, function(d) {
-            var t;
-            t = {
-              img_url: '/sp/' + btoa(btoa(d.media_url_https)),
-              height: d.sizes.large.h,
-              width: d.sizes.large.w
-            };
+            var height, img_url, t, width;
+            img_url = '/sp/' + btoa(btoa(d.media_url_https));
+            if (this.is_mobile) {
+              height = d.sizes.medium.h;
+              width = d.sizes.medium.w;
+            } else {
+              height = d.sizes.large.h;
+              width = d.sizes.large.w;
+              t = {
+                img_url: img_url,
+                height: height,
+                width: width
+              };
+            }
             return t;
           });
         }
