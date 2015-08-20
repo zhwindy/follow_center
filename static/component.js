@@ -140,8 +140,7 @@
     ready: function() {
       var message_id;
       message_id = this.message.m_type + '_' + this.message.id;
-      this.$parent.childElDone(message_id, this.$el);
-      return this.is_mobile = bz.mobilecheck();
+      return this.$parent.childElDone(message_id, this.$el);
     },
     computed: {
       avatar: function() {
@@ -152,20 +151,23 @@
       medias: function() {
         if (this.message.extended_entities) {
           return _.map(this.message.extended_entities.media, function(d) {
-            var height, img_url, t, width;
+            var img_height, img_url, img_width, real_height, real_width, t;
             img_url = '/sp/' + btoa(btoa(d.media_url_https));
-            if (this.is_mobile) {
-              height = d.sizes.medium.h;
-              width = d.sizes.medium.w;
+            real_width = $(window).width() - 50;
+            img_height = d.sizes.large.h;
+            img_width = d.sizes.large.w;
+            if (real_width <= img_width) {
+              real_height = real_width * img_height / img_width;
             } else {
-              height = d.sizes.large.h;
-              width = d.sizes.large.w;
-              t = {
-                img_url: img_url,
-                height: height,
-                width: width
-              };
+              real_height = img_height;
+              real_width = img_width;
             }
+            t = {
+              img_url: img_url,
+              height: real_height,
+              width: real_width
+            };
+            log(t);
             return t;
           });
         }

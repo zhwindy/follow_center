@@ -109,7 +109,6 @@ Vue.component 'twitter',
   ready:->
     message_id = @message.m_type+'_'+@message.id
     @$parent.childElDone(message_id, @$el)
-    @is_mobile = bz.mobilecheck()
   computed:
     #v-attr只接收变量,为了用proxy,这里要处理
     avatar:->
@@ -119,16 +118,19 @@ Vue.component 'twitter',
       if @message.extended_entities
         return _.map(@message.extended_entities.media, (d)->
           img_url = '/sp/'+btoa(btoa(d.media_url_https))
-          if @is_mobile
-            height = d.sizes.medium.h
-            width = d.sizes.medium.w
+          real_width = $(window).width()-50
+          img_height = d.sizes.large.h
+          img_width = d.sizes.large.w
+          if real_width<=img_width
+            real_height = real_width*img_height/img_width
           else
-            height = d.sizes.large.h
-            width = d.sizes.large.w
-            t =
-              img_url: img_url
-              height: height
-              width: width
+            real_height = img_height
+            real_width = img_width
+          t =
+            img_url: img_url
+            height: real_height
+            width: real_width
+          log t
           return t
           )
     text:->
