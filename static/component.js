@@ -167,12 +167,12 @@
             img_height = d.sizes.large.h;
             img_width = d.sizes.large.w;
             max_width = $(window).width();
+            max_width = $(window).width() - 50;
             if (max_width <= 768) {
-              max_width = $(window).width() - 50;
-              log(max_width);
               real_height = calculateHeight(img_height, img_width, max_width);
             } else {
               max_width = $('#v_messages > .col-md-8').width();
+              max_width = $(window).width() - 50;
               real_height = calculateHeight(img_height, img_width, max_width);
             }
             t = {
