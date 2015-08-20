@@ -120,7 +120,7 @@ Vue.component 'twitter',
           t =
             img_url: '/sp/'+btoa(btoa(d.media_url_https))
             height: d.sizes.large.h
-            width:d.sizes.large.w
+            width: d.sizes.large.w
           return t
           )
     text:->
@@ -150,13 +150,12 @@ Vue.component 'twitter',
                 <div class="box-body">
                     <p class="description_bz" v-html="text"></p>
                     <template v-repeat="media:medias">
-                        <img v-attr="src:media.img_url,width:meida.width,height:meida.height" class="my-img-responsive" >
+                        <img v-attr="src:media.img_url, width:media.width, height:media.height" class="my-img-responsive" >
                         <br>
                     </template>
                 </div>
             </div>
             '''
-{"media": [{"id": 621850661668323328, "url": "http://t.co/AcQeCc7wKt", "type": "photo", "sizes": {"large": {"h": 1270, "w": 500, "resize": "fit"}, "small": {"h": 680, "w": 267, "resize": "fit"}, "thumb": {"h": 150, "w": 150, "resize": "crop"}, "medium": {"h": 1200, "w": 472, "resize": "fit"}}, "id_str": "621850661668323328", "indices": [20, 42], "media_url": "http://pbs.twimg.com/media/CKFB4dAVAAASjAK.png", "display_url": "pic.twitter.com/AcQeCc7wKt", "expanded_url": "http://twitter.com/ruanyf/status/621850663404724224/photo/1", "media_url_https": "https://pbs.twimg.com/media/CKFB4dAVAAASjAK.png"}]}
 Vue.component 'github',
   props: [ 'message']
   ready:->
