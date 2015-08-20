@@ -44,6 +44,16 @@ Vue.transition 'fade',
     $(el).stop()
     return
 
+calculateHeight = (img_height, img_width, max_width)->
+  log max_width
+  if max_width<=img_width
+    real_height = max_width*img_height/img_width
+  else
+    real_height = img_height
+  return real_height
+
+
+
 Vue.component 'follow',
   props: [ 'followed', 'god_id']
   template: '<button v-on="click:toggleFollow" type="button" class="btn btn-sm" aria-label="Left Align"></button>'
@@ -109,8 +119,7 @@ Vue.component 'twitter',
   ready:->
     message_id = @message.m_type+'_'+@message.id
     @$parent.childElDone(message_id, @$el)
-  computed:
-    #v-attr只接收变量,为了用proxy,这里要处理
+  computed:#v-attr只接收变量,为了用proxy,这里要处理
     avatar:->
       avatar = btoa(btoa(@message.avatar))
       return '/sp/'+avatar
@@ -118,19 +127,20 @@ Vue.component 'twitter',
       if @message.extended_entities
         return _.map(@message.extended_entities.media, (d)->
           img_url = '/sp/'+btoa(btoa(d.media_url_https))
-          real_width = $(window).width()-50
           img_height = d.sizes.large.h
           img_width = d.sizes.large.w
-          if real_width<=img_width
-            real_height = real_width*img_height/img_width
-          else
-            real_height = img_height
-            real_width = img_width
+
+          max_width = $(window).width()
+          if max_width <= 768 #小屏幕，应该这时占满整个屏幕了
+            max_width = $(window).width()-50
+            log max_width
+            real_height = calculateHeight(img_height, img_width, max_width)
+          else #取真正能显示图片的大小
+            max_width = $('#v_messages > .col-md-8').width()
+            real_height = calculateHeight(img_height, img_width, max_width)
           t =
             img_url: img_url
             height: real_height
-            width: real_width
-          log t
           return t
           )
     text:->
@@ -160,12 +170,13 @@ Vue.component 'twitter',
                 <div class="box-body">
                     <p class="description_bz" v-html="text"></p>
                     <template v-repeat="media:medias">
-                        <img v-attr="src:media.img_url, width:media.width, height:media.height" class="my-img-responsive" >
+                        <img v-attr="src:media.img_url, height:media.height" class="my-img-responsive" >
                         <br>
                     </template>
                 </div>
             </div>
             '''
+
 Vue.component 'github',
   props: [ 'message']
   ready:->

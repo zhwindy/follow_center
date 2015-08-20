@@ -1,5 +1,5 @@
 (function() {
-  var autoLink,
+  var autoLink, calculateHeight,
     slice = [].slice;
 
   autoLink = function() {
@@ -50,6 +50,17 @@
       $(el).stop();
     }
   });
+
+  calculateHeight = function(img_height, img_width, max_width) {
+    var real_height;
+    log(max_width);
+    if (max_width <= img_width) {
+      real_height = max_width * img_height / img_width;
+    } else {
+      real_height = img_height;
+    }
+    return real_height;
+  };
 
   Vue.component('follow', {
     props: ['followed', 'god_id'],
@@ -151,23 +162,23 @@
       medias: function() {
         if (this.message.extended_entities) {
           return _.map(this.message.extended_entities.media, function(d) {
-            var img_height, img_url, img_width, real_height, real_width, t;
+            var img_height, img_url, img_width, max_width, real_height, t;
             img_url = '/sp/' + btoa(btoa(d.media_url_https));
-            real_width = $(window).width() - 50;
             img_height = d.sizes.large.h;
             img_width = d.sizes.large.w;
-            if (real_width <= img_width) {
-              real_height = real_width * img_height / img_width;
+            max_width = $(window).width();
+            if (max_width <= 768) {
+              max_width = $(window).width() - 50;
+              log(max_width);
+              real_height = calculateHeight(img_height, img_width, max_width);
             } else {
-              real_height = img_height;
-              real_width = img_width;
+              max_width = $('#v_messages > .col-md-8').width();
+              real_height = calculateHeight(img_height, img_width, max_width);
             }
             t = {
               img_url: img_url,
-              height: real_height,
-              width: real_width
+              height: real_height
             };
-            log(t);
             return t;
           });
         }
@@ -179,7 +190,7 @@
         });
       }
     },
-    template: '<div id="twitter_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="#/god/(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-blue">\n                    <i class="fa fa-twitter"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz" v-html="text"></p>\n        <template v-repeat="media:medias">\n            <img v-attr="src:media.img_url, width:media.width, height:media.height" class="my-img-responsive" >\n            <br>\n        </template>\n    </div>\n</div>'
+    template: '<div id="twitter_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="#/god/(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-blue">\n                    <i class="fa fa-twitter"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz" v-html="text"></p>\n        <template v-repeat="media:medias">\n            <img v-attr="src:media.img_url, height:media.height" class="my-img-responsive" >\n            <br>\n        </template>\n    </div>\n</div>'
   });
 
   Vue.component('github', {
