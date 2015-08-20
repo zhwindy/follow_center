@@ -130,13 +130,11 @@ Vue.component 'twitter',
           img_height = d.sizes.large.h
           img_width = d.sizes.large.w
 
-          max_width = $(window).width()
           max_width = $(window).width()-50
           if max_width <= 768 #小屏幕，应该这时占满整个屏幕了
             real_height = calculateHeight(img_height, img_width, max_width)
           else #取真正能显示图片的大小
-            max_width = $('#v_messages > .col-md-8').width()
-            max_width = $(window).width()-50
+            max_width = $('#v_messages > .col-md-8').width()-50
             real_height = calculateHeight(img_height, img_width, max_width)
           t =
             img_url: img_url
