@@ -233,6 +233,10 @@ Vue.component 'instagram',
     img_url:->
       img_url = btoa(btoa(@message.extended_entities.url))
       return '/sp/'+img_url
+    width:->
+      return @message.extended_entities.width
+    height:->
+      return @message.extended_entities.height
   template:'''
     <div id="instagram_(%message.id%)" class="box box-solid item">
         <div class="box-header">
@@ -258,7 +262,7 @@ Vue.component 'instagram',
         <div class="box-body">
             <p class="description_bz">(%message.text%)</p>
             <br>
-            <img src="/static/images/nothing.svg" v-attr="src:img_url" class="img-responsive">
+            <img v-attr="src:img_url,width:width,height:height" >
             <br>
             <p class="description_bz">(%message.text%)</p>
         </div>
