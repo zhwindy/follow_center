@@ -26,7 +26,7 @@ $ ->
             @gods = data.gods
       childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
         if @god_name == null and @last_message_id==message_id
-          _.delay(@scrollToLastMessage, 2000, el)
+          _.delay(@scrollToLastMessage, 500, el)
           bz.showNotice5('定位上次的信息...')
       saveLast:->
         parm = JSON.stringify

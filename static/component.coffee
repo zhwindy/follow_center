@@ -146,7 +146,7 @@ Vue.component 'twitter',
                 <div class="box-body">
                     <p class="description_bz" v-html="text"></p>
                     <template v-repeat="url:medias">
-                        <img v-attr="src:url" class="img-responsive" >
+                        <img src="/static/images/nothing.svg" v-attr="src:url" class="img-responsive" >
                         <br>
                     </template>
                 </div>
@@ -258,7 +258,7 @@ Vue.component 'instagram',
         <div class="box-body">
             <p class="description_bz">(%message.text%)</p>
             <br>
-            <img src="/lib_static/images/avatar.svg" v-attr="src:img_url" class="img-responsive">
+            <img src="/static/images/nothing.svg" v-attr="src:img_url" class="img-responsive">
             <br>
             <p class="description_bz">(%message.text%)</p>
         </div>

@@ -36,7 +36,7 @@
         },
         childElDone: function(message_id, el) {
           if (this.god_name === null && this.last_message_id === message_id) {
-            _.delay(this.scrollToLastMessage, 2000, el);
+            _.delay(this.scrollToLastMessage, 500, el);
             return bz.showNotice5('定位上次的信息...');
           }
         },
