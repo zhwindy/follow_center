@@ -42,7 +42,6 @@ def daemon(method):
     '''
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
-        return method(self, *args, **kwargs)
         try:
             return method(self, *args, **kwargs)
         #except(psycopg2.OperationalError, psycopg2.InterfaceError, psycopg2.DatabaseError):
