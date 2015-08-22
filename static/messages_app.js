@@ -108,6 +108,27 @@
             })(this)
           });
         },
+        "new": function() {
+          if (this.loading || this.message === null) {
+            return;
+          }
+          if (this.god_name) {
+            return;
+          }
+          this.loading = true;
+          return $.ajax({
+            url: '/all',
+            type: 'POST',
+            success: (function(_this) {
+              return function(data, status, response) {
+                _this.messages = _.uniq(_.union(_this.messages, data.messages), false, function(item, key, a) {
+                  return item.row_num;
+                });
+                return _this.loading = false;
+              };
+            })(this)
+          });
+        },
         god: function(god_name) {
           var parm;
           this.loading = true;
@@ -157,6 +178,9 @@
           return $(window).scroll(function() {
             var $top;
             $top = $('#v_messages').offset().top;
+            if ($(this).scrollTop() === 0) {
+              v["new"]();
+            }
             if (($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
               v.more();
             }

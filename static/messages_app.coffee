@@ -74,6 +74,19 @@ $ ->
             #for message in data.messages
             #  @messages.push(message)
             @loading=false
+      new:->
+        if @loading or @message == null #避免重复加载
+          return
+        if @god_name
+          return
+        @loading=true
+        $.ajax
+          url: '/all'
+          type: 'POST'
+          success: (data, status, response) =>
+            @messages = _.uniq _.union(@messages, data.messages), false, (item, key, a) ->
+              item.row_num
+            @loading=false
       god:(god_name)->
         @loading=true
         @god_name = god_name
@@ -106,6 +119,9 @@ $ ->
         v = @
         $(window).scroll ->
           $top = $('#v_messages').offset().top
+          #滚动到最上面时，加载新的内容
+          if $(this).scrollTop() == 0
+            v.new()
           #当滚动到最底部以上100像素时， 加载新内容
           if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0
             v.more()
