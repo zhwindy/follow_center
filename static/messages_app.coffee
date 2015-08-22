@@ -97,6 +97,7 @@ $ ->
           url: '/all'
           type: 'POST'
           success: (data, status, response) =>
+            log data.messages
             @last_message_id = data.last_message_id
             @messages = _.uniq _.union(@messages, data.messages), false, (item, key, a) ->
               item.row_num
