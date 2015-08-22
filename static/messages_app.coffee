@@ -38,6 +38,7 @@ $ ->
           _.delay(@scrollToLastMessage, 500, el)
           bz.showNotice5('定位上次的信息...')
       saveLast:->
+        @last_message_id = @last.m_type+'_'+@last.id
         parm = JSON.stringify
           last_time:@last.created_at
           last_message_id:@last.m_type+'_'+@last.id
@@ -46,6 +47,7 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
+            log 'setUnreadCount'
             @setUnreadCount()
       scrollToLastMessage:(target)->#到上一次的message
         @setUnreadCount()

@@ -57,6 +57,7 @@
         },
         saveLast: function() {
           var parm;
+          this.last_message_id = this.last.m_type + '_' + this.last.id;
           parm = JSON.stringify({
             last_time: this.last.created_at,
             last_message_id: this.last.m_type + '_' + this.last.id
@@ -67,6 +68,7 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
+                log('setUnreadCount');
                 return _this.setUnreadCount();
               };
             })(this)
