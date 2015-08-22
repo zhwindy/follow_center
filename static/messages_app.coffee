@@ -9,13 +9,22 @@ $ ->
       current_message_id:null
       god_name:null
       last:null#用来放上次看到的message
-      last_messsage_id:''#db中查出的上次看到的message_id用来定位
+      last_message_id:''#db中查出的上次看到的message_id用来定位
       gods:null
     created:->
       @bindScroll()
       @getGods()
     ready:->
     methods:
+      setUnreadCount:->#设置未读的条目
+        index = _.findIndex(@messages, (d)=>
+          message_id = d.m_type+'_'+d.id
+          return message_id == @last_message_id
+        )
+        if index == -1 or index == 0
+          document.title = "Follow Center"
+        else
+          document.title = "(#{index})Follow Center"
       getGods:->
         if @gods
           return
@@ -37,7 +46,9 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
+            @setUnreadCount()
       scrollToLastMessage:(target)->#到上一次的message
+        @setUnreadCount()
         y = $(target).offset().top
         window.scrollTo(0, y)
       all:-> #查自己订阅了的所有的
@@ -84,6 +95,7 @@ $ ->
           url: '/all'
           type: 'POST'
           success: (data, status, response) =>
+            @last_message_id = data.last_message_id
             @messages = _.uniq _.union(@messages, data.messages), false, (item, key, a) ->
               item.row_num
             @loading=false

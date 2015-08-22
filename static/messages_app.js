@@ -11,7 +11,7 @@
         current_message_id: null,
         god_name: null,
         last: null,
-        last_messsage_id: '',
+        last_message_id: '',
         gods: null
       },
       created: function() {
@@ -20,6 +20,21 @@
       },
       ready: function() {},
       methods: {
+        setUnreadCount: function() {
+          var index;
+          index = _.findIndex(this.messages, (function(_this) {
+            return function(d) {
+              var message_id;
+              message_id = d.m_type + '_' + d.id;
+              return message_id === _this.last_message_id;
+            };
+          })(this));
+          if (index === -1 || index === 0) {
+            return document.title = "Follow Center";
+          } else {
+            return document.title = "(" + index + ")Follow Center";
+          }
+        },
         getGods: function() {
           if (this.gods) {
             return;
@@ -51,12 +66,15 @@
             type: 'POST',
             data: parm,
             success: (function(_this) {
-              return function(data, status, response) {};
+              return function(data, status, response) {
+                return _this.setUnreadCount();
+              };
             })(this)
           });
         },
         scrollToLastMessage: function(target) {
           var y;
+          this.setUnreadCount();
           y = $(target).offset().top;
           return window.scrollTo(0, y);
         },
@@ -121,6 +139,7 @@
             type: 'POST',
             success: (function(_this) {
               return function(data, status, response) {
+                _this.last_message_id = data.last_message_id;
                 _this.messages = _.uniq(_.union(_this.messages, data.messages), false, function(item, key, a) {
                   return item.row_num;
                 });
