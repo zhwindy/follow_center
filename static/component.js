@@ -1,5 +1,5 @@
 (function() {
-  var autoLink, calculateHeight,
+  var autoLink, calculateHeight, getFitHeight,
     slice = [].slice;
 
   autoLink = function() {
@@ -53,11 +53,22 @@
 
   calculateHeight = function(img_height, img_width, max_width) {
     var real_height;
-    log(max_width);
     if (max_width <= img_width) {
       real_height = max_width * img_height / img_width;
     } else {
       real_height = img_height;
+    }
+    return real_height;
+  };
+
+  getFitHeight = function(img_height, img_width) {
+    var max_width, real_height;
+    max_width = $(window).width() - 50;
+    if (max_width <= 768) {
+      real_height = calculateHeight(img_height, img_width, max_width);
+    } else {
+      max_width = $('#v_messages > .col-md-8').width() - 50;
+      real_height = calculateHeight(img_height, img_width, max_width);
     }
     return real_height;
   };
@@ -162,20 +173,14 @@
       medias: function() {
         if (this.message.extended_entities) {
           return _.map(this.message.extended_entities.media, function(d) {
-            var img_height, img_url, img_width, max_width, real_height, t;
+            var height, img_height, img_url, img_width, t;
             img_url = '/sp/' + btoa(btoa(d.media_url_https));
             img_height = d.sizes.large.h;
             img_width = d.sizes.large.w;
-            max_width = $(window).width() - 50;
-            if (max_width <= 768) {
-              real_height = calculateHeight(img_height, img_width, max_width);
-            } else {
-              max_width = $('#v_messages > .col-md-8').width() - 50;
-              real_height = calculateHeight(img_height, img_width, max_width);
-            }
+            height = getFitHeight(img_height, img_width);
             t = {
               img_url: img_url,
-              height: real_height
+              height: height
             };
             return t;
           });
@@ -256,14 +261,14 @@
         img_url = btoa(btoa(this.message.extended_entities.url));
         return '/sp/' + img_url;
       },
-      width: function() {
-        return this.message.extended_entities.width;
-      },
       height: function() {
-        return this.message.extended_entities.height;
+        var img_height, img_width;
+        img_height = this.message.extended_entities.height;
+        img_width = this.message.extended_entities.width;
+        return getFitHeight(img_height, img_width);
       }
     },
-    template: '<div id="instagram_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="#/god/(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-orange">\n                    <i class="fa fa-instagram"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz">(%message.text%)</p>\n        <br>\n        <img v-attr="src:img_url,width:width,height:height" class="my-img-responsive">\n        <br>\n        <p class="description_bz">(%message.text%)</p>\n    </div>\n</div>'
+    template: '<div id="instagram_(%message.id%)" class="box box-solid item">\n    <div class="box-header">\n        <h2 class="box-title">\n            <a href="#/god/(%message.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class="box-tools pull-right">\n            <a class="a-icon" target="_blank" href="(%message.href%)">\n                <span class="round-icon bg-icon-orange">\n                    <i class="fa fa-instagram"></i>\n                </span>\n            </a>\n            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">\n                <sub v-dateformat="\'yyyy-MM-dd hh:mm:ss\': message.created_at"></sub>\n            </a>\n        </div>\n    </div>\n    <div class="box-body">\n        <p class="description_bz">(%message.text%)</p>\n        <br>\n        <img v-attr="src:img_url,height:height" class="my-img-responsive">\n        <br>\n        <p class="description_bz">(%message.text%)</p>\n    </div>\n</div>'
   });
 
   Vue.component('c_user_info', {
