@@ -68,7 +68,6 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
-                log('setUnreadCount');
                 return _this.setUnreadCount();
               };
             })(this)
@@ -145,7 +144,8 @@
                 _this.messages = _.uniq(_.union(data.messages, _this.messages), false, function(item, key, a) {
                   return item.row_num;
                 });
-                return _this.loading = false;
+                _this.loading = false;
+                return _this.setUnreadCount();
               };
             })(this)
           });

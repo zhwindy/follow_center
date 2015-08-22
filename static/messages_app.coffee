@@ -47,7 +47,6 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
-            log 'setUnreadCount'
             @setUnreadCount()
       scrollToLastMessage:(target)->#到上一次的message
         @setUnreadCount()
@@ -101,6 +100,7 @@ $ ->
             @messages = _.uniq _.union(data.messages, @messages), false, (item, key, a) ->
               item.row_num
             @loading=false
+            @setUnreadCount()
       god:(god_name)->
         @loading=true
         @god_name = god_name
