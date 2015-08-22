@@ -45,13 +45,20 @@ Vue.transition 'fade',
     return
 
 calculateHeight = (img_height, img_width, max_width)->
-  log max_width
   if max_width<=img_width
     real_height = max_width*img_height/img_width
   else
     real_height = img_height
   return real_height
 
+getFitHeight = (img_height, img_width)->
+  max_width = $(window).width()-50
+  if max_width <= 768 #小屏幕，应该这时占满整个屏幕了
+    real_height = calculateHeight(img_height, img_width, max_width)
+  else #取真正能显示图片的大小
+    max_width = $('#v_messages > .col-md-8').width()-50
+    real_height = calculateHeight(img_height, img_width, max_width)
+  return real_height
 
 
 Vue.component 'follow',
@@ -130,15 +137,11 @@ Vue.component 'twitter',
           img_height = d.sizes.large.h
           img_width = d.sizes.large.w
 
-          max_width = $(window).width()-50
-          if max_width <= 768 #小屏幕，应该这时占满整个屏幕了
-            real_height = calculateHeight(img_height, img_width, max_width)
-          else #取真正能显示图片的大小
-            max_width = $('#v_messages > .col-md-8').width()-50
-            real_height = calculateHeight(img_height, img_width, max_width)
+          height = getFitHeight(img_height, img_width)
+
           t =
             img_url: img_url
-            height: real_height
+            height: height
           return t
           )
     text:->
@@ -255,10 +258,11 @@ Vue.component 'instagram',
     img_url:->
       img_url = btoa(btoa(@message.extended_entities.url))
       return '/sp/'+img_url
-    width:->
-      return @message.extended_entities.width
     height:->
-      return @message.extended_entities.height
+      img_height = @message.extended_entities.height
+      img_width = @message.extended_entities.width
+
+      return getFitHeight(img_height, img_width)
   template:'''
     <div id="instagram_(%message.id%)" class="box box-solid item">
         <div class="box-header">
@@ -284,7 +288,7 @@ Vue.component 'instagram',
         <div class="box-body">
             <p class="description_bz">(%message.text%)</p>
             <br>
-            <img v-attr="src:img_url,width:width,height:height" class="my-img-responsive">
+            <img v-attr="src:img_url,height:height" class="my-img-responsive">
             <br>
             <p class="description_bz">(%message.text%)</p>
         </div>
