@@ -141,9 +141,8 @@
             type: 'POST',
             success: (function(_this) {
               return function(data, status, response) {
-                log(data.messages);
                 _this.last_message_id = data.last_message_id;
-                _this.messages = _.uniq(_.union(_this.messages, data.messages), false, function(item, key, a) {
+                _this.messages = _.uniq(_.union(data.messages, _this.messages), false, function(item, key, a) {
                   return item.row_num;
                 });
                 return _this.loading = false;
