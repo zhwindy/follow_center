@@ -27,12 +27,16 @@ with open('conf/twitter.ini', 'r') as cfg_file:
     access_token_secret = config.get('secret', 'access_token_secret')
 
 
-def check():
+def check(user_name=None):
     '''
     create by bigzhu at 15/07/10 14:46:58
         从 user_info 取出 twitter url 来检查
+    create by bigzhu at 15/08/23 23:07:22 加入user_name
     '''
-    users = pg.select('user_info', what='twitter', where='twitter is not null')
+    where = "twitter is not null"
+    if user_name:
+        where += " and twitter='%s'" % user_name
+    users = pg.select('user_info', what='twitter', where=where)
     for user in users:
         if user.twitter and user.twitter != '':
             print 'check twitter %s' % user.twitter
