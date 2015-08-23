@@ -371,8 +371,8 @@ Vue.component 'c_user_info',
             <follow followed="(%@ user_info.followed%)" god_id="(%user_info.god_id%)"></follow>
             <button id="btn-edit" v-btn-loading="loading" type="submit" class="btn btn-primary btn-flat btn-border" v-on="click:save">编辑</button>
         </div>
+        <hr>
     </div>
-    <hr>
   '''
   ready:->
     bz.setOnErrorVm(@)
