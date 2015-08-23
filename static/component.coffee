@@ -372,6 +372,7 @@ Vue.component 'c_user_info',
             <button id="btn-edit" v-btn-loading="loading" type="submit" class="btn btn-primary btn-flat btn-border" v-on="click:save">编辑</button>
         </div>
     </div>
+    <hr>
   '''
   ready:->
     bz.setOnErrorVm(@)

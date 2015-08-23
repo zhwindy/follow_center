@@ -27,7 +27,7 @@ $ ->
           document.title = "(#{index})Follow Center"
         return index
       getGods:->
-        if @god_name #显示某个god时，就没必要显示所有的gods了
+        if @gods
           return
         $.ajax
           url: '/gods'
