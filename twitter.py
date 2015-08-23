@@ -79,6 +79,7 @@ def getUserTimeline(screen_name):
                     wechat_oper.sendTwitter(data.openid, tweet, screen_name, id)
     except tweepy.error.TweepError:
         print 'screen_name=', screen_name
+        public_db.delNoName('twitter', screen_name)
         public_bz.getExpInfo()
 
 
