@@ -48,7 +48,8 @@ def daemon(method):
         #except(psycopg2.InterfaceError, psycopg2.DatabaseError):
         except (psycopg2.InterfaceError, psycopg2.OperationalError):
             print public_bz.getExpInfoAll()
-            print args[0]
+            print args
+            print kwargs
             connect()
             time.sleep(5)
             print '重新连接数据库'
