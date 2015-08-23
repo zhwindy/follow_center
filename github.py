@@ -17,12 +17,12 @@ import time
 import public_bz
 
 
-def check():
+def check(user_name=None):
     '''
     create by bigzhu at 15/07/15 21:50:48
         从 user_info 取出 github url 来检查
     '''
-    users = public_db.getUserInfoGithub()
+    users = public_db.getUserInfoGithub(user_name)
     for user in users:
         if user.github and user.github != '':
             print 'check github %s' % user.github
@@ -90,6 +90,8 @@ def getUserEvent(user_name, etag):
                 openids = public_db.getOpenidsByName('github', user_name)
                 for data in openids:
                     wechat_oper.sendGithub(data.openid, text, user_name, id)
+    if r.status_code == 404:
+        delGithubUser(user_name)
     else:
         print r.status_code
 

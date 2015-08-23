@@ -73,13 +73,15 @@ def getInstagramUser(name):
         return result[0]
 
 
-def getUserInfoGithub():
+def getUserInfoGithub(user_name=None):
     '''
     create by bigzhu at 15/07/15 22:45:42
     '''
     sql = '''
-            select * from   user_info u left join github_user g on u.user_name=g.login
+            select * from  user_info u left join github_user g on u.user_name=g.login
     '''
+    if user_name:
+        sql += " where user_name='%s' " % user_name
     return pg.query(sql)
 
 
