@@ -30,10 +30,11 @@
             };
           })(this));
           if (index === -1 || index === 0) {
-            return document.title = "Follow Center";
+            document.title = "Follow Center";
           } else {
-            return document.title = "(" + index + ")Follow Center";
+            document.title = "(" + index + ")Follow Center";
           }
+          return index;
         },
         getGods: function() {
           if (this.gods) {
@@ -50,9 +51,11 @@
           });
         },
         childElDone: function(message_id, el) {
+          var count;
           if (this.god_name === null && this.last_message_id === message_id) {
             _.delay(this.scrollToLastMessage, 500, el);
-            return bz.showNotice5('定位上次的信息...');
+            count = this.setUnreadCount();
+            return bz.showNotice5(count + "条未读信息");
           }
         },
         saveLast: function() {
@@ -75,7 +78,6 @@
         },
         scrollToLastMessage: function(target) {
           var y;
-          this.setUnreadCount();
           y = $(target).offset().top;
           return window.scrollTo(0, y);
         },

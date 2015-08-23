@@ -25,6 +25,7 @@ $ ->
           document.title = "Follow Center"
         else
           document.title = "(#{index})Follow Center"
+        return index
       getGods:->
         if @gods
           return
@@ -36,7 +37,8 @@ $ ->
       childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
         if @god_name == null and @last_message_id==message_id
           _.delay(@scrollToLastMessage, 500, el)
-          bz.showNotice5('定位上次的信息...')
+          count = @setUnreadCount()
+          bz.showNotice5("#{count}条未读信息")
       saveLast:->
         @last_message_id = @last.m_type+'_'+@last.id
         parm = JSON.stringify
@@ -49,7 +51,6 @@ $ ->
           success: (data, status, response) =>
             @setUnreadCount()
       scrollToLastMessage:(target)->#到上一次的message
-        @setUnreadCount()
         y = $(target).offset().top
         window.scrollTo(0, y)
       all:-> #查自己订阅了的所有的
