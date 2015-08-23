@@ -37,7 +37,7 @@
           return index;
         },
         getGods: function() {
-          if (this.gods) {
+          if (this.god_name) {
             return;
           }
           return $.ajax({
