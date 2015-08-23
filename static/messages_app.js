@@ -53,9 +53,11 @@
         childElDone: function(message_id, el) {
           var count;
           if (this.god_name === null && this.last_message_id === message_id) {
-            _.delay(this.scrollToLastMessage, 500, el);
             count = this.setUnreadCount();
-            return bz.showNotice5(count + "条未读信息");
+            bz.showNotice5(count + "条未读信息");
+            if (count !== 0) {
+              return _.delay(this.scrollToLastMessage, 500, el);
+            }
           }
         },
         saveLast: function() {
@@ -203,8 +205,7 @@
             $top = $('#v_messages').offset().top;
             if ($(this).scrollTop() === 0) {
               v["new"]();
-            }
-            if (($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
+            } else if (($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
               v.more();
             }
             return $('#v_messages .col-md-8 .box').each(function() {

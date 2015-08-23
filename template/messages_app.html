@@ -8,7 +8,6 @@
 
 {% extends 'base.html' %}
 {% block body %}
-
 <div id="v_messages" v-loading="loading" class="row">
     <div  class="col-md-8">
         <component is="(%message.m_type%)" v-repeat="message in messages" v-transition="fade">

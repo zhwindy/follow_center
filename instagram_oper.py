@@ -37,7 +37,7 @@ def getUser(user_name):
             if this_user.username.lower() == user_name.lower():
                 user = this_user
                 break
-        #如果没有这个用户
+        # 如果没有这个用户
         if user is None:
             public_db.delNoName('instagram', user_name)
         #user = api.user_search(user_name, 1)[0]
@@ -119,12 +119,17 @@ def getMedia(user_name=None, with_next_url=None, user=None):
         getMedia(with_next_url=next_, user=user)
 
 
-def check():
+def check(user_name=None):
     '''
     create by bigzhu at 15/07/31 14:28:30
+    modify by bigzhu at 15/08/23 22:30:25 可以指定查某个user_name
     '''
-    users = pg.select('user_info', what='instagram', where="instagram is not null and instagram!=''")
-    print len(users)
+    where = '''
+        instagram is not null and instagram!=''
+    '''
+    if user_name:
+        where += " and instagram='%s'" % user_name
+    users = pg.select('user_info', what='instagram', where=where)
     for user in users:
         if user.instagram and user.instagram != '':
             print 'check instagram %s' % user.instagram

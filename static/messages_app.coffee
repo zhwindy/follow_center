@@ -36,9 +36,10 @@ $ ->
             @gods = data.gods
       childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
         if @god_name == null and @last_message_id==message_id
-          _.delay(@scrollToLastMessage, 500, el)
           count = @setUnreadCount()
           bz.showNotice5("#{count}条未读信息")
+          if count!=0
+            _.delay(@scrollToLastMessage, 500, el)
       saveLast:->
         @last_message_id = @last.m_type+'_'+@last.id
         parm = JSON.stringify
@@ -134,12 +135,12 @@ $ ->
         v = @
         $(window).scroll ->
           $top = $('#v_messages').offset().top
-          #滚动到最上面时，加载新的内容
-          if $(this).scrollTop() == 0
+          if $(this).scrollTop() == 0 #滚动到最上面时，加载新的内容
             v.new()
-          #当滚动到最底部以上100像素时， 加载新内容
-          if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0
+            #$('body').addClass('fixed')
+          else if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0 #当滚动到最底部时，加载历史内容
             v.more()
+            #$('body').removeClass('fixed')
           #选出当前正在看的message
           $('#v_messages .col-md-8 .box').each ->
             if $(this).offset().top+$(this).height() >= $top + $(window).scrollTop()
