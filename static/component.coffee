@@ -564,11 +564,12 @@ Vue.component 'c_god', #显示god旳list
         avatar_url = @god.github_user.avatar_url
       else if @god.instagram_user
         avatar_url = @god.instagram_user.profile_picture
+        avatar_url = '/sp/'+ btoa(btoa(avatar_url))
       else if @god.twitter_user
         avatar_url = @god.twitter_user.profile_image_url_https
+        avatar_url = '/sp/'+ btoa(btoa(avatar_url))
 
-      avatar_url = btoa(btoa(avatar_url))
-      return '/sp/'+avatar_url
+      return avatar_url
   template: '''
     <div  class="box box-solid item">
         <div class="box-header">
