@@ -145,7 +145,7 @@
             success: (function(_this) {
               return function(data, status, response) {
                 _this.last_message_id = data.last_message_id;
-                if (data.messages.length !== 1) {
+                if (data.messages.length !== 1 && data.messages.length !== 0) {
                   _this.messages = _.uniq(_.union(data.messages, _this.messages), false, function(item, key, a) {
                     return item.row_num;
                   });

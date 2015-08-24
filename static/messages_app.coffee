@@ -99,7 +99,7 @@ $ ->
           type: 'POST'
           success: (data, status, response) =>
             @last_message_id = data.last_message_id
-            if data.messages.length != 1
+            if data.messages.length != 1 and data.messages.length != 0
               @messages = _.uniq _.union(data.messages, @messages), false, (item, key, a) ->
                 item.row_num
               @setUnreadCount()
