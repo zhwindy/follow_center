@@ -13,7 +13,6 @@ from datetime import timedelta
 import tweepy
 import wechat_oper
 import public_db
-import db_bz
 import pg
 import json
 import public_bz
@@ -95,13 +94,13 @@ def saveTwitter(tweet):
         tweet.user.entities = json.dumps(tweet.user.entities)
 
         del tweet.user.id
-        db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.user), "id_str='%s'" % tweet.user.id_str)
+        pg.insertIfNotExist(pg, 'twitter_user', vars(tweet.user), "id_str='%s'" % tweet.user.id_str)
         tweet.t_user_id = tweet.user.id_str
         del tweet.user
 
     if hasattr(tweet, 'author'):
         #del tweet.author.id
-        db_bz.insertIfNotExist(pg, 'twitter_user', vars(tweet.author), "id_str='%s'" % tweet.author.id_str)
+        pg.insertIfNotExist(pg, 'twitter_user', vars(tweet.author), "id_str='%s'" % tweet.author.id_str)
         tweet.t_author_id = tweet.author.id_str
 
         del tweet.author
@@ -138,7 +137,7 @@ def saveTwitter(tweet):
     # for k, v in vars(tweet).items():
     #    print '%s=%s' % (k, v)
 
-    return db_bz.insertIfNotExist(pg, 'twitter_message', vars(tweet), "id_str='%s'" % tweet.id_str)
+    return pg.insertIfNotExist(pg, 'twitter_message', vars(tweet), "id_str='%s'" % tweet.id_str)
 
 
 if __name__ == '__main__':

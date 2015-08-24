@@ -8,6 +8,7 @@ import functools
 import psycopg2
 import public_bz
 import time
+import db_bz
 
 import ConfigParser
 config = ConfigParser.ConfigParser()
@@ -44,8 +45,8 @@ def daemon(method):
     def wrapper(self, *args, **kwargs):
         try:
             return method(self, *args, **kwargs)
-        #except(psycopg2.OperationalError, psycopg2.InterfaceError, psycopg2.DatabaseError):
-        #except(psycopg2.InterfaceError, psycopg2.DatabaseError):
+        # except(psycopg2.OperationalError, psycopg2.InterfaceError, psycopg2.DatabaseError):
+        # except(psycopg2.InterfaceError, psycopg2.DatabaseError):
         except (psycopg2.InterfaceError, psycopg2.OperationalError):
             print public_bz.getExpInfoAll()
             print args
@@ -85,5 +86,9 @@ def delete(*args, **kwargs):
 def insert(*args, **kwargs):
     return db.insert(*args, **kwargs)
 
+
+@daemon
+def insertIfNotExist(*args, **kwargs):
+    return db_bz.insertIfNotExist(*args, **kwargs)
 if __name__ == '__main__':
     pass
