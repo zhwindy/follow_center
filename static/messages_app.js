@@ -132,7 +132,7 @@
           });
         },
         "new": function() {
-          if (this.loading || this.message === null) {
+          if (this.loading) {
             return;
           }
           if (this.god_name) {
@@ -145,11 +145,13 @@
             success: (function(_this) {
               return function(data, status, response) {
                 _this.last_message_id = data.last_message_id;
-                _this.messages = _.uniq(_.union(data.messages, _this.messages), false, function(item, key, a) {
-                  return item.row_num;
-                });
-                _this.loading = false;
-                return _this.setUnreadCount();
+                if (data.messages.length !== 0) {
+                  _this.messages = _.uniq(_.union(data.messages, _this.messages), false, function(item, key, a) {
+                    return item.row_num;
+                  });
+                  _this.setUnreadCount();
+                }
+                return _this.loading = false;
               };
             })(this)
           });

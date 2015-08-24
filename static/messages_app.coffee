@@ -89,7 +89,7 @@ $ ->
             #  @messages.push(message)
             @loading=false
       new:->
-        if @loading or @message == null #避免重复加载
+        if @loading#避免重复加载
           return
         if @god_name
           return
@@ -99,10 +99,11 @@ $ ->
           type: 'POST'
           success: (data, status, response) =>
             @last_message_id = data.last_message_id
-            @messages = _.uniq _.union(data.messages, @messages), false, (item, key, a) ->
-              item.row_num
+            if data.messages.length != 0
+              @messages = _.uniq _.union(data.messages, @messages), false, (item, key, a) ->
+                item.row_num
+              @setUnreadCount()
             @loading=false
-            @setUnreadCount()
       god:(god_name)->
         @loading=true
         @god_name = god_name

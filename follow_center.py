@@ -160,8 +160,6 @@ class all(tornado_bz.UserInfoHandler):
     '''
 
     def post(self):
-        #import datetime
-        #print datetime.datetime.now()
         self.set_header("Content-Type", "application/json")
         user_id = self.current_user
         # 上次看到哪条？
