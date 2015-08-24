@@ -42,7 +42,7 @@ def getTwitterUser(name):
     '''
     create by bigzhu at 15/07/17 15:09:56 twitter用户
     '''
-    result = list(pg.select('twitter_user', where="screen_name='%s'" % name))
+    result = list(pg.select('twitter_user', where="lower(screen_name)=lower('%s')" % name))
     count = len(result)
     if count > 1:
         raise Exception('twitter_user screen_name=%s count=%s' % (name, count))
@@ -54,7 +54,7 @@ def getGithubUser(name):
     '''
     create by bigzhu at 15/07/17 15:10:23 github 用户
     '''
-    result = list(pg.select('github_user', where="login='%s'" % name))
+    result = list(pg.select('github_user', where="lower(login)=lower('%s')" % name))
     count = len(result)
     if count > 1:
         raise Exception('github_user screen_name=%s count=%s' % (name, count))
@@ -66,7 +66,7 @@ def getInstagramUser(name):
     '''
     create by bigzhu at 15/07/31 15:00:19 Instagram
     '''
-    result = list(pg.select('instagram_user', where="username='%s'" % name))
+    result = list(pg.select('instagram_user', where="lower(username)=lower('%s')" % name))
     count = len(result)
     if count > 1:
         raise Exception('instagram_user username=%s count=%s' % (name, count))
@@ -79,7 +79,7 @@ def getUserInfoGithub(user_name=None):
     create by bigzhu at 15/07/15 22:45:42
     '''
     sql = '''
-            select * from  user_info u left join github_user g on u.user_name=g.login
+            select * from  user_info u left join github_user g on lower(u.user_name)=lower(g.login)
     '''
     if user_name:
         sql += " where user_name='%s' " % user_name
