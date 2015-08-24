@@ -486,7 +486,6 @@ Vue.component 'c_user_info',
         $("#btn-edit").text('保存')
       else
         @loading = true
-        user_info = _.clone(@user_info)
         parm = JSON.stringify
           user_name:@user_info.user_name
           blog:@user_info.blog
@@ -494,6 +493,7 @@ Vue.component 'c_user_info',
           github:@user_info.github
           instagram:@user_info.instagram
           slogan:@user_info.slogan
+          picture:@user_info.picture
         #如果url path不同,则向对应后台url发请求,以应对重载又要留着原本profile的情况(follow_center)
         path = bz.getUrlPath(1)
         $.ajax

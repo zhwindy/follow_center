@@ -382,20 +382,20 @@
         }
       },
       save: function() {
-        var parm, path, user_info;
+        var parm, path;
         if (this.disable_edit) {
           this.disable_edit = false;
           return $("#btn-edit").text('保存');
         } else {
           this.loading = true;
-          user_info = _.clone(this.user_info);
           parm = JSON.stringify({
             user_name: this.user_info.user_name,
             blog: this.user_info.blog,
             twitter: this.user_info.twitter,
             github: this.user_info.github,
             instagram: this.user_info.instagram,
-            slogan: this.user_info.slogan
+            slogan: this.user_info.slogan,
+            picture: this.user_info.picture
           });
           path = bz.getUrlPath(1);
           return $.ajax({
