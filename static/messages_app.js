@@ -127,7 +127,7 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
-                _this.messages = _.uniq(_.union(_this.messages, data.messages), false, function(item, key, a) {
+                _this.messages = _.uniq(_.union(data.messages.reverse(), _this.messages), false, function(item, key, a) {
                   return item.row_num;
                 });
                 return _this.loading = false;
@@ -213,7 +213,7 @@
             if ($(this).scrollTop() === 0) {
               v["new"]();
             } else if (($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
-              v.more();
+              v["new"]();
             }
             return $('#v_messages .col-md-8 .box').each(function() {
               var message;

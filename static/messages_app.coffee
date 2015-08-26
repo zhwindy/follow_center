@@ -87,7 +87,7 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
-            @messages = _.uniq _.union(@messages, data.messages), false, (item, key, a) ->
+            @messages = _.uniq _.union(data.messages.reverse(), @messages), false, (item, key, a) ->
               item.row_num
             #for message in data.messages
             #  @messages.push(message)
@@ -144,8 +144,8 @@ $ ->
           if $(this).scrollTop() == 0 #滚动到最上面时，加载新的内容
             v.new()
             #$('body').addClass('fixed')
-          else if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0 #当滚动到最底部时，加载历史内容
-            v.more()
+          else if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0 #当滚动到最底部时，加载最新内容
+            v.new()
             #$('body').removeClass('fixed')
           #选出当前正在看的message
           $('#v_messages .col-md-8 .box').each ->
