@@ -41,6 +41,7 @@ $ ->
           if count!=0
             _.delay(@scrollToLastMessage, 500, el)
       saveLast:->
+        return
         @last_message_id = @last.m_type+'_'+@last.id
         parm = JSON.stringify
           last_time:@last.created_at
@@ -63,8 +64,8 @@ $ ->
           type: 'POST'
           success: (data, status, response) =>
             @last_message_id = data.last_message_id
-            #@messages = data.messages.reverse()
-            @messages = data.messages
+            @messages = data.messages.reverse()
+            #@messages = data.messages
             @loading=false
       more:->
         if @loading or @message == null #避免重复加载

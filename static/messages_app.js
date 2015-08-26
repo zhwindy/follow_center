@@ -62,6 +62,7 @@
         },
         saveLast: function() {
           var parm;
+          return;
           this.last_message_id = this.last.m_type + '_' + this.last.id;
           parm = JSON.stringify({
             last_time: this.last.created_at,
@@ -93,7 +94,7 @@
             success: (function(_this) {
               return function(data, status, response) {
                 _this.last_message_id = data.last_message_id;
-                _this.messages = data.messages;
+                _this.messages = data.messages.reverse();
                 return _this.loading = false;
               };
             })(this)
