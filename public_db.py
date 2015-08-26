@@ -94,7 +94,7 @@ def getTwitterMessages():
     return pg.query(sql)
 
 
-def getMessages(user_id=None, god_name=None, type=None, id=None, limit=50, offset=None, last_time=None):
+def getMessages(user_id=None, god_name=None, type=None, id=None, limit=10, offset=None, last_time=None):
     '''
     create by bigzhu at 15/07/14 15:11:44 查出我 Follow 的用户的twitter message
     modify by bigzhu at 15/07/17 01:39:21 过于复杂,合并sql,根据god_name也可以查
