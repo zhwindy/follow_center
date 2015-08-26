@@ -100,6 +100,7 @@ $ ->
           success: (data, status, response) =>
             @last_message_id = data.last_message_id
             if data.messages.length != 1 and data.messages.length != 0
+              data.messages.splice(0, 1) #删了第一个元素，为是用想同时间select，第一条元素重复会导致刷新
               @messages = _.uniq _.union(data.messages, @messages), false, (item, key, a) ->
                 item.row_num
               @setUnreadCount()
