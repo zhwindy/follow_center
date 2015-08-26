@@ -251,7 +251,7 @@ class last(model_oper_bz.base):
     last_message_id = TextField()
 
 
-class user_info(model_oper_bz.user_info):
+class user_info(model_bz.user_info):
 
     '''
     create by bigzhu at 15/08/19 09:27:08 增加18+

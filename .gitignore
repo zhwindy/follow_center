@@ -21,3 +21,4 @@ agent.log
 *.orig
 *.swo
 conf/
+*.dump

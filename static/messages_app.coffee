@@ -63,6 +63,7 @@ $ ->
           type: 'POST'
           success: (data, status, response) =>
             @last_message_id = data.last_message_id
+            #@messages = data.messages.reverse()
             @messages = data.messages
             @loading=false
       more:->
