@@ -94,12 +94,11 @@
             success: (function(_this) {
               return function(data, status, response) {
                 _this.last_message_id = data.last_message_id;
-                if (data.messages.length === 0) {
-                  _this.more();
-                  return;
-                }
                 _this.messages = data.messages.reverse();
-                return _this.loading = false;
+                _this.loading = false;
+                if (data.messages.length === 0) {
+                  return _this.more();
+                }
               };
             })(this)
           });

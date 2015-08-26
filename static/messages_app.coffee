@@ -64,12 +64,11 @@ $ ->
           type: 'POST'
           success: (data, status, response) =>
             @last_message_id = data.last_message_id
-            if data.messages.length == 0 #没有查到新的message，马上查历史的出来，让界面有点东西
-              @more()
-              return
             @messages = data.messages.reverse()
             #@messages = data.messages
             @loading=false
+            if data.messages.length == 0 #没有查到新的message，马上查历史的出来，让界面有点东西
+              @more()
       more:->
         if @loading or @message == null #避免重复加载
           return
