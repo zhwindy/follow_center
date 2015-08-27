@@ -35,7 +35,7 @@ def saveLast(last_time, last_message_id, user_id):
     if id is None:
         count = pg.update('last', where='last_time< to_timestamp(%s/1000) and user_id=%s' % (last_time, user_id), last_message_id=last_message_id, last_time=datetime_last_time)
         return count
-    return id
+    return 1
 
 
 def follow(user_id, god_id, make_sure=True):

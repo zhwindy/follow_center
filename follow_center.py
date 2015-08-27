@@ -139,9 +139,9 @@ class save_last(tornado_bz.UserInfoHandler):
         last_message_id = data.get('last_message_id')
         user_id = self.current_user
 
-        oper.saveLast(last_time, last_message_id, user_id)
+        count = oper.saveLast(last_time, last_message_id, user_id)
 
-        self.write(json.dumps({'error': '0'}, cls=public_bz.ExtEncoder))
+        self.write(json.dumps({'error': '0', 'count':count}, cls=public_bz.ExtEncoder))
 
 
 class messages_app(tornado_bz.UserInfoHandler):

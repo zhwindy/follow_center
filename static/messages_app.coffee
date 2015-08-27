@@ -13,6 +13,7 @@ $ ->
       last_message:null #用来放上次看到的message
       last_message_id:''#db中查出的上次看到的message_id用来定位
       gods:null
+      unreadCount:0
     created:->
       @bindScroll()
       @getGods()
@@ -32,7 +33,8 @@ $ ->
             if data.messages.length != 0
               @messages = _.uniq _.union(@messages, data.messages), false, (item, key, a) ->
                 item.row_num
-              @setUnreadCount(data.last_message_id)
+              log data.messages.length
+              @setTitleUnreadCount(data.messages.length)
             @new_loading=false
       old:->
         parm = JSON.stringify
@@ -53,18 +55,13 @@ $ ->
         parm = JSON.stringify
           offset:@messages.length+1
           god_name:@god_name
-      setUnreadCount:(last_message_id)->#设置未读的条目数
-        index = _.findIndex(@messages, (d)=>
-          message_id = d.m_type+'_'+d.id
-          return message_id == @last_message_id
-        )
-        if index == -1 or index == 0
+      setTitleUnreadCount:(count)->#设置未读的条目数
+        @unreadCount = count
+        if count == 0
           document.title = "Follow Center"
         else
-          document.title = "(#{index}) Follow Center"
-        return index
+          document.title = "(#{count}) Follow Center"
       saveLast:(last_message)->
-        return
         @last_message_id = last_message.m_type+'_'+last_message.id
         parm = JSON.stringify
           last_time:last_message.created_at
@@ -76,6 +73,8 @@ $ ->
           success: (data, status, response) =>
             #存储在本地，用来比较
             @last_message = last_message
+            if data.count == 1
+              @setTitleUnreadCount(@unreadCount-1)
       getGods:->
         if @gods
           return
@@ -127,7 +126,8 @@ $ ->
           $top = $('#v_messages').offset().top
           if $(this).scrollTop() == 0 #滚动到最上面时，加载新的内容
             if v.old_loading == false
-              v.old()
+              log 'old'
+              #v.old()
           else if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0 #当滚动到最底部时，加载最新内容
             if v.new_loading == false
               v.new()
@@ -140,7 +140,6 @@ $ ->
               #从jquery对像又取到 vue 对象
               message = $(this)[0].__vue__.message
               if v.last_message == null or v.last_message.created_at<message.created_at
-                log message
                 v.saveLast(message)
               return false
   routes =

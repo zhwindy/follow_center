@@ -14,7 +14,8 @@
         god_name: null,
         last_message: null,
         last_message_id: '',
-        gods: null
+        gods: null,
+        unreadCount: 0
       },
       created: function() {
         this.bindScroll();
@@ -39,7 +40,8 @@
                   _this.messages = _.uniq(_.union(_this.messages, data.messages), false, function(item, key, a) {
                     return item.row_num;
                   });
-                  _this.setUnreadCount(data.last_message_id);
+                  log(data.messages.length);
+                  _this.setTitleUnreadCount(data.messages.length);
                 }
                 return _this.new_loading = false;
               };
@@ -74,25 +76,16 @@
             god_name: this.god_name
           });
         },
-        setUnreadCount: function(last_message_id) {
-          var index;
-          index = _.findIndex(this.messages, (function(_this) {
-            return function(d) {
-              var message_id;
-              message_id = d.m_type + '_' + d.id;
-              return message_id === _this.last_message_id;
-            };
-          })(this));
-          if (index === -1 || index === 0) {
-            document.title = "Follow Center";
+        setTitleUnreadCount: function(count) {
+          this.unreadCount = count;
+          if (count === 0) {
+            return document.title = "Follow Center";
           } else {
-            document.title = "(" + index + ") Follow Center";
+            return document.title = "(" + count + ") Follow Center";
           }
-          return index;
         },
         saveLast: function(last_message) {
           var parm;
-          return;
           this.last_message_id = last_message.m_type + '_' + last_message.id;
           parm = JSON.stringify({
             last_time: last_message.created_at,
@@ -104,7 +97,10 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
-                return _this.last_message = last_message;
+                _this.last_message = last_message;
+                if (data.count === 1) {
+                  return _this.setTitleUnreadCount(_this.unreadCount - 1);
+                }
               };
             })(this)
           });
@@ -189,7 +185,7 @@
             $top = $('#v_messages').offset().top;
             if ($(this).scrollTop() === 0) {
               if (v.old_loading === false) {
-                v.old();
+                log('old');
               }
             } else if (($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
               if (v.new_loading === false) {
@@ -204,7 +200,6 @@
                 }
                 message = $(this)[0].__vue__.message;
                 if (v.last_message === null || v.last_message.created_at < message.created_at) {
-                  log(message);
                   v.saveLast(message);
                 }
                 return false;
