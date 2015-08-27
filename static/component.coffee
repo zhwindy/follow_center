@@ -289,8 +289,6 @@ Vue.component 'instagram',
             <p class="description_bz">(%message.text%)</p>
             <br>
             <img v-attr="src:img_url,height:height" class="my-img-responsive">
-            <br>
-            <p class="description_bz">(%message.text%)</p>
         </div>
     </div>
     '''
