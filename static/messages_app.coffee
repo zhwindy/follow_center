@@ -4,11 +4,13 @@ $ ->
     data:
       user_info:''
       user_infos:{}
-      messages:null
+      messages:[]
       loading:false
+      new_loading:false
+      old_loading:false
       current_message_id:null
       god_name:null
-      last:null#用来放上次看到的message
+      last_message:null #用来放上次看到的message
       last_message_id:''#db中查出的上次看到的message_id用来定位
       gods:null
     created:->
@@ -16,7 +18,42 @@ $ ->
       @getGods()
     ready:->
     methods:
-      setUnreadCount:->#设置未读的条目
+      main:-> # 首页
+        @god_name = null
+        @user_info = ''
+        @new()
+        @old()
+      new:->
+        @new_loading=true
+        $.ajax
+          url: '/new'
+          type: 'POST'
+          success: (data, status, response) =>
+            if data.messages.length != 0
+              @messages = _.uniq _.union(@messages, data.messages), false, (item, key, a) ->
+                item.row_num
+              @setUnreadCount(data.last_message_id)
+            @new_loading=false
+      old:->
+        parm = JSON.stringify
+          offset:@messages.length
+        @old_loading=true
+        $.ajax
+          url: '/old'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            @messages = _.uniq _.union(data.messages.reverse(), @messages), false, (item, key, a) ->
+              item.row_num
+            #for message in data.messages
+            #  @messages.push(message)
+            @loading=false
+      god_old:->
+        url = '/god'
+        parm = JSON.stringify
+          offset:@messages.length+1
+          god_name:@god_name
+      setUnreadCount:(last_message_id)->#设置未读的条目数
         index = _.findIndex(@messages, (d)=>
           message_id = d.m_type+'_'+d.id
           return message_id == @last_message_id
@@ -24,8 +61,21 @@ $ ->
         if index == -1 or index == 0
           document.title = "Follow Center"
         else
-          document.title = "(#{index})Follow Center"
+          document.title = "(#{index}) Follow Center"
         return index
+      saveLast:(last_message)->
+        return
+        @last_message_id = last_message.m_type+'_'+last_message.id
+        parm = JSON.stringify
+          last_time:last_message.created_at
+          last_message_id:last_message.m_type+'_'+last_message.id
+        $.ajax
+          url: '/save_last'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            #存储在本地，用来比较
+            @last_message = last_message
       getGods:->
         if @gods
           return
@@ -40,75 +90,9 @@ $ ->
           bz.showNotice5("#{count}条未读信息")
           if count!=0
             _.delay(@scrollToLastMessage, 500, el)
-      saveLast:->
-        return
-        @last_message_id = @last.m_type+'_'+@last.id
-        parm = JSON.stringify
-          last_time:@last.created_at
-          last_message_id:@last.m_type+'_'+@last.id
-        $.ajax
-          url: '/save_last'
-          type: 'POST'
-          data : parm
-          success: (data, status, response) =>
-            @setUnreadCount()
       scrollToLastMessage:(target)->#到上一次的message
         y = $(target).offset().top
         window.scrollTo(0, y)
-      all:-> #查自己订阅了的所有的
-        @god_name = null
-        @user_info = ''
-        @loading=true
-        $.ajax
-          url: '/all'
-          type: 'POST'
-          success: (data, status, response) =>
-            @last_message_id = data.last_message_id
-            @messages = data.messages.reverse()
-            #@messages = data.messages
-            @loading=false
-            if data.messages.length == 0 #没有查到新的message，马上查历史的出来，让界面有点东西
-              @more()
-      more:->
-        if @loading or @message == null #避免重复加载
-          return
-        if @god_name
-          url = '/god'
-          parm = JSON.stringify
-            offset:@messages.length+1
-            god_name:@god_name
-        else
-          url = '/more'
-          parm = JSON.stringify
-            offset:@messages.length+1
-        @loading=true
-        $.ajax
-          url: url
-          type: 'POST'
-          data : parm
-          success: (data, status, response) =>
-            @messages = _.uniq _.union(data.messages.reverse(), @messages), false, (item, key, a) ->
-              item.row_num
-            #for message in data.messages
-            #  @messages.push(message)
-            @loading=false
-      new:->
-        if @loading#避免重复加载
-          return
-        if @god_name
-          return
-        @loading=true
-        $.ajax
-          url: '/all'
-          type: 'POST'
-          success: (data, status, response) =>
-            @last_message_id = data.last_message_id
-            if data.messages.length != 1 and data.messages.length != 0
-              data.messages.splice(0, 1) #删了第一个元素，为是用想同时间select，第一条元素重复会导致刷新
-              @messages = _.uniq _.union(data.messages, @messages), false, (item, key, a) ->
-                item.row_num
-              @setUnreadCount()
-            @loading=false
       god:(god_name)->
         @loading=true
         @god_name = god_name
@@ -142,27 +126,25 @@ $ ->
         $(window).scroll ->
           $top = $('#v_messages').offset().top
           if $(this).scrollTop() == 0 #滚动到最上面时，加载新的内容
-            v.new()
-            #$('body').addClass('fixed')
+            if v.old_loading == false
+              v.old()
           else if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0 #当滚动到最底部时，加载最新内容
-            v.new()
+            if v.new_loading == false
+              v.new()
             #$('body').removeClass('fixed')
-          #选出当前正在看的message
+          ##选出当前正在看的message
           $('#v_messages .col-md-8 .box').each ->
             if $(this).offset().top+$(this).height() >= $top + $(window).scrollTop()
-              #log 'this:'+$(this).offset().top+$(this).height()
-              #log 'comparm:' + $top + $(window).scrollTop()
-              #如果在god页面，不要记录消息
-              if v.god_name != null
+              if v.god_name != null #如果在god页面，不要记录消息
                 return false
               #从jquery对像又取到 vue 对象
               message = $(this)[0].__vue__.message
-              if v.last == null or v.last.created_at<message.created_at
-                v.last = message
-                v.saveLast()
+              if v.last_message == null or v.last_message.created_at<message.created_at
+                log message
+                v.saveLast(message)
               return false
   routes =
     '/god/:god_name': v_messages.god
-    '/': v_messages.all
+    '/': v_messages.main
   router = Router(routes)
   router.init('/')

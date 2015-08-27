@@ -153,7 +153,7 @@ class messages_app(tornado_bz.UserInfoHandler):
         self.render(tornado_bz.getTName(self))
 
 
-class all(tornado_bz.UserInfoHandler):
+class new(tornado_bz.UserInfoHandler):
 
     '''
     create by bigzhu at 15/08/17 11:12:24 查看我订阅了的message，要定位到上一次看的那条
@@ -161,23 +161,24 @@ class all(tornado_bz.UserInfoHandler):
 
     def post(self):
         self.set_header("Content-Type", "application/json")
-        user_id = self.current_user
         # 上次看到哪条？
-        last = public_db.getLast(user_id)
+        last = public_db.getLast(self.current_user)
         if last:
             last_message_id = last.last_message_id
             last_time = last.last_time
+            limit=None #查出看到上次的所有
         else:
             last_message_id = None
             last_time = None
+            limit=10 #第一次看，就查最新的10条出来
 
-        messages = public_db.getMessages(user_id=user_id, last_time=last_time, limit=None)
+        messages = public_db.getMessages(user_id=self.current_user, last_time=last_time, limit=limit)
 
         #print datetime.datetime.now()
         self.write(json.dumps({'error': '0', 'messages': messages, 'last_message_id': last_message_id}, cls=public_bz.ExtEncoder))
 
 
-class more(tornado_bz.UserInfoHandler):
+class old(tornado_bz.UserInfoHandler):
 
     '''
     create by bigzhu at 15/08/17 11:06:40 用来查all的更多,不需要定位

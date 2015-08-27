@@ -6,11 +6,13 @@
       data: {
         user_info: '',
         user_infos: {},
-        messages: null,
+        messages: [],
         loading: false,
+        new_loading: false,
+        old_loading: false,
         current_message_id: null,
         god_name: null,
-        last: null,
+        last_message: null,
         last_message_id: '',
         gods: null
       },
@@ -20,7 +22,59 @@
       },
       ready: function() {},
       methods: {
-        setUnreadCount: function() {
+        main: function() {
+          this.god_name = null;
+          this.user_info = '';
+          this["new"]();
+          return this.old();
+        },
+        "new": function() {
+          this.new_loading = true;
+          return $.ajax({
+            url: '/new',
+            type: 'POST',
+            success: (function(_this) {
+              return function(data, status, response) {
+                if (data.messages.length !== 0) {
+                  _this.messages = _.uniq(_.union(_this.messages, data.messages), false, function(item, key, a) {
+                    return item.row_num;
+                  });
+                  _this.setUnreadCount(data.last_message_id);
+                }
+                return _this.new_loading = false;
+              };
+            })(this)
+          });
+        },
+        old: function() {
+          var parm;
+          parm = JSON.stringify({
+            offset: this.messages.length
+          });
+          this.old_loading = true;
+          return $.ajax({
+            url: '/old',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                _this.messages = _.uniq(_.union(data.messages.reverse(), _this.messages), false, function(item, key, a) {
+                  return item.row_num;
+                });
+                return _this.loading = false;
+              };
+            })(this)
+          });
+        },
+        god_old: function() {
+          var parm, url;
+          url = '/god';
+          return parm = JSON.stringify({
+            offset: this.messages.length + 1,
+            god_name: this.god_name
+          });
+        },
+        setUnreadCount: function(last_message_id) {
           var index;
           index = _.findIndex(this.messages, (function(_this) {
             return function(d) {
@@ -32,9 +86,28 @@
           if (index === -1 || index === 0) {
             document.title = "Follow Center";
           } else {
-            document.title = "(" + index + ")Follow Center";
+            document.title = "(" + index + ") Follow Center";
           }
           return index;
+        },
+        saveLast: function(last_message) {
+          var parm;
+          return;
+          this.last_message_id = last_message.m_type + '_' + last_message.id;
+          parm = JSON.stringify({
+            last_time: last_message.created_at,
+            last_message_id: last_message.m_type + '_' + last_message.id
+          });
+          return $.ajax({
+            url: '/save_last',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                return _this.last_message = last_message;
+              };
+            })(this)
+          });
         },
         getGods: function() {
           if (this.gods) {
@@ -60,106 +133,10 @@
             }
           }
         },
-        saveLast: function() {
-          var parm;
-          return;
-          this.last_message_id = this.last.m_type + '_' + this.last.id;
-          parm = JSON.stringify({
-            last_time: this.last.created_at,
-            last_message_id: this.last.m_type + '_' + this.last.id
-          });
-          return $.ajax({
-            url: '/save_last',
-            type: 'POST',
-            data: parm,
-            success: (function(_this) {
-              return function(data, status, response) {
-                return _this.setUnreadCount();
-              };
-            })(this)
-          });
-        },
         scrollToLastMessage: function(target) {
           var y;
           y = $(target).offset().top;
           return window.scrollTo(0, y);
-        },
-        all: function() {
-          this.god_name = null;
-          this.user_info = '';
-          this.loading = true;
-          return $.ajax({
-            url: '/all',
-            type: 'POST',
-            success: (function(_this) {
-              return function(data, status, response) {
-                _this.last_message_id = data.last_message_id;
-                _this.messages = data.messages.reverse();
-                _this.loading = false;
-                if (data.messages.length === 0) {
-                  return _this.more();
-                }
-              };
-            })(this)
-          });
-        },
-        more: function() {
-          var parm, url;
-          if (this.loading || this.message === null) {
-            return;
-          }
-          if (this.god_name) {
-            url = '/god';
-            parm = JSON.stringify({
-              offset: this.messages.length + 1,
-              god_name: this.god_name
-            });
-          } else {
-            url = '/more';
-            parm = JSON.stringify({
-              offset: this.messages.length + 1
-            });
-          }
-          this.loading = true;
-          return $.ajax({
-            url: url,
-            type: 'POST',
-            data: parm,
-            success: (function(_this) {
-              return function(data, status, response) {
-                _this.messages = _.uniq(_.union(data.messages.reverse(), _this.messages), false, function(item, key, a) {
-                  return item.row_num;
-                });
-                return _this.loading = false;
-              };
-            })(this)
-          });
-        },
-        "new": function() {
-          if (this.loading) {
-            return;
-          }
-          if (this.god_name) {
-            return;
-          }
-          this.loading = true;
-          return $.ajax({
-            url: '/all',
-            type: 'POST',
-            success: (function(_this) {
-              return function(data, status, response) {
-                _this.last_message_id = data.last_message_id;
-                if (data.messages.length !== 1 && data.messages.length !== 0) {
-                  data.messages.splice(0, 1);
-                  _this.messages = _.uniq(_.union(data.messages, _this.messages), false, function(item, key, a) {
-                    return item.row_num;
-                  });
-                  _this.setUnreadCount();
-                }
-                return _this.loading = false;
-              };
-            })(this)
-          });
         },
         god: function(god_name) {
           var parm;
@@ -211,9 +188,13 @@
             var $top;
             $top = $('#v_messages').offset().top;
             if ($(this).scrollTop() === 0) {
-              v["new"]();
+              if (v.old_loading === false) {
+                v.old();
+              }
             } else if (($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
-              v["new"]();
+              if (v.new_loading === false) {
+                v["new"]();
+              }
             }
             return $('#v_messages .col-md-8 .box').each(function() {
               var message;
@@ -222,9 +203,9 @@
                   return false;
                 }
                 message = $(this)[0].__vue__.message;
-                if (v.last === null || v.last.created_at < message.created_at) {
-                  v.last = message;
-                  v.saveLast();
+                if (v.last_message === null || v.last_message.created_at < message.created_at) {
+                  log(message);
+                  v.saveLast(message);
                 }
                 return false;
               }
@@ -235,7 +216,7 @@
     });
     routes = {
       '/god/:god_name': v_messages.god,
-      '/': v_messages.all
+      '/': v_messages.main
     };
     router = Router(routes);
     return router.init('/');

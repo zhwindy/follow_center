@@ -30,7 +30,7 @@
 
   String.prototype['autoLink'] = autoLink;
 
-  Vue.config.debug = true;
+  Vue.config.debug = false;
 
   Vue.transition('fade', {
     enter: function(el, done) {

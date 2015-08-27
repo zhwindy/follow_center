@@ -24,7 +24,7 @@ autoLink = (options...) ->
 
 String.prototype['autoLink'] = autoLink
 #follow 的按钮
-Vue.config.debug = true
+Vue.config.debug = false
 
 Vue.transition 'fade',
   enter: (el, done) ->
