@@ -51,7 +51,13 @@
           });
         },
         old: function() {
-          var parm;
+          var el, parm;
+          if (this.$.c_messages.length !== 0) {
+            el = this.$.c_messages[0].$el;
+          } else {
+            el = null;
+          }
+          log(el);
           parm = JSON.stringify({
             offset: this.messages.length
           });
@@ -62,11 +68,13 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
-                log(data.messages);
                 _this.messages = _.uniq(_.union(data.messages.reverse(), _this.messages), false, function(item, key, a) {
                   return item.row_num;
                 });
-                return _this.old_loading = false;
+                _this.old_loading = false;
+                if (el !== null) {
+                  return _.delay(_this.scrollTo, 500, el, -50);
+                }
               };
             })(this)
           });
@@ -128,13 +136,17 @@
             count = this.setUnreadCount();
             bz.showNotice5(count + "条未读信息");
             if (count !== 0) {
-              return _.delay(this.scrollToLastMessage, 500, el);
+              return _.delay(this.scrollTo, 500, el);
             }
           }
         },
-        scrollToLastMessage: function(target) {
+        scrollTo: function(target, offset) {
           var y;
+          if (offset == null) {
+            offset = 0;
+          }
           y = $(target).offset().top;
+          y = y + offset;
           return window.scrollTo(0, y);
         },
         god: function(god_name) {

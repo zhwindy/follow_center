@@ -39,6 +39,11 @@ $ ->
 
             @new_loading=false
       old:->
+        if @$.c_messages.length != 0
+          el = @$.c_messages[0].$el
+        else
+          el = null
+        log el
         parm = JSON.stringify
           offset:@messages.length
         @old_loading=true
@@ -47,12 +52,13 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
-            log data.messages
             @messages = _.uniq _.union(data.messages.reverse(), @messages), false, (item, key, a) ->
               item.row_num
             #for message in data.messages
             #  @messages.push(message)
             @old_loading=false
+            if el != null
+              _.delay(@scrollTo, 500, el, -50)
       god_old:->
         url = '/god'
         parm = JSON.stringify
@@ -91,9 +97,10 @@ $ ->
           count = @setUnreadCount()
           bz.showNotice5("#{count}条未读信息")
           if count!=0
-            _.delay(@scrollToLastMessage, 500, el)
-      scrollToLastMessage:(target)->#到上一次的message
+            _.delay(@scrollTo, 500, el)
+      scrollTo:(target, offset=0)-># 定位到这个target, offset偏移量 
         y = $(target).offset().top
+        y = y+ offset
         window.scrollTo(0, y)
       god:(god_name)->
         @loading=true

@@ -19,7 +19,7 @@
             <div class="col-md-4">
             </div>
         </div>
-        <component is="(%message.m_type%)" v-repeat="message in messages" v-transition="fade">
+        <component is="(%message.m_type%)" v-repeat="message in messages" v-ref="c_messages" v-transition="fade">
         </component>
         <div class="row">
             <div class="col-md-4">
