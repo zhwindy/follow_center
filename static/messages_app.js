@@ -57,7 +57,6 @@
           } else {
             el = null;
           }
-          log(el);
           parm = JSON.stringify({
             offset: this.messages.length
           });

@@ -43,7 +43,6 @@ $ ->
           el = @$.c_messages[0].$el
         else
           el = null
-        log el
         parm = JSON.stringify
           offset:@messages.length
         @old_loading=true
