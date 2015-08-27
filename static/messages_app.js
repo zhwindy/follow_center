@@ -26,8 +26,7 @@
         main: function() {
           this.god_name = null;
           this.user_info = '';
-          this["new"]();
-          return this.old();
+          return this["new"]();
         },
         "new": function() {
           this.new_loading = true;
@@ -40,8 +39,11 @@
                   _this.messages = _.uniq(_.union(_this.messages, data.messages), false, function(item, key, a) {
                     return item.row_num;
                   });
-                  log(data.messages.length);
                   _this.setTitleUnreadCount(data.messages.length);
+                } else {
+                  if (_this.messages.length === 0) {
+                    _this.old();
+                  }
                 }
                 return _this.new_loading = false;
               };
@@ -60,10 +62,11 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
+                log(data.messages);
                 _this.messages = _.uniq(_.union(data.messages.reverse(), _this.messages), false, function(item, key, a) {
                   return item.row_num;
                 });
-                return _this.loading = false;
+                return _this.old_loading = false;
               };
             })(this)
           });
@@ -185,7 +188,7 @@
             $top = $('#v_messages').offset().top;
             if ($(this).scrollTop() === 0) {
               if (v.old_loading === false) {
-                log('old');
+                v.old();
               }
             } else if (($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
               if (v.new_loading === false) {

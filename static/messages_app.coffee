@@ -23,7 +23,6 @@ $ ->
         @god_name = null
         @user_info = ''
         @new()
-        @old()
       new:->
         @new_loading=true
         $.ajax
@@ -33,8 +32,11 @@ $ ->
             if data.messages.length != 0
               @messages = _.uniq _.union(@messages, data.messages), false, (item, key, a) ->
                 item.row_num
-              log data.messages.length
               @setTitleUnreadCount(data.messages.length)
+            else
+              if @messages.length == 0
+                @old()
+
             @new_loading=false
       old:->
         parm = JSON.stringify
@@ -45,11 +47,12 @@ $ ->
           type: 'POST'
           data : parm
           success: (data, status, response) =>
+            log data.messages
             @messages = _.uniq _.union(data.messages.reverse(), @messages), false, (item, key, a) ->
               item.row_num
             #for message in data.messages
             #  @messages.push(message)
-            @loading=false
+            @old_loading=false
       god_old:->
         url = '/god'
         parm = JSON.stringify
@@ -126,8 +129,7 @@ $ ->
           $top = $('#v_messages').offset().top
           if $(this).scrollTop() == 0 #滚动到最上面时，加载新的内容
             if v.old_loading == false
-              log 'old'
-              #v.old()
+              v.old()
           else if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0 #当滚动到最底部时，加载最新内容
             if v.new_loading == false
               v.new()
