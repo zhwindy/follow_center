@@ -104,7 +104,7 @@ def getMedia(user_name=None, with_next_url=None, user=None):
         db_media.link = media.link
         db_media.type = media.type
         db_media.user_id = user.id
-        id = db_bz.insertIfNotExist(pg, 'instagram_media', db_media, "id_str='%s'" % db_media.id_str)
+        id = pg.insertIfNotExist(pg, 'instagram_media', db_media, "id_str='%s'" % db_media.id_str)
         print 'new=', media.id, user.username
         if id is not None and len(medias) <= 2:  # 新增加消息,微信通知只通知2条以内
             openids = public_db.getOpenidsByName('instagram', user.username)
