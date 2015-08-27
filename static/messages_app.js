@@ -36,7 +36,7 @@
             success: (function(_this) {
               return function(data, status, response) {
                 if (data.messages.length !== 0) {
-                  _this.messages = _.uniq(_.union(_this.messages, data.messages), false, function(item, key, a) {
+                  _this.messages = _.uniq(_.union(_this.messages, data.messages.reverse()), false, function(item, key, a) {
                     return item.row_num;
                   });
                   _this.setTitleUnreadCount(data.messages.length);

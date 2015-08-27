@@ -30,7 +30,7 @@ $ ->
           type: 'POST'
           success: (data, status, response) =>
             if data.messages.length != 0
-              @messages = _.uniq _.union(@messages, data.messages), false, (item, key, a) ->
+              @messages = _.uniq _.union(@messages, data.messages.reverse()), false, (item, key, a) ->
                 item.row_num
               @setTitleUnreadCount(data.messages.length)
             else
