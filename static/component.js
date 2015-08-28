@@ -159,10 +159,6 @@
 
   Vue.component('twitter', {
     props: ['message'],
-    ready: function() {
-      var message_id;
-      return message_id = this.message.m_type + '_' + this.message.id;
-    },
     computed: {
       avatar: function() {
         var avatar;
@@ -197,10 +193,6 @@
 
   Vue.component('github', {
     props: ['message'],
-    ready: function() {
-      var message_id;
-      return message_id = this.message.m_type + '_' + this.message.id;
-    },
     computed: {
       avatar: function() {
         return this.message.avatar;
@@ -243,10 +235,6 @@
 
   Vue.component('instagram', {
     props: ['message'],
-    ready: function() {
-      var message_id;
-      return message_id = this.message.m_type + '_' + this.message.id;
-    },
     computed: {
       avatar: function() {
         var avatar;

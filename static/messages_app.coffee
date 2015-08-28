@@ -136,13 +136,6 @@ $ ->
           success: (data, status, response) =>
             log data.gods
             @gods = data.gods
-      childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
-        null
-        #if @god_name == null and @last_message_id==message_id
-        #  count = @setUnreadCount()
-        #  bz.showNotice5("#{count}条未读信息")
-        #  if count!=0
-        #    _.delay(@scrollTo, 500, el)
       scrollTo:(target, offset=0)-># 定位到这个target, offset偏移量 
         y = $(target).offset().top
         y = y+ offset

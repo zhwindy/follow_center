@@ -200,9 +200,6 @@
             })(this)
           });
         },
-        childElDone: function(message_id, el) {
-          return null;
-        },
         scrollTo: function(target, offset) {
           var y;
           if (offset == null) {
