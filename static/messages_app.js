@@ -171,7 +171,7 @@
               return d.row_num === message.row_num;
             };
           })(this));
-          return this.message.length - index;
+          return this.messages.length - index;
         },
         saveLast: function(last_message) {
           var parm;

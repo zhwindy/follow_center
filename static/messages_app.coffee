@@ -117,7 +117,7 @@ $ ->
         index = _.findIndex(@messages, (d)=>
                  return d.row_num == message.row_num
                )
-        return @message.length-index
+        return @messages.length-index
       saveLast:(last_message)->
         @last_message_id = last_message.m_type+'_'+last_message.id
         parm = JSON.stringify
