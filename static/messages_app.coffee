@@ -19,11 +19,25 @@ $ ->
       @getGods()
     ready:->
     methods:
+      new:->
+        if @new_loading
+          return
+        if @god_name
+          @newGod()
+        else
+          @newAll()
+      old:->
+        if @old_loading
+          return
+        if @god_name
+          @oldGod()
+        else
+          @oldAll()
       main:-> # 首页
         @god_name = null
         @user_info = ''
-        @new()
-      new:->
+        @newAll()
+      newAll:->
         @new_loading=true
         $.ajax
           url: '/new'
@@ -35,14 +49,9 @@ $ ->
               @setTitleUnreadCount(data.messages.length)
             else
               if @messages.length == 0
-                @old()
-
+                @old_all()
             @new_loading=false
-      old:->
-        if @$.c_messages.length != 0
-          el = @$.c_messages[0].$el
-        else
-          el = null
+      oldAll:->
         parm = JSON.stringify
           offset:@messages.length
         @old_loading=true
@@ -53,16 +62,50 @@ $ ->
           success: (data, status, response) =>
             @messages = _.uniq _.union(data.messages.reverse(), @messages), false, (item, key, a) ->
               item.row_num
-            #for message in data.messages
-            #  @messages.push(message)
             @old_loading=false
+            el = @getLastMessageEl()
             if el != null
               _.delay(@scrollTo, 500, el, -50)
-      god_old:->
-        url = '/god'
+      god:(god_name)->
+        @god_name = god_name
+        @newGod()
+      newGod:->
+        @new_loading=true
+        parm = JSON.stringify
+          god_name:@god_name
+        $.ajax
+          url: '/god'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            @messages = _.uniq _.union(@messages, data.messages.reverse()), false, (item, key, a) ->
+              item.row_num
+            @setTitleUnreadCount(data.messages.length)
+            @new_loading=false
+            #window.scrollTo(0, 0) #回到顶端
+        @getUserInfo(@god_name)
+      oldGod:->
         parm = JSON.stringify
           offset:@messages.length+1
           god_name:@god_name
+        @old_loading=true
+        $.ajax
+          url: '/god'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            @messages = _.uniq _.union(data.messages.reverse(), @messages), false, (item, key, a) ->
+              item.row_num
+            @old_loading=false
+            el = @getLastMessageEl()
+            if el != null
+              _.delay(@scrollTo, 500, el, -50)
+      getLastMessageEl:->
+        if @$.c_messages.length != 0
+          el = @$.c_messages[0].$el
+        else
+          el = null
+        return el
       setTitleUnreadCount:(count)->#设置未读的条目数
         @unreadCount = count
         if count == 0
@@ -101,20 +144,6 @@ $ ->
         y = $(target).offset().top
         y = y+ offset
         window.scrollTo(0, y)
-      god:(god_name)->
-        @loading=true
-        @god_name = god_name
-        parm = JSON.stringify
-          god_name:god_name
-        $.ajax
-          url: '/god'
-          type: 'POST'
-          data : parm
-          success: (data, status, response) =>
-            @messages = data.messages
-            @loading=false
-            window.scrollTo(0, 0) #回到顶端
-        @getUserInfo(god_name)
       getUserInfo:(user_name)->
         if @user_infos[user_name]
           @user_info = @user_infos[user_name]
@@ -136,11 +165,11 @@ $ ->
 
           if $(this).scrollTop() == 0 #滚动到最上面时，加载历史内容
             #if v.old_loading == false
-            #  v.old()
+            #  v.old_all()
             null
           else if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0 #当滚动到最底部时，加载最新内容
             if v.new_loading == false
-              v.new()
+              v.newAll()
             #$('body').removeClass('fixed')
           ##选出当前正在看的message
           $('#v_messages .col-md-8 .box').each ->

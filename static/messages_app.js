@@ -23,12 +23,32 @@
       },
       ready: function() {},
       methods: {
+        "new": function() {
+          if (this.new_loading) {
+            return;
+          }
+          if (this.god_name) {
+            return this.newGod();
+          } else {
+            return this.newAll();
+          }
+        },
+        old: function() {
+          if (this.old_loading) {
+            return;
+          }
+          if (this.god_name) {
+            return this.oldGod();
+          } else {
+            return this.oldAll();
+          }
+        },
         main: function() {
           this.god_name = null;
           this.user_info = '';
-          return this["new"]();
+          return this.newAll();
         },
-        "new": function() {
+        newAll: function() {
           this.new_loading = true;
           return $.ajax({
             url: '/new',
@@ -42,7 +62,7 @@
                   _this.setTitleUnreadCount(data.messages.length);
                 } else {
                   if (_this.messages.length === 0) {
-                    _this.old();
+                    _this.old_all();
                   }
                 }
                 return _this.new_loading = false;
@@ -50,13 +70,8 @@
             })(this)
           });
         },
-        old: function() {
-          var el, parm;
-          if (this.$.c_messages.length !== 0) {
-            el = this.$.c_messages[0].$el;
-          } else {
-            el = null;
-          }
+        oldAll: function() {
+          var parm;
           parm = JSON.stringify({
             offset: this.messages.length
           });
@@ -67,10 +82,12 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
+                var el;
                 _this.messages = _.uniq(_.union(data.messages.reverse(), _this.messages), false, function(item, key, a) {
                   return item.row_num;
                 });
                 _this.old_loading = false;
+                el = _this.getLastMessageEl();
                 if (el !== null) {
                   return _.delay(_this.scrollTo, 500, el, -50);
                 }
@@ -78,13 +95,66 @@
             })(this)
           });
         },
-        god_old: function() {
-          var parm, url;
-          url = '/god';
-          return parm = JSON.stringify({
+        god: function(god_name) {
+          this.god_name = god_name;
+          return this.newGod();
+        },
+        newGod: function() {
+          var parm;
+          this.new_loading = true;
+          parm = JSON.stringify({
+            god_name: this.god_name
+          });
+          $.ajax({
+            url: '/god',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                _this.messages = _.uniq(_.union(_this.messages, data.messages.reverse()), false, function(item, key, a) {
+                  return item.row_num;
+                });
+                _this.setTitleUnreadCount(data.messages.length);
+                return _this.new_loading = false;
+              };
+            })(this)
+          });
+          return this.getUserInfo(this.god_name);
+        },
+        oldGod: function() {
+          var parm;
+          parm = JSON.stringify({
             offset: this.messages.length + 1,
             god_name: this.god_name
           });
+          this.old_loading = true;
+          return $.ajax({
+            url: '/god',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                var el;
+                _this.messages = _.uniq(_.union(data.messages.reverse(), _this.messages), false, function(item, key, a) {
+                  return item.row_num;
+                });
+                _this.old_loading = false;
+                el = _this.getLastMessageEl();
+                if (el !== null) {
+                  return _.delay(_this.scrollTo, 500, el, -50);
+                }
+              };
+            })(this)
+          });
+        },
+        getLastMessageEl: function() {
+          var el;
+          if (this.$.c_messages.length !== 0) {
+            el = this.$.c_messages[0].$el;
+          } else {
+            el = null;
+          }
+          return el;
         },
         setTitleUnreadCount: function(count) {
           this.unreadCount = count;
@@ -148,27 +218,6 @@
           y = y + offset;
           return window.scrollTo(0, y);
         },
-        god: function(god_name) {
-          var parm;
-          this.loading = true;
-          this.god_name = god_name;
-          parm = JSON.stringify({
-            god_name: god_name
-          });
-          $.ajax({
-            url: '/god',
-            type: 'POST',
-            data: parm,
-            success: (function(_this) {
-              return function(data, status, response) {
-                _this.messages = data.messages;
-                _this.loading = false;
-                return window.scrollTo(0, 0);
-              };
-            })(this)
-          });
-          return this.getUserInfo(god_name);
-        },
         getUserInfo: function(user_name) {
           var parm;
           if (this.user_infos[user_name]) {
@@ -201,7 +250,7 @@
               null;
             } else if (($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
               if (v.new_loading === false) {
-                v["new"]();
+                v.newAll();
               }
             }
             return $('#v_messages .col-md-8 .box').each(function() {
