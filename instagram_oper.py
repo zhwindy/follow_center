@@ -41,7 +41,14 @@ def getUser(user_name):
         if user is None:
             public_db.delNoName('instagram', user_name)
         #user = api.user_search(user_name, 1)[0]
-        user = api.user(user.id)
+
+        try:
+            user = api.user(user.id)
+        except instagram.bind.InstagramAPIError:
+            #通常是没有访问权限
+            print public_bz.getExpInfoAll()
+            public_db.delNoName('instagram', user_name)
+            return
 
         db_user = storage()
         db_user.id = user.id
