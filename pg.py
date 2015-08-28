@@ -68,6 +68,7 @@ def query(*args, **kwargs):
     return db.query(*args, **kwargs)
 
 
+@daemon
 def refresh(view_name):
     db.query('REFRESH MATERIALIZED VIEW %s' % view_name)
 
