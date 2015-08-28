@@ -140,14 +140,19 @@ def getMessages(user_id=None, god_name=None, type=None, id=None, limit=10, offse
     return pg.query(sql)
 
 
-def getGodInfoFollow(user_id=None, god_name=None):
+def getGodInfoFollow(user_id=None, god_name=None, recommand=False):
     '''
     modify by bigzhu at 15/08/06 17:05:22 可以根据god_name来取
+    modify by bigzhu at 15/08/28 17:09:31 推荐模式就是只查随机5个
+    modify by bigzhu at 15/08/28 17:30:38 没有社交帐号的不要查出来
     '''
     sql = '''
-    select  u.id as god_id, 0 followed,
+    select  u.id as god_id,
             u.created_date as u_created_date,
-    * from user_info u order by u.created_date desc
+    * from user_info u
+        where
+            not ((twitter is null or twitter='') and (github is null or github='') and (instagram is null or instagram=''))
+     order by u.created_date desc
     '''
     if god_name:
         sql = '''
@@ -158,6 +163,14 @@ def getGodInfoFollow(user_id=None, god_name=None):
             select * from   (%s) ut left join (select god_id followed_god_id, 1 followed from follow_who where user_id=%s) f on ut.god_id=f.followed_god_id
             order by ut.u_created_date desc
         ''' % (sql, user_id)
+    if recommand:
+        sql = '''
+        select * from (%s) s where s.followed is null
+        ''' % sql
+
+        sql = '''
+        select * from (%s) s  order by random() limit 5;
+        ''' % sql
 
     return pg.query(sql)
 

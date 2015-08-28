@@ -49,7 +49,7 @@ $ ->
               @setTitleUnreadCount(data.messages.length)
             else
               if @messages.length == 0
-                @old_all()
+                @oldAll()
             @new_loading=false
       oldAll:->
         parm = JSON.stringify
@@ -127,13 +127,15 @@ $ ->
             @last_message = last_message
             if data.count == 1
               @setTitleUnreadCount(@unreadCount-1)
+
       getGods:->
         if @gods
           return
         $.ajax
-          url: '/gods'
+          url: '/recommandGods'
           type: 'POST'
           success: (data, status, response) =>
+            log data.gods
             @gods = data.gods
       childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
         null

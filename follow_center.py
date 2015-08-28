@@ -225,6 +225,14 @@ class gods(tornado_bz.UserInfoHandler):
         gods = oper.getGods(self.current_user)
         self.write(json.dumps({'error': '0', 'gods': gods}, cls=public_bz.ExtEncoder))
 
+class recommandGods(tornado_bz.UserInfoHandler):
+    '''
+    create by bigzhu at 15/08/28 17:04:40 随机推荐5个没关注的人
+    '''
+    def post(self):
+        self.set_header("Content-Type", "application/json")
+        gods = oper.getGods(self.current_user, recommand=True)
+        self.write(json.dumps({'error': '0', 'gods': gods}, cls=public_bz.ExtEncoder))
 
 class user_info(tornado_bz.UserInfoHandler):
 

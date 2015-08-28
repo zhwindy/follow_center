@@ -62,7 +62,7 @@
                   _this.setTitleUnreadCount(data.messages.length);
                 } else {
                   if (_this.messages.length === 0) {
-                    _this.old_all();
+                    _this.oldAll();
                   }
                 }
                 return _this.new_loading = false;
@@ -190,10 +190,11 @@
             return;
           }
           return $.ajax({
-            url: '/gods',
+            url: '/recommandGods',
             type: 'POST',
             success: (function(_this) {
               return function(data, status, response) {
+                log(data.gods);
                 return _this.gods = data.gods;
               };
             })(this)

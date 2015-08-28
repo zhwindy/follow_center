@@ -7,18 +7,20 @@ import base64
 import time_bz
 
 
-def getGods(user_id):
+def getGods(user_id, recommand=False):
     '''
     create by bigzhu at 15/07/12 23:43:54 显示所有的大神, 关联twitter
     modify by bigzhu at 15/07/17 15:20:26 关联其他的,包括 github
+    modify by bigzhu at 15/08/28 17:05:54 可以查出没关注的,和随机的
     '''
-    gods = list(public_db.getGodInfoFollow(user_id))
+    gods = list(public_db.getGodInfoFollow(user_id, recommand=recommand))
     will_del = []
     for god in gods:
         god.twitter_user = public_db.getTwitterUser(god.twitter)
         god.github_user = public_db.getGithubUser(god.github)
         god.instagram_user = public_db.getInstagramUser(god.instagram)
         if god.twitter_user is None and god.github_user is None and god.instagram_user is None:
+            print god
             will_del.append(god)
     for god in will_del:
         gods.remove(god)
