@@ -125,7 +125,7 @@ Vue.component 'twitter',
   props: [ 'message' ]
   ready:->
     message_id = @message.m_type+'_'+@message.id
-    @$parent.childElDone(message_id, @$el)
+    #@$parent.childElDone(message_id, @$el)
   computed:#v-attr只接收变量,为了用proxy,这里要处理
     avatar:->
       avatar = btoa(btoa(@message.avatar))
@@ -182,7 +182,7 @@ Vue.component 'github',
   props: [ 'message']
   ready:->
     message_id = @message.m_type+'_'+@message.id
-    @$parent.childElDone(message_id, @$el)
+    #@$parent.childElDone(message_id, @$el)
   computed:
     avatar:->
       return @message.avatar
@@ -249,7 +249,7 @@ Vue.component 'instagram',
   props: [ 'message' ]
   ready:->
     message_id = @message.m_type+'_'+@message.id
-    @$parent.childElDone(message_id, @$el)
+    #@$parent.childElDone(message_id, @$el)
   computed:
     #v-attr只接收变量,为了用proxy,这里要处理
     avatar:->

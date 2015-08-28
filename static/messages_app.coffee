@@ -127,7 +127,6 @@ $ ->
             @last_message = last_message
             if data.count == 1
               @setTitleUnreadCount(@unreadCount-1)
-
       getGods:->
         if @gods
           return

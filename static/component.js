@@ -161,8 +161,7 @@
     props: ['message'],
     ready: function() {
       var message_id;
-      message_id = this.message.m_type + '_' + this.message.id;
-      return this.$parent.childElDone(message_id, this.$el);
+      return message_id = this.message.m_type + '_' + this.message.id;
     },
     computed: {
       avatar: function() {
@@ -200,8 +199,7 @@
     props: ['message'],
     ready: function() {
       var message_id;
-      message_id = this.message.m_type + '_' + this.message.id;
-      return this.$parent.childElDone(message_id, this.$el);
+      return message_id = this.message.m_type + '_' + this.message.id;
     },
     computed: {
       avatar: function() {
@@ -247,8 +245,7 @@
     props: ['message'],
     ready: function() {
       var message_id;
-      message_id = this.message.m_type + '_' + this.message.id;
-      return this.$parent.childElDone(message_id, this.$el);
+      return message_id = this.message.m_type + '_' + this.message.id;
     },
     computed: {
       avatar: function() {
