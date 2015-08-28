@@ -95,7 +95,7 @@
             })(this)
           });
         },
-        god: function(god_name) {
+        mainGod: function(god_name) {
           this.god_name = god_name;
           return this.newGod();
         },
@@ -200,14 +200,7 @@
           });
         },
         childElDone: function(message_id, el) {
-          var count;
-          if (this.god_name === null && this.last_message_id === message_id) {
-            count = this.setUnreadCount();
-            bz.showNotice5(count + "条未读信息");
-            if (count !== 0) {
-              return _.delay(this.scrollTo, 500, el);
-            }
-          }
+          return null;
         },
         scrollTo: function(target, offset) {
           var y;
@@ -271,7 +264,7 @@
       }
     });
     routes = {
-      '/god/:god_name': v_messages.god,
+      '/god/:god_name': v_messages.mainGod,
       '/': v_messages.main
     };
     router = Router(routes);

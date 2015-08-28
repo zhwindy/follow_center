@@ -66,9 +66,11 @@ $ ->
             el = @getLastMessageEl()
             if el != null
               _.delay(@scrollTo, 500, el, -50)
-      god:(god_name)->
+      mainGod:(god_name)->
         @god_name = god_name
         @newGod()
+        #window.scrollTo(0, 0) #回到顶端
+        #_.delay(window.scrollTo, 2500, 0,0)
       newGod:->
         @new_loading=true
         parm = JSON.stringify
@@ -82,7 +84,6 @@ $ ->
               item.row_num
             @setTitleUnreadCount(data.messages.length)
             @new_loading=false
-            #window.scrollTo(0, 0) #回到顶端
         @getUserInfo(@god_name)
       oldGod:->
         parm = JSON.stringify
@@ -135,11 +136,12 @@ $ ->
           success: (data, status, response) =>
             @gods = data.gods
       childElDone:(message_id, el)-> #component el 插入后回调，用来定位message
-        if @god_name == null and @last_message_id==message_id
-          count = @setUnreadCount()
-          bz.showNotice5("#{count}条未读信息")
-          if count!=0
-            _.delay(@scrollTo, 500, el)
+        null
+        #if @god_name == null and @last_message_id==message_id
+        #  count = @setUnreadCount()
+        #  bz.showNotice5("#{count}条未读信息")
+        #  if count!=0
+        #    _.delay(@scrollTo, 500, el)
       scrollTo:(target, offset=0)-># 定位到这个target, offset偏移量 
         y = $(target).offset().top
         y = y+ offset
@@ -182,7 +184,7 @@ $ ->
                 v.saveLast(message)
               return false
   routes =
-    '/god/:god_name': v_messages.god
+    '/god/:god_name': v_messages.mainGod
     '/': v_messages.main
   router = Router(routes)
   router.init('/')
