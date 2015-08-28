@@ -194,7 +194,6 @@
             type: 'POST',
             success: (function(_this) {
               return function(data, status, response) {
-                log(data.gods);
                 return _this.gods = data.gods;
               };
             })(this)
@@ -245,8 +244,12 @@
               }
             }
             return $('#v_messages .col-md-8 .box').each(function() {
-              var message;
-              if ($(this).offset().top + $(this).height() >= $top + $(window).scrollTop()) {
+              var message, message_position, scroll_bottom;
+              message_position = $(this).offset().top + $(this).height();
+              scroll_bottom = $(window).scrollTop() + $(window).height();
+              message_position = parseInt(message_position / 10);
+              scroll_bottom = parseInt(scroll_bottom / 10);
+              if (message_position === scroll_bottom) {
                 if (v.god_name !== null) {
                   return false;
                 }
