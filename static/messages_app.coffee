@@ -182,7 +182,7 @@ $ ->
               #从jquery对像又取到 vue 对象
               message = $(this)[0].__vue__.message
               if v.last_message == null or v.last_message.created_at<message.created_at
-                #log $(this).attr('id')
+                log $(this).attr('id')
                 v.saveLast(message)
               return false
   routes =
