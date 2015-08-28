@@ -198,9 +198,7 @@
             var $top;
             $top = $('#v_messages').offset().top;
             if ($(this).scrollTop() === 0) {
-              if (v.old_loading === false) {
-                v.old();
-              }
+              null;
             } else if (($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
               if (v.new_loading === false) {
                 v["new"]();

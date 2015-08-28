@@ -133,9 +133,11 @@ $ ->
         v = @
         $(window).scroll ->
           $top = $('#v_messages').offset().top
-          if $(this).scrollTop() == 0 #滚动到最上面时，加载新的内容
-            if v.old_loading == false
-              v.old()
+
+          if $(this).scrollTop() == 0 #滚动到最上面时，加载历史内容
+            #if v.old_loading == false
+            #  v.old()
+            null
           else if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0 #当滚动到最底部时，加载最新内容
             if v.new_loading == false
               v.new()
