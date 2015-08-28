@@ -26,9 +26,9 @@ class my_base(base_m.base_m):
         ]
         self.all_js_files += simditor_js_files
 
-        self.all_js_files.append('/static/component.js?v=%s' % self.version)
-        self.all_js_files.append('/static/director.js')
-        self.all_js_files.append('/static/GreenSock-JS/src/minified/TimelineLite.min.js')
+        self.all_js_files.append('component.js')
+        self.all_js_files.append('director.js')
+        self.all_js_files.append('GreenSock-JS/src/minified/TimelineLite.min.js')
         return self.all_js_files
 
     def css_files(self):
