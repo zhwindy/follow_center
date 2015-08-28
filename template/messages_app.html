@@ -10,11 +10,11 @@
 {% block body %}
 <div id="v_messages" v-loading="loading" class="row">
     <div  class="col-md-8">
-        <div v-show="old_loading" class="row">
+        <div v-show="messages.length != 0 " class="row">
             <div class="col-md-4">
             </div>
             <div class="col-md-4 text-center">
-                <a v-on="click:old" v-btn-loading="old_loading" href='javascript:void(0);' class="btn btn-defalt">历史...</a>
+                <a v-on="click:old" v-btn-loading="old_loading" href='javascript:void(0);' class="btn btn-defalt">显示老消息</a>
             </div>
             <div class="col-md-4">
             </div>
