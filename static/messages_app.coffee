@@ -113,6 +113,11 @@ $ ->
           document.title = "Follow Center"
         else
           document.title = "(#{count}) Follow Center"
+      getUnreadCount:(message)->
+        index = _.findIndex(@messages, (d)=>
+                 return d.row_num == message.row_num
+               )
+        return @message.length-index
       saveLast:(last_message)->
         @last_message_id = last_message.m_type+'_'+last_message.id
         parm = JSON.stringify
@@ -126,7 +131,8 @@ $ ->
             #存储在本地，用来比较
             @last_message = last_message
             if data.count == 1
-              @setTitleUnreadCount(@unreadCount-1)
+              count = @getUnreadCount(last_message)
+              @setTitleUnreadCount(count)
       getGods:->
         if @gods
           return

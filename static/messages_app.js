@@ -164,6 +164,15 @@
             return document.title = "(" + count + ") Follow Center";
           }
         },
+        getUnreadCount: function(message) {
+          var index;
+          index = _.findIndex(this.messages, (function(_this) {
+            return function(d) {
+              return d.row_num === message.row_num;
+            };
+          })(this));
+          return this.message.length - index;
+        },
         saveLast: function(last_message) {
           var parm;
           this.last_message_id = last_message.m_type + '_' + last_message.id;
@@ -177,9 +186,11 @@
             data: parm,
             success: (function(_this) {
               return function(data, status, response) {
+                var count;
                 _this.last_message = last_message;
                 if (data.count === 1) {
-                  return _this.setTitleUnreadCount(_this.unreadCount - 1);
+                  count = _this.getUnreadCount(last_message);
+                  return _this.setTitleUnreadCount(count);
                 }
               };
             })(this)
