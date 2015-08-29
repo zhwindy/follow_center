@@ -169,7 +169,7 @@ $ ->
             null
           else if ($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0 #当滚动到最底部时，加载最新内容
             if v.new_loading == false
-              v.newAll()
+              v.new()
             #$('body').removeClass('fixed')
           ##选出当前正在看的message
           $('#v_messages .col-md-8 .box').each ->

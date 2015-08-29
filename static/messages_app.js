@@ -251,7 +251,7 @@
               null;
             } else if (($('#v_messages .col-md-8').height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
               if (v.new_loading === false) {
-                v.newAll();
+                v["new"]();
               }
             }
             return $('#v_messages .col-md-8 .box').each(function() {
