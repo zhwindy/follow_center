@@ -461,4 +461,29 @@
     template: '<div  class="box box-solid item">\n    <div class="box-header">\n        <h3 class="box-title">\n            <a href="/#/god/(%god.user_name%)">\n                <img v-attr="src:avatar" class="direct-chat-img">\n                <div class="name">\n                    (%god.user_name%)\n                </div>\n            </a>\n        </h3>\n        <div class="box-tools pull-right" v-html="all_link">\n        </div>\n    </div>\n    <div class="box-body" v-html="description">\n    </div>\n    <div class="box-footer">\n        <follow followed="(%god.followed%)" god_id="(%god.god_id%)"></follow>\n    </div>\n</div>'
   });
 
+  Vue.component('god_list', {
+    data: function() {
+      return {
+        gods: []
+      };
+    },
+    ready: function() {
+      return this.getGods();
+    },
+    template: '<c_god v-repeat="god in gods" v-transition="fade"></c_god>',
+    methods: {
+      getGods: function() {
+        return $.ajax({
+          url: '/recommandGods',
+          type: 'POST',
+          success: (function(_this) {
+            return function(data, status, response) {
+              return _this.gods = data.gods;
+            };
+          })(this)
+        });
+      }
+    }
+  });
+
 }).call(this);

@@ -12,11 +12,9 @@ $ ->
       god_name:null
       last_message:null #用来放上次看到的message
       last_message_id:''#db中查出的上次看到的message_id用来定位
-      gods:null
       unreadCount:0
     created:->
       @bindScroll()
-      @getGods()
     ready:->
     methods:
       new:->
@@ -133,14 +131,6 @@ $ ->
             if data.count == 1
               count = @getUnreadCount(last_message)
               @setTitleUnreadCount(count)
-      getGods:->
-        if @gods
-          return
-        $.ajax
-          url: '/recommandGods'
-          type: 'POST'
-          success: (data, status, response) =>
-            @gods = data.gods
       scrollTo:(target, offset=0)-># 定位到这个target, offset偏移量 
         y = $(target).offset().top
         y = y+ offset

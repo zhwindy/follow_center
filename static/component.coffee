@@ -498,7 +498,7 @@ Vue.component 'c_user_info',
             else
               bz.showSuccess5("保存成功")
 
-Vue.component 'c_god', #显示god旳list
+Vue.component 'c_god', #显示god
   props: [ 'god']
   computed:
     twitter_link:->
@@ -580,3 +580,19 @@ Vue.component 'c_god', #显示god旳list
         </div>
     </div>
   '''
+
+Vue.component 'god_list', #显示god旳list
+  data:->
+    gods:[]
+  ready:->
+    @getGods()
+  template: '''
+        <c_god v-repeat="god in gods" v-transition="fade"></c_god>
+  '''
+  methods:
+    getGods:->
+      $.ajax
+        url: '/recommandGods'
+        type: 'POST'
+        success: (data, status, response) =>
+          @gods = data.gods

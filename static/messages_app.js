@@ -14,12 +14,10 @@
         god_name: null,
         last_message: null,
         last_message_id: '',
-        gods: null,
         unreadCount: 0
       },
       created: function() {
-        this.bindScroll();
-        return this.getGods();
+        return this.bindScroll();
       },
       ready: function() {},
       methods: {
@@ -192,20 +190,6 @@
                   count = _this.getUnreadCount(last_message);
                   return _this.setTitleUnreadCount(count);
                 }
-              };
-            })(this)
-          });
-        },
-        getGods: function() {
-          if (this.gods) {
-            return;
-          }
-          return $.ajax({
-            url: '/recommandGods',
-            type: 'POST',
-            success: (function(_this) {
-              return function(data, status, response) {
-                return _this.gods = data.gods;
               };
             })(this)
           });
