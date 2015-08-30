@@ -12,6 +12,8 @@
     {% from base64 import encodestring %}
     {% for user in users %}
 
+    {% set avatar_url = '/lib_static/images/avatar.svg' %}
+
     {%if user.picture %}
     {% set avatar_url = user.picture %}
     {%elif user.github_user%}
