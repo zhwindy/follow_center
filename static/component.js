@@ -279,7 +279,7 @@
           toolbar = mobileToolbar;
         }
         this.simditor = new Simditor({
-          textarea: $('#editor'),
+          textarea: this.$el,
           placeholder: '这里输入文字...',
           toolbar: small_tool_bar,
           toolbarFloat: false,
@@ -300,7 +300,7 @@
         })(this));
       }
     },
-    template: '<textarea id="editor" placeholder=""></textarea>'
+    template: '<textarea placeholder=""></textarea>'
   });
 
   Vue.component('c_user_info', {
@@ -507,7 +507,8 @@
   Vue.component('add_god', {
     data: function() {
       return {
-        btn_loading: false
+        btn_loading: false,
+        slogan: ''
       };
     },
     methods: {
@@ -523,7 +524,7 @@
         });
       }
     },
-    template: '<a v-on="click:new" href=\'javascript:void(0);\' class="btn btn-defalt" data-toggle="modal" data-target="#god_input">添加</a>\n<div id="god_input" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exampleModalLabel">New message</h4>\n      </div>\n      <div class="modal-body">\n        <form>\n          <div class="form-group">\n            <label for="recipient-name" class="control-label">用户名:</label>\n            <input type="text" class="form-control" id="recipient-name">\n          </div>\n          <div class="form-group">\n            <label for="message-text" class="control-label">描述:</label>\n            <textarea class="form-control" id="message-text"></textarea>\n          </div>\n        </form>\n      </div>\n      <div class="modal-footer">\n        <button v-btn-loading="btn_loading" v-on="click:addGod" type="button" class="btn btn-sm btn-default">加好了</button>\n      </div>\n    </div>\n  </div>\n</div>\n'
+    template: '<a v-on="click:new" href=\'javascript:void(0);\' class="btn btn-defalt" data-toggle="modal" data-target="#god_input">添加</a>\n<div id="god_input" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exampleModalLabel">New message</h4>\n      </div>\n      <div class="modal-body">\n        <form>\n          <div class="form-group">\n            <label for="recipient-name" class="control-label">用户名:</label>\n            <input type="text" class="form-control" id="recipient-name">\n          </div>\n          <div class="form-group">\n            <label for="message-text" class="control-label">描述:</label>\n            <textarea class="form-control" id="message-text"></textarea>\n            <simditor content="(%@ slogan%)"></simditor>\n          </div>\n        </form>\n      </div>\n      <div class="modal-footer">\n        <button v-btn-loading="btn_loading" v-on="click:addGod" type="button" class="btn btn-sm btn-default">加好了</button>\n      </div>\n    </div>\n  </div>\n</div>\n'
   });
 
 }).call(this);

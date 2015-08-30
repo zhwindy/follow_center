@@ -333,7 +333,7 @@ Vue.component 'simditor', #simditor 需要双向绑定: <simditor content="(%@ u
       if bz.mobilecheck()
         toolbar = mobileToolbar
       @simditor = new Simditor(
-        textarea: $('#editor')
+        textarea: @$el
         placeholder: '这里输入文字...'
         #toolbar: toolbar
         toolbar: small_tool_bar
@@ -351,7 +351,7 @@ Vue.component 'simditor', #simditor 需要双向绑定: <simditor content="(%@ u
         #vue如果要双向绑定,要定义这个函数
         @content = @simditor.getValue()
   template: '''
-    <textarea id="editor" placeholder=""></textarea>
+    <textarea placeholder=""></textarea>
   '''
 
 Vue.component 'c_user_info', #用户信息
@@ -611,6 +611,7 @@ Vue.component 'god_list', #显示god旳list
 Vue.component 'add_god', #
   data:->
     btn_loading:false
+    slogan:''
   methods:
     addGod:->
       $.ajax
@@ -636,6 +637,7 @@ Vue.component 'add_god', #
             <div class="form-group">
               <label for="message-text" class="control-label">描述:</label>
               <textarea class="form-control" id="message-text"></textarea>
+              <simditor content="(%@ slogan%)"></simditor>
             </div>
           </form>
         </div>
