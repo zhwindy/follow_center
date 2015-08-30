@@ -60,7 +60,6 @@ getFitHeight = (img_height, img_width)->
     real_height = calculateHeight(img_height, img_width, max_width)
   return real_height
 
-
 Vue.component 'follow',
   props: [ 'followed', 'god_id']
   template: '<button v-on="click:toggleFollow" type="button" class="btn btn-sm" aria-label="Left Align"></button>'
@@ -284,7 +283,7 @@ Vue.component 'instagram',
     </div>
     '''
 
-Vue.component 'c_user_info',
+Vue.component 'c_user_info', #用户信息
   props: [ 'user_info' ]
   computed:
     avatar:->
@@ -316,13 +315,13 @@ Vue.component 'c_user_info',
             <div class="form-group">
                 <label for="blog" class="col-sm-3 control-label min-form-lable">个人博客</label>
                 <div class="col-sm-9">
-                    <input v-disable="disable_edit" type="text"  class="form-control editable" id="blog" placeholder="这个人很懒，什么也没留下"  v-model="user_info.blog"  v-on="focus:autoInsert('blog')">
+                    <input v-disable="disable_edit" type="text"  class="form-control editable" id="blog" placeholder=""  v-model="user_info.blog"  v-on="focus:autoInsert('blog')">
                 </div>
             </div>
             <div v-show="!disable_edit" class="form-group" id="slogan-group">
                 <label for="editor" class="col-sm-3 control-label min-form-lable">个性签名</label>
                 <div class="col-sm-9">
-                    <textarea id="editor" placeholder="这个人很懒, 什么也没留下" v-model="user_info.slogan"></textarea>
+                    <textarea id="editor" placeholder="" v-model="user_info.slogan"></textarea>
                 </div>
             </div>
             <hr>
@@ -336,7 +335,7 @@ Vue.component 'c_user_info',
                     </label>
                 </a>
                 <div class="col-sm-7">
-                    <input v-disable="disable_edit" type="text" class="form-control editable" id="twitter" placeholder="这个人很懒，什么也没留下"   v-model="user_info.twitter" v-on="focus:autoInsert('twitter', user_info.user_name)">
+                    <input v-disable="disable_edit" type="text" class="form-control editable" id="twitter" placeholder=""   v-model="user_info.twitter" v-on="focus:autoInsert('twitter', user_info.user_name)">
                 </div>
             </div>
             <div class="form-group">
@@ -344,7 +343,7 @@ Vue.component 'c_user_info',
                     <label class="col-sm-5 control-label"><span class="round-icon bg-icon-black"><i class="fa fa-github"></i></span> Github</label>
                 </a>
                 <div class="col-sm-7">
-                    <input v-disable="disable_edit" type="text" class="form-control editable" placeholder="这个人很懒，什么也没留下"  v-model="user_info.github" v-on="focus:autoInsert('github', user_info.user_name)">
+                    <input v-disable="disable_edit" type="text" class="form-control editable" placeholder=""  v-model="user_info.github" v-on="focus:autoInsert('github', user_info.user_name)">
                 </div>
             </div>
             <div class="form-group">
@@ -352,7 +351,7 @@ Vue.component 'c_user_info',
                     <label class="col-sm-5 control-label"><span class="round-icon bg-icon-orange"><i class="fa fa-instagram"></i></span> Instagram</label>
                 </a>
                 <div class="col-sm-7">
-                    <input v-disable="disable_edit" type="text" class="form-control editable" placeholder="这个人很懒，什么也没留下"  v-model="user_info.instagram" v-on="focus:autoInsert('instagram', user_info.user_name)">
+                    <input v-disable="disable_edit" type="text" class="form-control editable" placeholder=""  v-model="user_info.instagram" v-on="focus:autoInsert('instagram', user_info.user_name)">
                 </div>
             </div>
         </form>
@@ -596,3 +595,15 @@ Vue.component 'god_list', #显示god旳list
         type: 'POST'
         success: (data, status, response) =>
           @gods = data.gods
+
+Vue.component 'add_god', #
+  template: '''
+  <a v-on="click:new" href='javascript:void(0);' class="btn btn-defalt" data-toggle="modal" data-target="#god_input">添加</a>
+  <div id="god_input" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+          <input type="text" class="form-control editable">
+      </div>
+    </div>
+  </div>
+  '''
