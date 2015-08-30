@@ -288,9 +288,9 @@ Vue.component 'simditor', #simditor 需要双向绑定: <simditor content="(%@ u
   ready:->
     @initSimditor()
     @$watch 'content',  (newVal, oldVal)-> #只是用来做第一次初始值同步的
-      if @simditor.getValue()
-        return
-      if newVal !=oldVal
+      #if @simditor.getValue()
+      #  return
+      if newVal != @simditor.getValue()
         @simditor.setValue newVal
   methods:
     initSimditor:->
@@ -612,37 +612,54 @@ Vue.component 'add_god', #
   data:->
     btn_loading:false
     slogan:''
+    user_name:''
+  ready:->
+    bz.setOnErrorVm(@)
   methods:
+    pop:-> #打开时候初始化，避免存留上一次的内容
+      @user_name = ''
+      @slogan = ''
     addGod:->
-      $.ajax
-        url: '/recommandGods'
-        type: 'POST'
-        success: (data, status, response) =>
-          @gods = data.gods
+      if @btn_loading
+        return
+      else
+        @btn_loading = true
+        parm = JSON.stringify
+          user_name:@user_name
+          slogan:@slogan
+        $.ajax
+          url: '/add'
+          type: 'POST'
+          data : parm
+          success: (data, status, response) =>
+            @btn_loading=false
+            if data.error != '0'
+              throw new Error(data.error)
+            else
+              bz.showSuccess5("保存成功")
   template: '''
-  <a v-on="click:new" href='javascript:void(0);' class="btn btn-defalt" data-toggle="modal" data-target="#god_input">添加</a>
+  <a v-on="click:pop" class="btn btn-defalt" data-toggle="modal" data-target="#god_input">添加</a>
   <div id="god_input" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+          <h4 class="modal-title" id="exampleModalLabel">添加一个新的牛人</h4>
         </div>
         <div class="modal-body">
           <form>
             <div class="form-group">
               <label for="recipient-name" class="control-label">用户名:</label>
-              <input type="text" class="form-control" id="recipient-name">
+              <input v-model="user_name" type="text" class="form-control" id="recipient-name">
             </div>
             <div class="form-group">
               <label for="message-text" class="control-label">描述:</label>
-              <textarea class="form-control" id="message-text"></textarea>
               <simditor content="(%@ slogan%)"></simditor>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button v-btn-loading="btn_loading" v-on="click:addGod" type="button" class="btn btn-sm btn-default">加好了</button>
+          <button v-btn-loading="btn_loading" v-on="click:addGod" type="button" class="btn btn-sm btn-default" data-dismiss="modal">加好了</button>
         </div>
       </div>
     </div>

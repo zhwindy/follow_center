@@ -261,10 +261,7 @@
     ready: function() {
       this.initSimditor();
       return this.$watch('content', function(newVal, oldVal) {
-        if (this.simditor.getValue()) {
-          return;
-        }
-        if (newVal !== oldVal) {
+        if (newVal !== this.simditor.getValue()) {
           return this.simditor.setValue(newVal);
         }
       });
@@ -508,23 +505,47 @@
     data: function() {
       return {
         btn_loading: false,
-        slogan: ''
+        slogan: '',
+        user_name: ''
       };
     },
+    ready: function() {
+      return bz.setOnErrorVm(this);
+    },
     methods: {
+      pop: function() {
+        this.user_name = '';
+        return this.slogan = '';
+      },
       addGod: function() {
-        return $.ajax({
-          url: '/recommandGods',
-          type: 'POST',
-          success: (function(_this) {
-            return function(data, status, response) {
-              return _this.gods = data.gods;
-            };
-          })(this)
-        });
+        var parm;
+        if (this.btn_loading) {
+
+        } else {
+          this.btn_loading = true;
+          parm = JSON.stringify({
+            user_name: this.user_name,
+            slogan: this.slogan
+          });
+          return $.ajax({
+            url: '/add',
+            type: 'POST',
+            data: parm,
+            success: (function(_this) {
+              return function(data, status, response) {
+                _this.btn_loading = false;
+                if (data.error !== '0') {
+                  throw new Error(data.error);
+                } else {
+                  return bz.showSuccess5("保存成功");
+                }
+              };
+            })(this)
+          });
+        }
       }
     },
-    template: '<a v-on="click:new" href=\'javascript:void(0);\' class="btn btn-defalt" data-toggle="modal" data-target="#god_input">添加</a>\n<div id="god_input" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exampleModalLabel">New message</h4>\n      </div>\n      <div class="modal-body">\n        <form>\n          <div class="form-group">\n            <label for="recipient-name" class="control-label">用户名:</label>\n            <input type="text" class="form-control" id="recipient-name">\n          </div>\n          <div class="form-group">\n            <label for="message-text" class="control-label">描述:</label>\n            <textarea class="form-control" id="message-text"></textarea>\n            <simditor content="(%@ slogan%)"></simditor>\n          </div>\n        </form>\n      </div>\n      <div class="modal-footer">\n        <button v-btn-loading="btn_loading" v-on="click:addGod" type="button" class="btn btn-sm btn-default">加好了</button>\n      </div>\n    </div>\n  </div>\n</div>\n'
+    template: '<a v-on="click:pop" class="btn btn-defalt" data-toggle="modal" data-target="#god_input">添加</a>\n<div id="god_input" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exampleModalLabel">添加一个新的牛人</h4>\n      </div>\n      <div class="modal-body">\n        <form>\n          <div class="form-group">\n            <label for="recipient-name" class="control-label">用户名:</label>\n            <input v-model="user_name" type="text" class="form-control" id="recipient-name">\n          </div>\n          <div class="form-group">\n            <label for="message-text" class="control-label">描述:</label>\n            <simditor content="(%@ slogan%)"></simditor>\n          </div>\n        </form>\n      </div>\n      <div class="modal-footer">\n        <button v-btn-loading="btn_loading" v-on="click:addGod" type="button" class="btn btn-sm btn-default" data-dismiss="modal">加好了</button>\n      </div>\n    </div>\n  </div>\n</div>\n'
   });
 
 }).call(this);
