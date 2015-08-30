@@ -66,6 +66,7 @@ $ ->
               _.delay(@scrollTo, 500, el, -50)
       mainGod:(god_name)->
         @god_name = god_name
+        @messages=[]
         @newGod()
         #window.scrollTo(0, 0) #回到顶端
         #_.delay(window.scrollTo, 2500, 0,0)

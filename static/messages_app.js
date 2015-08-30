@@ -95,6 +95,7 @@
         },
         mainGod: function(god_name) {
           this.god_name = god_name;
+          this.messages = [];
           return this.newGod();
         },
         newGod: function() {
