@@ -160,7 +160,7 @@ Vue.component 'twitter',
                             </span>
                         </a>
                         <a href="/message?t=(%message.m_type%)&id=(%message.id%)">
-                            <sub v-dateformat="'yyyy-MM-dd hh:mm:ss': message.created_at"></sub>
+                            <sub v-time-len="message.created_at"></sub>
                         </a>
                     </div>
                 </div>
@@ -218,7 +218,7 @@ Vue.component 'github',
                           </span>
                       </a>
                       <a href="/message?t=(%message.m_type%)&id=(%message.id%)">
-                          <sub v-dateformat="'yyyy-MM-dd hh:mm:ss': message.created_at"></sub>
+                          <sub v-time-len="message.created_at"></sub>
                       </a>
                   </div>
               </div>
@@ -271,7 +271,7 @@ Vue.component 'instagram',
                     </span>
                 </a>
                 <a href="/message?t=(%message.m_type%)&id=(%message.id%)">
-                    <sub v-dateformat="'yyyy-MM-dd hh:mm:ss': message.created_at"></sub>
+                    <sub v-time-len="message.created_at"></sub>
                 </a>
             </div>
         </div>
