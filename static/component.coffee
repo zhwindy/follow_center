@@ -62,7 +62,9 @@ getFitHeight = (img_height, img_width)->
 
 Vue.component 'follow',
   props: [ 'followed', 'god_id']
-  template: '<button v-on="click:toggleFollow" type="button" class="btn btn-sm" aria-label="Left Align"></button>'
+  data:
+    btn_loading:false
+  template: '<button v-btn-loading="btn_loading" v-on="click:toggleFollow" type="button" class="btn btn-sm" aria-label="Left Align"></button>'
   ready:->
     @$watch 'followed',->
       if @followed == 1
@@ -83,8 +85,11 @@ Vue.component 'follow',
       $(target).html('<span class="fa fa-heart yellow" aria-hidden="true">+</span>Follow')
       $(target).removeClass('btn-warning').addClass('btn-default')
     toggleFollow:->
-      target = @$el
+      if @btn_loading
+        return
 
+      @btn_loading = true
+      target = @$el
       if @followed == 1
         parm = JSON.stringify
           god_id:@god_id
@@ -93,7 +98,7 @@ Vue.component 'follow',
           type: 'POST'
           data : parm
           success: (data, status, response) =>
-            @loading=false
+            @btn_loading=false
             if data.error != '0'
               throw new Error(data.error)
             else
@@ -108,7 +113,7 @@ Vue.component 'follow',
           type: 'POST'
           data : parm
           success: (data, status, response) =>
-            @loading=false
+            @btn_loading=false
             if data.error != '0'
               #如果是要登录,那么跳转到登录
               if data.error == 'must login'
