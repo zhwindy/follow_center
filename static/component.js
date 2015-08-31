@@ -424,22 +424,28 @@
     props: ['god'],
     computed: {
       twitter_link: function() {
+        var count;
         if (this.god.twitter_user) {
-          return "<a class='a-icon' target='_blank' href='https://twitter.com/" + this.god.twitter + "'> <span class='round-icon bg-icon-blue'> <i class='fa fa-twitter'></i> </span> </a> " + this.god.twitter_user.followers_count;
+          count = bz.formatCount(this.god.twitter_user.followers_count);
+          return "<a class='a-icon' target='_blank' href='https://twitter.com/" + this.god.twitter + "'> <span class='round-icon bg-icon-blue'> <i class='fa fa-twitter'></i> </span> </a> " + count;
         } else {
           return '';
         }
       },
       github_link: function() {
+        var count;
         if (this.god.github_user) {
-          return "<a class='a-icon' target='_blank' href='https://github.com/" + this.god.github + "'> <span class='round-icon bg-icon-black'> <i class='fa fa-github'></i> </span> </a> " + this.god.github_user.followers;
+          count = bz.formatCount(this.god.github_user.followers);
+          return "<a class='a-icon' target='_blank' href='https://github.com/" + this.god.github + "'> <span class='round-icon bg-icon-black'> <i class='fa fa-github'></i> </span> </a> " + count;
         } else {
           return '';
         }
       },
       instagram_link: function() {
+        var count;
         if (this.god.instagram_user) {
-          return "<a class='a-icon' target='_blank' href='https://instagram.com/" + this.god.instagram + "'> <span class='round-icon bg-icon-orange'> <i class='fa fa-instagram'></i> </span> </a> " + this.god.instagram_user.counts.followed_by;
+          count = bz.formatCount(this.god.instagram_user.counts.followed_by);
+          return "<a class='a-icon' target='_blank' href='https://instagram.com/" + this.god.instagram + "'> <span class='round-icon bg-icon-orange'> <i class='fa fa-instagram'></i> </span> </a> " + count;
         } else {
           return '';
         }

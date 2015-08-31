@@ -514,37 +514,40 @@ Vue.component 'c_god', #显示god
   computed:
     twitter_link:->
       if @god.twitter_user
+        count = bz.formatCount(@god.twitter_user.followers_count)
         return "
                   <a class='a-icon' target='_blank' href='https://twitter.com/#{@god.twitter}'>
                       <span class='round-icon bg-icon-blue'>
                           <i class='fa fa-twitter'></i>
                       </span>
                   </a>
-                  #{@god.twitter_user.followers_count}
+                  #{count}
         "
       else
         return ''
     github_link:->
       if @god.github_user
+        count = bz.formatCount(@god.github_user.followers)
         return "
                   <a class='a-icon' target='_blank' href='https://github.com/#{@god.github}'>
                       <span class='round-icon bg-icon-black'>
                           <i class='fa fa-github'></i>
                       </span>
                   </a>
-                  #{@god.github_user.followers}
+                  #{count}
         "
       else
         return ''
     instagram_link:->
       if @god.instagram_user
+        count = bz.formatCount(@god.instagram_user.counts.followed_by)
         return "
                   <a class='a-icon' target='_blank' href='https://instagram.com/#{@god.instagram}'>
                       <span class='round-icon bg-icon-orange'>
                           <i class='fa fa-instagram'></i>
                       </span>
                   </a>
-                #{@god.instagram_user.counts.followed_by}
+                #{count}
         "
       else
         return ''
