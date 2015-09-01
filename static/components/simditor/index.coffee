@@ -1,5 +1,5 @@
 require './style.less'
-simditor = require 'simditor'
+Simditor = require 'simditor'
 module.exports =
   template: require('./template.html')
   props: [ 'content' ]
@@ -50,7 +50,7 @@ module.exports =
       ]
       if bz.mobilecheck()
         toolbar = mobileToolbar
-      @simditor = new simditor.Simditor(
+      @simditor = new Simditor(
         textarea: @$el
         placeholder: '这里输入文字...'
         #toolbar: toolbar

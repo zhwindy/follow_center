@@ -210,6 +210,7 @@ v_messages = new Vue
     'instagram': require('./components/instagram'),
     'user_info': require('./components/user_info'),
     'god_list': require('./components/god_list'),
+    'add_god': require('./components/add_god'),
 
 routes =
   '/god/:god_name': v_messages.mainGod
