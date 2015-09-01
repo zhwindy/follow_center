@@ -1,0 +1,27 @@
+<div id="instagram_(%message.id%)" class="box box-solid item">
+    <div class="box-header">
+        <h2 class="box-title">
+            <a href="#/god/(%message.user_name%)">
+                <img v-attr="src:avatar" class="direct-chat-img">
+                <div class="name">
+                    (%message.name%)
+                </div>
+            </a>
+        </h2>
+        <div class="box-tools pull-right">
+            <a class="a-icon" target="_blank" href="(%message.href%)">
+                <span class="round-icon bg-icon-orange">
+                    <i class="fa fa-instagram"></i>
+                </span>
+            </a>
+            <a href="/message?t=(%message.m_type%)&id=(%message.id%)">
+                <sub v-time-len="message.created_at"></sub>
+            </a>
+        </div>
+    </div>
+    <div class="box-body">
+        <p class="description_bz">(%message.text%)</p>
+        <br>
+        <img v-attr="src:img_url,height:height" class="my-img-responsive">
+    </div>
+</div>

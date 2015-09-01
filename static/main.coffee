@@ -1,6 +1,7 @@
 require './main.less'
 Vue = require 'vue'
 Vue.config.debug = false
+Vue.config.delimiters = ['(%', '%)']
 Vue.transition 'fade',
   enter: (el, done) ->
     # 此时元素已被插入 DOM
@@ -203,6 +204,12 @@ v_messages = new Vue
             return false
   components:
     'follow': require('./components/follow'),
+    'simditor': require('./components/simditor'),
+    'twitter': require('./components/twitter'),
+    'github': require('./components/github'),
+    'instagram': require('./components/instagram'),
+    'user_info': require('./components/user_info'),
+    'god_list': require('./components/god_list'),
 
 routes =
   '/god/:god_name': v_messages.mainGod

@@ -13,6 +13,7 @@
     "coffee-script": "^1.9.3",
     "less": "^2.5.1",
     "less-loader": "^2.2.0",
+    "simditor": "^2.2.3",
     "vue": "^0.12.12",
     "vue-loader": "^3.0.3"
   }
