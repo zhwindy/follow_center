@@ -87,7 +87,6 @@ Vue.component 'follow',
     toggleFollow:->
       if @btn_loading
         return
-
       @btn_loading = true
       target = @$el
       if @followed == 1
