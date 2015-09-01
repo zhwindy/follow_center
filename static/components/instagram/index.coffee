@@ -1,4 +1,5 @@
 require './style.less'
+lib = require '../../lib.coffee'
 module.exports =
   template: require('./template.html')
   props: [ 'message' ]
@@ -13,4 +14,4 @@ module.exports =
     height:->
       img_height = @message.extended_entities.height
       img_width = @message.extended_entities.width
-      return getFitHeight(img_height, img_width)
+      return lib.getFitHeight(img_height, img_width)

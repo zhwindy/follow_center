@@ -1,4 +1,5 @@
 require './style.less'
+lib = require '../../lib.coffee'
 module.exports =
   template: require('./template.html')
   props: [ 'message' ]
@@ -13,7 +14,7 @@ module.exports =
           img_height = d.sizes.large.h
           img_width = d.sizes.large.w
 
-          height = getFitHeight(img_height, img_width)
+          height = lib.getFitHeight(img_height, img_width)
 
           t =
             img_url: img_url
