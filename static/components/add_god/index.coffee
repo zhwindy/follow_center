@@ -1,4 +1,5 @@
 require './style.less'
+bz = require '../../lib.coffee'
 module.exports =
   template: require('./template.html')
   data:->

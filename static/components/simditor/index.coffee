@@ -1,5 +1,6 @@
 require './style.less'
 Simditor = require 'simditor'
+bz = require '../../lib.coffee'
 module.exports =
   template: require('./template.html')
   props: [ 'content' ]

@@ -1,4 +1,6 @@
 require './style.less'
+
+bz = require '../../lib.coffee'
 module.exports =
   template: require('./template.html')
   props: [ 'user_info' ]

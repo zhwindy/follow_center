@@ -1,5 +1,5 @@
 require './style.less'
-lib = require '../../lib.coffee'
+bz = require '../../lib.coffee'
 
 Autolinker = require 'autolinker'
 module.exports =
@@ -16,7 +16,7 @@ module.exports =
           img_height = d.sizes.large.h
           img_width = d.sizes.large.w
 
-          height = lib.getFitHeight(img_height, img_width)
+          height = bz.getFitHeight(img_height, img_width)
 
           t =
             img_url: img_url
