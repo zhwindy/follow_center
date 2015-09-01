@@ -10,5 +10,8 @@ module.exports = {
       { test: /\.less$/, loader: "style!css!less" },
       { test: /\.html$/, loader: "html" }
     ]
+  },
+  resolve: {
+    extensions: ["", ".web.coffee", ".web.js", ".coffee", ".js"]
   }
 }
