@@ -1,5 +1,7 @@
 require './style.less'
 lib = require '../../lib.coffee'
+
+Autolinker = require 'autolinker'
 module.exports =
   template: require('./template.html')
   props: [ 'message' ]
@@ -22,4 +24,5 @@ module.exports =
           return t
           )
     text:->
-      return @message.text.autoLink({ target: "_blank", rel: "外部链接,请谨慎打开"})
+      #return @message.text.autoLink({ target: "_blank", rel: "外部链接,请谨慎打开"})
+      return Autolinker.link(@message.text)

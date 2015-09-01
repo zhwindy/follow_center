@@ -1,6 +1,8 @@
 require './main.less'
 Vue = require 'vue'
 Vue.config.debug = false
+#不要waring 
+Vue.config.silent = true
 Vue.config.delimiters = ['(%', '%)']
 Vue.transition 'fade',
   enter: (el, done) ->
