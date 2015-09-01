@@ -6,8 +6,8 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.coffee$/, loader: "coffee" },
-      { test: /\.less$/, loader: "less" },
+      { test: /\.coffee$/, loader: "coffee-loader" },
+      { test: /\.less$/, loader: "style!css!less" },
       { test: /\.html$/, loader: "html" }
     ]
   }

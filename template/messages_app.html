@@ -1,9 +1,5 @@
 {% block css %}
 <link href="{{static_url('message.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{static_url('messages_app.css')}}" rel="stylesheet" type="text/css" />
-{% end %}
-{% block js %}
-<script src="{{static_url('messages_app.js')}}"></script>
 {% end %}
 
 {% extends 'base.html' %}
@@ -27,5 +23,7 @@
         <god_list></god_list>
     </div>
 </div>
+
+<script src="{{static_url('build/bundle.js')}}"></script>
 {% end %}
 
