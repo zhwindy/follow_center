@@ -1,5 +1,7 @@
 require './node_modules/admin-lte/dist/css/AdminLTE.min.css'
 require './main.less'
+_ = require 'underscore'
+
 Vue = require 'vue'
 Vue.config.debug = false
 #不要waring 

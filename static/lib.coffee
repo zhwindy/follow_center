@@ -1,4 +1,3 @@
-
 Vue = require 'vue'
 Vue.config.delimiters = ['(%', '%)']
 window.log = (parm)-> console.log parm
