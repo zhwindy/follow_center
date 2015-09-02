@@ -1,5 +1,4 @@
-Vue = require 'vue'
-Vue.config.delimiters = ['(%', '%)']
+Vue = require './vue_local'
 window.log = (parm)-> console.log parm
 # 闭包方法添加 watch
 setWatch = (vm, arg, table_name, column_name, el)->
