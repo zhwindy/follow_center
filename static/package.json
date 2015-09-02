@@ -4,7 +4,7 @@
   "main": "main.coffee",
   "scripts": {
     "server": "webpack-dev-server --devtool eval --progress --colors --content-base build",
-    "watch": "webpack --progress --colors --watch"
+    "watch": "webpack --progress --colors --watch --optimize-minimize"
   },
   "author": "",
   "license": "ISC",
