@@ -1,9 +1,14 @@
+var path = require("path");
 module.exports = {
-  entry: ['./main.coffee'],
+  entry: {
+        main: "./main.coffee",
+        users: "./users.coffee"
+  	},
   output: {
-    path: "./build",
-    filename: 'bundle.js'
-  },
+  		path: path.join(__dirname, "build"),
+  		filename: "[name].bundle.js",
+  		chunkFilename: "[id].chunk.js"
+  	},
   module: {
     loaders: [
       { test: /\.coffee$/, loader: "coffee-loader" },
