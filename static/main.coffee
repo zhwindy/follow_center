@@ -1,4 +1,3 @@
-require './node_modules/admin-lte/dist/css/AdminLTE.min.css'
 require './main.less'
 _ = require 'underscore'
 
@@ -216,6 +215,8 @@ v_messages = new Vue
     'user_info': require('./components/user_info'),
     'god_list': require('./components/god_list'),
     'add_god': require('./components/add_god'),
+  directives:
+    'btn-loading': require('./directives/btn_loading'),
 
 routes =
   '/god/:god_name': v_messages.mainGod

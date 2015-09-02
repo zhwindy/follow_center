@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}基于社交网的资讯聚合{% end %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="description" content="{% block description %}Follow Center: 关注聚合大神的一切社交媒体 twitter github,方便的实时消息提醒,不错过他/她的一切{% end %}" />
+        <meta name="keywords" content="{% block keywords %}Follow,Center,社交,聚合,跟踪{% end %}" />
+        <link rel='shortcut icon' href='/static/images/login-logo.png' />
+        <link href="/lib_static/lib/AdminLTE-2.0.4/dist/css/skins/skin-black.min.css" rel="stylesheet" type="text/css" />
+        <link href="{{static_url('base.css')}}" rel="stylesheet" type="text/css" />
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+            <![endif]-->
+            {% block js %}
+            {% end %}
+    </head>
+    <body class="skin-black layout-top-nav">
+        <div class="container">
+            {% block body %}
+            {% end %}
+        </div>
+    </body>
+            {% block css %}
+            {% end %}
+</html>
+{% module my_base() %}
