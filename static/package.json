@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "admin-lte": "^2.3.0",
     "autolinker": "^0.18.1",
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.9.3",
