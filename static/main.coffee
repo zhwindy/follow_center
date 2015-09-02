@@ -1,3 +1,4 @@
+require './node_modules/admin-lte/dist/css/AdminLTE.min.css'
 require './main.less'
 Vue = require 'vue'
 Vue.config.debug = false
