@@ -8,7 +8,7 @@ module.exports = {
     loaders: [
       { test: /\.coffee$/, loader: "coffee-loader" },
       { test: /\.less$/, loader: "style!css!less" },
-      { test: /\.html$/, loader: "html" },
+      { test: /\.(html|tpl)$/, loader: "html" },
       { test: /\.css$/, loader: "style!css" },
       {
           test: /\.(jpe?g|png|gif|svg)$/i,
