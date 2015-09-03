@@ -1,6 +1,4 @@
 require './style.less'
-require '../../node_modules/simditor/styles/simditor.css'
-Simditor = require 'simditor'
 bz = require '../../lib.coffee'
 module.exports =
   template: require('./template.html')

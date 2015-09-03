@@ -1,4 +1,4 @@
-Vue = require 'vue'
+#Vue = require 'vue'
 Vue.config.debug = false
 #不要waring 
 Vue.config.silent = true

@@ -1,5 +1,4 @@
 require './main.less'
-_ = require 'underscore'
 
 Vue = require './vue_local.coffee'
 v_messages = new Vue
@@ -199,6 +198,5 @@ v_messages = new Vue
 routes =
   '/god/:god_name': v_messages.mainGod
   '/': v_messages.main
-director = require 'director'
-router = director.Router(routes)
+router = Router(routes)
 router.init('/')

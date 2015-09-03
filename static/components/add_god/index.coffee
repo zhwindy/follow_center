@@ -1,7 +1,7 @@
 require './style.less'
 bz = require '../../lib.coffee'
 module.exports =
-  template: require('./t.tpl')
+  template: require('./template.html')
   data:->
     btn_loading:false
     slogan:''
