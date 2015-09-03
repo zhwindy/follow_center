@@ -102,4 +102,5 @@ def decodeUrl(url):
     return base64.decodestring(base64.decodestring(url))
 
 if __name__ == '__main__':
+    print decodeUrl("YUhSMGNEb3ZMM0JvYjNSdmN5MW9MbUZyTG1sdWMzUmhaM0poYlM1amIyMHZhSEJvYjNSdmN5MWhheTE0WVdZeEwzUTFNUzR5T0RnMUxURTVMM014TlRCNE1UVXdMekV4TXpjMU9ESTBYekUwTlRBMU5UZ3lNalV5TlRJM09ETmZNVGcwTnpVeU5UYzJNbDloTG1wd1p3PT0=")
     pass

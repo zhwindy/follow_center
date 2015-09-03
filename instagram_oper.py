@@ -58,7 +58,8 @@ def getUser(user_name):
         db_user.bio = user.bio
         db_user.website = user.website
         db_user.counts = json.dumps(user.counts)
-        pg.insert('instagram_user', **db_user)
+        #pg.insert('instagram_user', **db_user)
+        pg.insertOrUpdate(pg, 'instagram_user', where="id=%s" % db_user.id, db_user)
         #db_bz.insertIfNotExist(pg, 'instagram_user', db_user, "id=%s" % db_user.id)
         return getUser(user_name)
 
