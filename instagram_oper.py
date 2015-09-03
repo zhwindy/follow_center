@@ -24,12 +24,12 @@ with open('conf/instagram.ini', 'r') as cfg_file:
 api = InstagramAPI(access_token=access_token, client_secret=client_secret)
 
 
-def getUser(user_name):
+def getUser(user_name, always_check=False):
     '''
     modify by bigzhu at 15/07/31 16:41:16 api找用户时是按专注度来排序的,名字绝对匹配的未必是第一位, 从10个里面找
     '''
     users = list(pg.select('instagram_user', where="lower(username)=lower('%s')" % user_name))
-    if users:
+    if users and not always_check:
         return users[0]
     else:
         user = None
@@ -66,7 +66,7 @@ def getUser(user_name):
 
 def getMedia(user_name=None, with_next_url=None, user=None):
     if user_name:
-        user = getUser(user_name)
+        user = getUser(user_name, always_check=True)
         if user is None:
             return
         # min_id 会查出大于等于这个id的
