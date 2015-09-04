@@ -195,6 +195,7 @@ def check(user_name=None):
 if __name__ == '__main__':
     a = callGetMeidaApi(1337827037)
     print len(a['data'])
+    print a['pagination']['next_url']
     # while True:
     #    check()
     #    pg.refresh('messages')
