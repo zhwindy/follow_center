@@ -28,3 +28,5 @@ module.exports =
       return issue_comment_link
     issue_comment_body:->
       return @payload['comment']['body']
+  directives:
+    'time-len':require '../../directives/time_len'

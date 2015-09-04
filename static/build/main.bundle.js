@@ -1377,6 +1377,9 @@
 	        rel: "外部链接,请谨慎打开"
 	      });
 	    }
+	  },
+	  directives: {
+	    'time-len': __webpack_require__(119)
 	  }
 	};
 
@@ -1477,6 +1480,9 @@
 	    issue_comment_body: function() {
 	      return this.payload['comment']['body'];
 	    }
+	  },
+	  directives: {
+	    'time-len': __webpack_require__(119)
 	  }
 	};
 
@@ -1557,6 +1563,9 @@
 	      img_width = this.message.extended_entities.width;
 	      return bz.getFitHeight(img_height, img_width);
 	    }
+	  },
+	  directives: {
+	    'time-len': __webpack_require__(119)
 	  }
 	};
 
@@ -2204,6 +2213,70 @@
 
 /***/ },
 /* 118 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(3)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 119 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var bz;
+
+	__webpack_require__(120);
+
+	bz = __webpack_require__(76);
+
+	module.exports = {
+	  bind: function() {},
+	  update: function(new_value, old_value) {
+	    var date_str, el;
+	    if (new_value) {
+	      el = $(this.el);
+	      date_str = bz.timeLen(new_value);
+	      return el.html(date_str);
+	    }
+	  },
+	  unbind: function() {}
+	};
+
+
+/***/ },
+/* 120 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(121);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(4)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();

@@ -15,3 +15,5 @@ module.exports =
       img_height = @message.extended_entities.height
       img_width = @message.extended_entities.width
       return bz.getFitHeight(img_height, img_width)
+  directives:
+    'time-len':require '../../directives/time_len'

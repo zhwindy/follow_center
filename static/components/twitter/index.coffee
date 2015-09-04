@@ -51,3 +51,5 @@ module.exports =
     text:->
       return @message.text.autoLink({ target: "_blank", rel: "外部链接,请谨慎打开"})
       #return Autolinker.link(@message.text)
+  directives:
+    'time-len':require '../../directives/time_len'
