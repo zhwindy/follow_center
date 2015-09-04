@@ -12,7 +12,6 @@ sys.setrecursionlimit(5000)  # set the maximum depth as 5000
 from datetime import timedelta
 import time
 import json
-import db_bz
 import ConfigParser
 import public_db
 import wechat_oper
@@ -48,7 +47,7 @@ def getUser(user_name, always_check=False):
         try:
             user = api.user(user.id)
         except instagram.bind.InstagramAPIError:
-            #通常是没有访问权限
+            # 通常是没有访问权限
             print public_bz.getExpInfoAll()
             public_db.delNoName('instagram', user_name)
             return
@@ -71,8 +70,8 @@ def getMedia(user_name=None, with_next_url=None, user=None):
     if user_name:
         user = getUser(user_name, always_check=True)
         if user is None:
+            # min_id 会查出大于等于这个id的
             return
-        # min_id 会查出大于等于这个id的
         try:
             medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
         except instagram.bind.InstagramClientError:
@@ -116,7 +115,10 @@ def getMedia(user_name=None, with_next_url=None, user=None):
         db_media.type = media.type
         db_media.user_id = user.id
         id = pg.insertIfNotExist(pg, 'instagram_media', db_media, "id_str='%s'" % db_media.id_str)
-        print 'new=', media.id, user.username
+        if id is None:
+            raise Exception('重复记录 id=%s, name=%s' % (media.id, user.username))
+        else:
+            print 'new=', media.id, user.username
         if id is not None and len(medias) <= 2:  # 新增加消息,微信通知只通知2条以内
             openids = public_db.getOpenidsByName('instagram', user.username)
             for data in openids:
@@ -152,6 +154,6 @@ def check(user_name=None):
 
 if __name__ == '__main__':
     while True:
-        check()
+        check('bigzhu')
         pg.refresh('messages')
         time.sleep(300)

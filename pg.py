@@ -91,6 +91,8 @@ def insert(*args, **kwargs):
 @daemon
 def insertIfNotExist(*args, **kwargs):
     return db_bz.insertIfNotExist(*args, **kwargs)
+
+
 @daemon
 def insertOrUpdate(*args, **kwargs):
     return db_bz.insertOrUpdate(*args, **kwargs)
