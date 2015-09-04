@@ -6,6 +6,9 @@ import public_bz
 import instagram
 from instagram.client import InstagramAPI
 
+import sys
+sys.setrecursionlimit(5000)  # set the maximum depth as 5000
+
 from datetime import timedelta
 import time
 import json
