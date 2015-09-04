@@ -217,6 +217,6 @@ def check(user_name=None):
 
 if __name__ == '__main__':
     while True:
-        check('maolimaoli')
+        check()
         pg.refresh('messages')
         time.sleep(300)
