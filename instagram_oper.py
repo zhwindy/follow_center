@@ -72,7 +72,7 @@ def saveMedias(medias, user):
         media = storage(media_d)
         db_media = storage()
         if media.caption:
-            caption = media.caption.__dict__
+            caption = media.caption
             caption['user_id'] = caption['user'].id
             del caption['user']
         else:
@@ -81,17 +81,16 @@ def saveMedias(medias, user):
         db_media.comment_count = media.comment_count
 
         if media.comments:
-            media.comments = [d.__dict__ for d in media.comments]
             for comment in media.comments:
-                comment['user'] = comment['user'].__dict__
+                comment['user'] = comment['user']
         db_media.comments = json.dumps(media.comments, cls=public_bz.ExtEncoder)
         db_media.created_time = media.created_time
         # 8小时的问题
         db_media.created_time += timedelta(hours=8)
         db_media.filter = media.filter
-        db_media.low_resolution = json.dumps(media.images['low_resolution'].__dict__)
-        db_media.standard_resolution = json.dumps(media.images['standard_resolution'].__dict__)
-        db_media.thumbnail = json.dumps(media.images['thumbnail'].__dict__)
+        db_media.low_resolution = json.dumps(media.images['low_resolution'])
+        db_media.standard_resolution = json.dumps(media.images['standard_resolution'])
+        db_media.thumbnail = json.dumps(media.images['thumbnail'])
         db_media.id_str = media.id
         db_media.like_count = media.like_count
         # likes里有User对象,暂时不存了
