@@ -174,6 +174,8 @@ def check(user_name=None):
 
 
 if __name__ == '__main__':
+    next_='https://api.instagram.com/v1/users/262341/media/recent?access_token=1337827037.933ab14.2a607a5fc0534f9f9900e75196a2dfbb&max_id=2158311_262341&min_id=&sig=a1f9fc02bba59116a7c635ad03ae1efab347ee9140d6a87508a9b62333cea7df'
+    getMedia(with_next_url=next_, user={})
     while True:
         check()
         pg.refresh('messages')
