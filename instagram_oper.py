@@ -65,7 +65,7 @@ def getUser(user_name, always_check=False):
         return getUser(user_name)
 
 
-def saveMedias(medias, user):
+def saveMedias(user, medias):
     '''
     create by bigzhu at 15/09/04 20:58:54 保存meedias
 
@@ -176,7 +176,7 @@ def main(user_name=None):
         public_db.delNoName('instagram', user_name)
         return
     saveLastId(user, medias)
-    saveMedias(medias, user)
+    saveMedias(user, medias)
 
 
 def check(user_name=None):
