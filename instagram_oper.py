@@ -148,6 +148,7 @@ def getMedia(user_name=None, with_next_url=None, user=None):
     saveMedias(medias, user)
     # 递归查出
     if next_ != with_next_url:
+        print with_next_url
         getMedia(with_next_url=next_, user=user)
 
 
