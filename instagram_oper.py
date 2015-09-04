@@ -3,12 +3,10 @@
 import pg
 from public_bz import storage
 import public_bz
+import time
 import requests
 import instagram
 from instagram.client import InstagramAPI
-
-import sys
-sys.setrecursionlimit(5000)  # set the maximum depth as 5000
 
 from datetime import timedelta
 import json
@@ -145,30 +143,23 @@ def callGetMeidaApi(user_id, min_id=None):
     else:
         print r.status_code
 
-def getMedia(user_name=None, with_next_url=None, user=None):
-    if user_name:
-        user = getUser(user_name, always_check=True)
-        if user is None:
-            # 用户都没有，不用往下了
-            return
-        try:
-            # https://api.instagram.com/v1/users/1337827037/media/recent/?access_token=1337827037.933ab14.2a607a5fc0534f9f9900e75196a2dfbb&min_id=1054034416535329463_1337827037
-            # 即使设置了min_id,instagram还是会把当前这条min_id返回来，简直了
-            medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
-            medias = callGetMeidaApi(user.id, user.last_id)
-        except instagram.bind.InstagramClientError:
-            print public_bz.getExpInfoAll()
-            public_db.delNoName('instagram', user_name)
-            return
-        saveLastId(user, medias)
-    else:
-        medias, next_ = api.user_recent_media(with_next_url=with_next_url)
 
+def main(user_name=None):
+    user = getUser(user_name, always_check=True)
+    if user is None:
+        # 用户都没有，不用往下了
+        return
+    try:
+        # https://api.instagram.com/v1/users/1337827037/media/recent/?access_token=1337827037.933ab14.2a607a5fc0534f9f9900e75196a2dfbb&min_id=1054034416535329463_1337827037
+        # 即使设置了min_id,instagram还是会把当前这条min_id返回来，简直了
+        #medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
+        medias = storage(callGetMeidaApi(user.id, user.last_id)['data'])
+    except instagram.bind.InstagramClientError:
+        print public_bz.getExpInfoAll()
+        public_db.delNoName('instagram', user_name)
+        return
+    saveLastId(user, medias)
     saveMedias(medias, user)
-    # 递归查出
-    if next_ != with_next_url:
-        print with_next_url
-        getMedia(with_next_url=next_, user=user)
 
 
 def check(user_name=None):
@@ -185,7 +176,7 @@ def check(user_name=None):
     for user in users:
         if user.instagram and user.instagram != '':
             print 'check instagram %s' % user.instagram
-            getMedia(user.instagram)
+            main(user.instagram)
             # try:
             #    getMedia(user.instagram)
             # except Exception:
@@ -193,10 +184,7 @@ def check(user_name=None):
 
 
 if __name__ == '__main__':
-    a = callGetMeidaApi(1337827037)
-    print len(a['data'])
-    print a['pagination']['next_url']
-    # while True:
-    #    check()
-    #    pg.refresh('messages')
-    #    time.sleep(300)
+    while True:
+        check()
+        pg.refresh('messages')
+        time.sleep(300)
