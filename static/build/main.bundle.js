@@ -2038,7 +2038,8 @@
 	              if (data.error !== '0') {
 	                throw new Error(data.error);
 	              } else {
-	                return bz.showSuccess5("保存成功");
+	                bz.showSuccess5("保存成功");
+	                return $('#god_input').modal('hide');
 	              }
 	            };
 	          })(this)
@@ -2093,7 +2094,7 @@
 /* 112 */
 /***/ function(module, exports) {
 
-	module.exports = "<a v-on=\"click:pop\" class=\"btn btn-defalt\" data-toggle=\"modal\" data-target=\"#god_input\">添加</a>\n<div id=\"god_input\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\">\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n                <h4 class=\"modal-title\" id=\"exampleModalLabel\">添加一个新的牛人</h4>\n            </div>\n            <div class=\"modal-body\">\n                <form>\n                    <div class=\"form-group\">\n                        <label for=\"recipient-name\" class=\"control-label\">用户名:</label>\n                        <input v-model=\"user_name\" type=\"text\" class=\"form-control\" id=\"recipient-name\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"message-text\" class=\"control-label\">描述:</label>\n                        <simditor content=\"(%@ slogan%)\"></simditor>\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer\">\n                <button v-btn-loading=\"btn_loading\" v-on=\"click:addGod\" type=\"button\" class=\"btn btn-sm btn-default\" data-dismiss=\"modal\">加好了</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "<a v-on=\"click:pop\" class=\"btn btn-defalt\" data-toggle=\"modal\" data-target=\"#god_input\">添加</a>\n<div id=\"god_input\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\">\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n                <h4 class=\"modal-title\" id=\"exampleModalLabel\">添加一个新的牛人</h4>\n            </div>\n            <div class=\"modal-body\">\n                <form>\n                    <div class=\"form-group\">\n                        <label for=\"recipient-name\" class=\"control-label\">用户名:</label>\n                        <input v-on=\"keyup:addGod | key 'enter'\" v-model=\"user_name\" type=\"text\" class=\"form-control\" id=\"recipient-name\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"message-text\" class=\"control-label\">描述:</label>\n                        <simditor content=\"(%@ slogan%)\"></simditor>\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer\">\n                <button v-btn-loading=\"btn_loading\" v-on=\"click:addGod\" type=\"button\" class=\"btn btn-sm btn-default\" data-dismiss=\"modal\">加好了</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 113 */

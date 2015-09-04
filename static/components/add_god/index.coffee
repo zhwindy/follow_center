@@ -33,3 +33,4 @@ module.exports =
               throw new Error(data.error)
             else
               bz.showSuccess5("保存成功")
+              $('#god_input').modal('hide')

@@ -10,7 +10,7 @@
                 <form>
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">用户名:</label>
-                        <input v-model="user_name" type="text" class="form-control" id="recipient-name">
+                        <input v-on="keyup:addGod | key 'enter'" v-model="user_name" type="text" class="form-control" id="recipient-name">
                     </div>
                     <div class="form-group">
                         <label for="message-text" class="control-label">描述:</label>
