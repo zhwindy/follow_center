@@ -17,8 +17,7 @@ module.exports =
     disable_edit: true # 禁止编辑
     button_text:'修改资料'
   methods:
-    # 协议可以配置
-    autoInsert:(key, scheme='http://')->
+    autoInsert:(key, scheme='http://')-> # 协议可以配置
       if not @user_info[key]
         @user_info.$set(key, scheme)
     changeImg:->
@@ -85,4 +84,6 @@ module.exports =
               throw new Error(data.error)
             else
               bz.showSuccess5("保存成功")
+  directives:
+    disable: require('../../directives/disable')
 
