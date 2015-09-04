@@ -126,7 +126,7 @@ def saveMedias(user, medias):
                     text = caption.get('text')
                 else:
                     text = ''
-                wechat_oper.sendInstagram(data.openid, text, media.images['standard_resolution'].url, user.username, id)
+                wechat_oper.sendInstagram(data.openid, text, media.images['low_resolution']['url'], user.username, id)
 
 
 def saveLastId(user, medias):
@@ -170,12 +170,13 @@ def main(user_name=None):
         # 即使设置了min_id,instagram还是会把当前这条min_id返回来，简直了
         #medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
         medias = callGetMeidaApi(user.id, user.last_id)['data']
-        print len(medias)
     except instagram.bind.InstagramClientError:
         print public_bz.getExpInfoAll()
         public_db.delNoName('instagram', user_name)
         return
     saveLastId(user, medias)
+    if len(medias) !=0:
+        print len(medias)
     saveMedias(user, medias)
 
 
