@@ -73,8 +73,8 @@ def saveMedias(medias, user):
         db_media = storage()
         if media.caption:
             caption = media.caption
-            caption['user_id'] = caption['user'].id
-            del caption['user']
+            caption['user_id'] = caption['from']['id']
+            del caption['from']
         else:
             caption = ''
         db_media.caption = json.dumps(caption, cls=public_bz.ExtEncoder)
