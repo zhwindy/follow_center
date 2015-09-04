@@ -68,7 +68,8 @@ def saveMedias(medias, user):
     '''
     create by bigzhu at 15/09/04 20:58:54 保存meedias
     '''
-    for media in medias:
+    for media_d in medias:
+        media = storage(media_d)
         db_media = storage()
         if media.caption:
             caption = media.caption.__dict__
@@ -118,10 +119,10 @@ def saveLastId(user, medias):
     create by bigzhu at 15/09/04 21:42:06 保存最后那条记录，删除重复记录
     '''
     if medias:
-        if medias[-1].id == user.last_id:  # 会取出最后一条，要删了
+        if medias[-1]['id'] == user.last_id:  # 会取出最后一条，要删了
             del medias[-1]
         else:
-            last_id = medias[0].id
+            last_id = medias[0]['id']
             pg.update('instagram_user', where="lower(username)=lower('%s')" % user.username, last_id=last_id)
 
 
@@ -153,7 +154,7 @@ def main(user_name=None):
         # https://api.instagram.com/v1/users/1337827037/media/recent/?access_token=1337827037.933ab14.2a607a5fc0534f9f9900e75196a2dfbb&min_id=1054034416535329463_1337827037
         # 即使设置了min_id,instagram还是会把当前这条min_id返回来，简直了
         #medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
-        medias = storage(callGetMeidaApi(user.id, user.last_id)['data'])
+        medias = callGetMeidaApi(user.id, user.last_id)['data']
     except instagram.bind.InstagramClientError:
         print public_bz.getExpInfoAll()
         public_db.delNoName('instagram', user_name)
