@@ -66,24 +66,10 @@ def getUser(user_name, always_check=False):
         return getUser(user_name)
 
 
-def getMedia(user_name=None, with_next_url=None, user=None):
-    if user_name:
-        user = getUser(user_name, always_check=True)
-        if user is None:
-            # min_id 会查出大于等于这个id的
-            return
-        try:
-            medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
-        except instagram.bind.InstagramClientError:
-            print public_bz.getExpInfoAll()
-            public_db.delNoName('instagram', user_name)
-            return
-        if medias:
-            last_id = medias[0].id
-            pg.update('instagram_user', where="lower(username)=lower('%s')" % user_name, last_id=last_id)
-    else:
-        medias, next_ = api.user_recent_media(with_next_url=with_next_url)
-
+def saveMedias(medias, user):
+    '''
+    create by bigzhu at 15/09/04 20:58:54 保存meedias
+    '''
     for media in medias:
         db_media = storage()
         if media.caption:
@@ -127,6 +113,39 @@ def getMedia(user_name=None, with_next_url=None, user=None):
                 else:
                     text = ''
                 wechat_oper.sendInstagram(data.openid, text, media.images['standard_resolution'].url, user.username, id)
+
+
+def saveLastId(user, medias):
+    '''
+    create by bigzhu at 15/09/04 21:42:06 保存最后那条记录，删除重复记录
+    '''
+    if medias:
+        if medias[-1].id == user.last_id:  # 会取出最后一条，要删了
+            del medias[-1]
+        else:
+            last_id = medias[0].id
+            pg.update('instagram_user', where="lower(username)=lower('%s')" % user.username, last_id=last_id)
+
+
+def getMedia(user_name=None, with_next_url=None, user=None):
+    if user_name:
+        user = getUser(user_name, always_check=True)
+        if user is None:
+            # 用户都没有，不用往下了
+            return
+        try:
+            # https://api.instagram.com/v1/users/1337827037/media/recent/?access_token=1337827037.933ab14.2a607a5fc0534f9f9900e75196a2dfbb&min_id=1054034416535329463_1337827037
+            # 即使设置了min_id,instagram还是会把当前这条min_id返回来，简直了
+            medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
+        except instagram.bind.InstagramClientError:
+            print public_bz.getExpInfoAll()
+            public_db.delNoName('instagram', user_name)
+            return
+        saveLastId(user, medias)
+    else:
+        medias, next_ = api.user_recent_media(with_next_url=with_next_url)
+
+    saveMedias(medias, user)
     # 递归查出
     if next_ != with_next_url:
         getMedia(with_next_url=next_, user=user)
@@ -154,6 +173,6 @@ def check(user_name=None):
 
 if __name__ == '__main__':
     while True:
-        check('bigzhu')
+        check()
         pg.refresh('messages')
         time.sleep(300)
