@@ -99,7 +99,8 @@ def saveMedias(user, medias):
         #db_media.location = json.dumps(media.location, cls=public_bz.ExtEncoder)
         db_media.comments = json.dumps(media.comments, cls=public_bz.ExtEncoder)
         db_media.filter = media.filter
-        db_media.created_time = time_bz.timestampToDateTime(media.created_time) + timedelta(hours=8)
+        #db_media.created_time = time_bz.timestampToDateTime(media.created_time) + timedelta(hours=8)
+        db_media.created_time = time_bz.timestampToDateTime(media.created_time)
         db_media.link = media.link
         #db_media.likes = json.dumps(media.likes, cls=public_bz.ExtEncoder)
         db_media.low_resolution = json.dumps(media.images['low_resolution'])
