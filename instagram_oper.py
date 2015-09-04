@@ -185,8 +185,8 @@ def main(user_name=None):
         public_db.delNoName('instagram', user_name)
         return
     saveLastId(user, medias)
-    if len(medias) !=0:
-        print len(medias)
+    if len(medias['data']) !=0:
+        print len(medias['data'])
     saveMedias(user, medias)
 
 
