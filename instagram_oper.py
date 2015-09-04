@@ -67,10 +67,40 @@ def getUser(user_name, always_check=False):
 def saveMedias(medias, user):
     '''
     create by bigzhu at 15/09/04 20:58:54 保存meedias
+
+         "attribution":null,
+         "tags":[  ],
+         "type":"image",
+         "location":{  },
+         "comments":{  },
+         "filter":"Normal",
+         "created_time":"1441362020",
+         "link":"https:\/\/instagram.com\/p\/7NIHiLJJs3\/",
+         "likes":{  },
+         "images":{  },
+         "users_in_photo":[  ],
+         "caption":{  },
+         "user_has_liked":false,
+         "id":"1066544388859271991_262341",
+         "user":{  }
     '''
     for media_d in medias:
         media = storage(media_d)
         db_media = storage()
+
+        #db_media.attribution = media.attribution
+        #db_media.tags = json.dumps(media.tags, cls=public_bz.ExtEncoder)
+        db_media.type = media.type
+        #db_media.location = json.dumps(media.location, cls=public_bz.ExtEncoder)
+        db_media.comments = json.dumps(media.comments, cls=public_bz.ExtEncoder)
+        db_media.filter = media.filter
+        db_media.created_time = media.created_time + timedelta(hours=8)
+        db_media.link = media.link
+        #db_media.likes = json.dumps(media.likes, cls=public_bz.ExtEncoder)
+        db_media.low_resolution = json.dumps(media.images['low_resolution'])
+        db_media.standard_resolution = json.dumps(media.images['standard_resolution'])
+        db_media.thumbnail = json.dumps(media.images['thumbnail'])
+        #db_media.users_in_photo = json.dumps(media.users_in_photo, cls=public_bz.ExtEncoder)
         if media.caption:
             caption = media.caption
             caption['user_id'] = caption['from']['id']
@@ -78,26 +108,10 @@ def saveMedias(medias, user):
         else:
             caption = ''
         db_media.caption = json.dumps(caption, cls=public_bz.ExtEncoder)
-        db_media.comment_count = media.comment_count
 
-        if media.comments:
-            for comment in media.comments:
-                comment['user'] = comment['user']
-        db_media.comments = json.dumps(media.comments, cls=public_bz.ExtEncoder)
-        db_media.created_time = media.created_time
-        # 8小时的问题
-        db_media.created_time += timedelta(hours=8)
-        db_media.filter = media.filter
-        db_media.low_resolution = json.dumps(media.images['low_resolution'])
-        db_media.standard_resolution = json.dumps(media.images['standard_resolution'])
-        db_media.thumbnail = json.dumps(media.images['thumbnail'])
         db_media.id_str = media.id
-        db_media.like_count = media.like_count
-        # likes里有User对象,暂时不存了
-        #db_media.likes = json.dumps(media.likes)
-        db_media.link = media.link
-        db_media.type = media.type
         db_media.user_id = user.id
+
         id = pg.insertIfNotExist(pg, 'instagram_media', db_media, "id_str='%s'" % db_media.id_str)
         if id is None:
             raise Exception('重复记录 id=%s, name=%s' % (media.id, user.username))
