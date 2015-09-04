@@ -29,6 +29,14 @@ class my_base(base_m.base_m):
         self.all_js_files.append('director.min.js')
         #self.all_js_files.append('GreenSock-JS/src/minified/TimelineLite.min.js')
         return self.all_js_files
+    def css_files(self):
+        simditor_path = self.LIB_PATH + 'simditor-2.1.14/'
+        simditor_styles = simditor_path + 'styles/'
+        my_css_files = [
+            simditor_styles + 'simditor.css',
+        ]
+        self.all_css_files += my_css_files
+        return self.all_css_files
 
 if __name__ == '__main__':
     pass
