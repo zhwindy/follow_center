@@ -16,6 +16,9 @@ import public_db
 import wechat_oper
 config = ConfigParser.ConfigParser()
 
+import sys
+sys.setrecursionlimit(5000)  # set the maximum depth as 5000
+
 
 with open('conf/instagram.ini', 'r') as cfg_file:
     config.readfp(cfg_file)
@@ -213,6 +216,6 @@ def check(user_name=None):
 
 if __name__ == '__main__':
     while True:
-        check()
+        check('maolimaoli')
         pg.refresh('messages')
         time.sleep(300)
