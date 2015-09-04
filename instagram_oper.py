@@ -5,6 +5,7 @@ from public_bz import storage
 import public_bz
 import time
 import requests
+import time_bz
 import instagram
 from instagram.client import InstagramAPI
 
@@ -94,8 +95,8 @@ def saveMedias(medias, user):
         #db_media.location = json.dumps(media.location, cls=public_bz.ExtEncoder)
         db_media.comments = json.dumps(media.comments, cls=public_bz.ExtEncoder)
         db_media.filter = media.filter
-        print media.created_time
-        db_media.created_time = media.created_time + timedelta(hours=8)
+        db_media.created_time = time_bz.timestampToDateTime(media.created_time) + timedelta(hours=8)
+        print db_media.created_time
         db_media.link = media.link
         #db_media.likes = json.dumps(media.likes, cls=public_bz.ExtEncoder)
         db_media.low_resolution = json.dumps(media.images['low_resolution'])
@@ -173,8 +174,8 @@ def main(user_name=None):
         print public_bz.getExpInfoAll()
         public_db.delNoName('instagram', user_name)
         return
-    saveLastId(user, medias)
     saveMedias(medias, user)
+    saveLastId(user, medias)
 
 
 def check(user_name=None):
