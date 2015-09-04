@@ -85,7 +85,8 @@ def saveMedias(user, medias):
          "id":"1066544388859271991_262341",
          "user":{  }
     '''
-    for media_d in medias:
+
+    for media_d in medias['data']:
         media = storage(media_d)
         db_media = storage()
 
@@ -128,11 +129,17 @@ def saveMedias(user, medias):
                     text = ''
                 wechat_oper.sendInstagram(data.openid, text, media.images['low_resolution']['url'], user.username, id)
 
+    if medias['pagination']:
+        next_url = medias['pagination']['next_url']
+        medias = callGetMeidaApi(next_url=next_url)
+        saveMedias(user, medias)
+
 
 def saveLastId(user, medias):
     '''
     create by bigzhu at 15/09/04 21:42:06 保存最后那条记录，删除重复记录
     '''
+    medias = medias['data']
     if medias:
         if medias[-1]['id'] == user.last_id:  # 会取出最后一条，要删了
             del medias[-1]
@@ -141,15 +148,19 @@ def saveLastId(user, medias):
             pg.update('instagram_user', where="lower(username)=lower('%s')" % user.username, last_id=last_id)
 
 
-def callGetMeidaApi(user_id, min_id=None):
+def callGetMeidaApi(user_id=None, min_id=None, next_url=None):
     params = {'count': 9999,
               'access_token': access_token,
               }
     if min_id:
         params['min_id'] = min_id
-    url = '''https://api.instagram.com/v1/users/%s/media/recent''' % user_id
+    if user_id:
+        url = '''https://api.instagram.com/v1/users/%s/media/recent''' % user_id
     try:
-        r = requests.get(url, params=params)
+        if next_url:
+            r = requests.get(next_url)
+        else:
+            r = requests.get(url, params=params)
     except requests.exceptions.ConnectionError:
         print public_bz.getExpInfoAll()
         return
@@ -169,7 +180,7 @@ def main(user_name=None):
         # https://api.instagram.com/v1/users/1337827037/media/recent/?access_token=1337827037.933ab14.2a607a5fc0534f9f9900e75196a2dfbb&min_id=1054034416535329463_1337827037
         # 即使设置了min_id,instagram还是会把当前这条min_id返回来，简直了
         #medias, next_ = api.user_recent_media(user_id=user.id, min_id=user.last_id)
-        medias = callGetMeidaApi(user.id, user.last_id)['data']
+        medias = callGetMeidaApi(user.id, user.last_id)
     except instagram.bind.InstagramClientError:
         print public_bz.getExpInfoAll()
         public_db.delNoName('instagram', user_name)
