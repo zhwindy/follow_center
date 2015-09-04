@@ -86,4 +86,5 @@ module.exports =
               bz.showSuccess5("保存成功")
   directives:
     disable: require('../../directives/disable')
+    'btn-loading': require('../../directives/btn_loading')
 
