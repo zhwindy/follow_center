@@ -60,6 +60,14 @@
                 <input v-disable="disable_edit" type="text" class="form-control editable" placeholder=""  v-model="user_info.instagram" v-on="focus:autoInsert('instagram', user_info.user_name)">
             </div>
         </div>
+        <div class="form-group">
+            <a href="http://(%user_info.tumblr%).tumblr.com" target="_blank">
+                <label class="col-sm-5 control-label"><span class="round-icon bg-icon-dark-blue"><i class="fa fa-tumblr"></i></span> Tumblr</label>
+            </a>
+            <div class="col-sm-7">
+                <input v-disable="disable_edit" type="text" class="form-control editable" placeholder=""  v-model="user_info.tumblr" v-on="focus:autoInsert('tumblr', user_info.user_name)">
+            </div>
+        </div>
     </form>
     <div class="text-center">
         <follow followed="(%@ user_info.followed%)" god_id="(%user_info.god_id%)"></follow>

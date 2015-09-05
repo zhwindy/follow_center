@@ -23,6 +23,7 @@ module.exports =
           twitter:@user_name
           github:@user_name
           instagram:@user_name
+          tumblr:@user_name
         $.ajax
           url: '/add'
           type: 'POST'
