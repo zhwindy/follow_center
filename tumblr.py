@@ -5,8 +5,6 @@ create by bigzhu at 15/07/15 17:17:29 取github的动态
 '''
 import requests
 import pg
-from datetime import timedelta
-import copy
 import db_bz
 import wechat_oper
 from public_bz import storage
@@ -90,7 +88,12 @@ def saveUserCheckNew(blogs):
             # return
             pass
     pg.insertOrUpdate(pg, 'tumblr_user', user, where)
-    for blog in blogs['posts']:
+    blogs = blogs['posts']
+    saveBlogs(user_name, blogs, offset=7620)
+
+
+def saveBlogs(user_name, blogs, offset):
+    for blog in blogs:
         blog['created_date'] = time_bz.timestampToDateTime(blog['timestamp'])
         del blog['timestamp']
         blog['id_str'] = blog['id']
@@ -102,19 +105,46 @@ def saveUserCheckNew(blogs):
         del blog['highlighted']
         blog['user_name'] = user_name
 
-        blog['tags'] = json.dumps(blog['tags'])
-        blog['reblog'] = json.dumps(blog['reblog'])
-        blog['trail'] = json.dumps(blog['trail'])
-        blog['photos'] = json.dumps(blog['photos'])
+        blog['tags'] = json.dumps(blog.get('tags'))
+        blog['reblog'] = json.dumps(blog.get('reblog'))
+        blog['trail'] = json.dumps(blog.get('trail'))
+        blog['photos'] = json.dumps(blog.get('photos'))
+        blog['post_author'] = json.dumps(blog.get('post_author'))
+        blog['player'] = json.dumps(blog.get('player'))
+        blog['dialogue'] = json.dumps(blog.get('dialogue'))
+
+        #if blog.get('tags'):
+        #    del blog['tags']
+        #if blog.get('reblog'):
+        #    del blog['reblog']
+        #if blog.get('trail'):
+        #    del blog['trail']
+        #if blog.get('photos'):
+        #    del blog['photos']
+        #if blog.get('post_author'):
+        #    del blog['post_author']
+
+
+
+
+
+
+
+
 
         result = pg.insertIfNotExist(pg, 'tumblr_blog', blog, "id_str='%s'" % blog['id_str'])
         if result is None:  # 有重复记录了,就不再继续了
+            print 'have some data'
             return
+        else:
+            print 'new ',blog['id_str'],blog['type'],'offset:',offset
     # 继续取
-    #blogs = callGetMeidaApi(user_name)['response']
+    new_offset = offset + 20
+    new_blogs = callGetMeidaApi(user_name, offset=new_offset)['response']['posts']
+    saveBlogs(user_name, new_blogs, new_offset)
 
 
-def callGetMeidaApi(user_name, offset=0, limit=10):
+def callGetMeidaApi(user_name, offset=0, limit=20):
     api_key = 'fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4'
     params = {'api_key': api_key,
               'offset': offset,
@@ -140,7 +170,7 @@ def main(user_name=None):
     #    print public_bz.getExpInfoAll()
     #    public_db.delNoName('tumblr', user_name)
     #    return
-    blogs = callGetMeidaApi(user_name, offset=10)['response']
+    blogs = callGetMeidaApi(user_name)['response']
     saveUserCheckNew(blogs)
 if __name__ == '__main__':
     main('triketora')
