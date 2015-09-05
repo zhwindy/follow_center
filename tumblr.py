@@ -5,10 +5,6 @@ create by bigzhu at 15/07/15 17:17:29 取github的动态
 '''
 import requests
 import pg
-import db_bz
-import wechat_oper
-from public_bz import storage
-import public_db
 import json
 import time_bz
 import time
@@ -17,61 +13,23 @@ import public_bz
 
 def check(user_name=None):
     '''
-    create by bigzhu at 15/07/15 21:50:48
-        从 user_info 取出 github url 来检查
     '''
-    users = public_db.getUserInfoGithub(user_name)
+    where = '''
+        tumblr is not null and tumblr!=''
+    '''
+    if user_name:
+        where += " and tumblr='%s'" % user_name
+    users = pg.select('user_info', what='tumblr', where=where)
     for user in users:
-        if user.github and user.github != '':
-            print 'check github %s' % user.github
-            getUserEvent(user.github, user.etag)
+        print 'check tumblr %s' % user.tumblr
+        main(user.tumblr)
 
 
-def delGithubUser(user_name):
+def delTumblrUser(user_name):
     sql = '''
-    update user_info set github=null where lower(github)=lower('%s')
+    update user_info set tumblr=null where lower(tumblr)=lower('%s')
     ''' % user_name
     pg.query(sql)
-
-
-def formatInfo(message):
-    '''
-    create by bigzhu at 15/07/22 14:48:01 组装message为可读的
-    '''
-    text = ''
-    if message['type'] == 'PushEvent':
-        commits = message['payload']['commits']
-        commits = ';'.join(c['message'] for c in commits)
-        text = 'Push ' + message['repo']['name'] + ':' + commits
-    elif message['type'] == 'IssueCommentEvent':
-        payload = message['payload']
-        text = payload['issue']['title'] + '\n'
-        text += payload['comment']['body']
-    elif message['type'] == 'WatchEvent':
-        text = message['payload']['action'] + ' ' + message['repo']['name']
-    elif message['type'] == 'IssuesEvent':
-        payload = message['payload']
-        text = message['repo']['name'] + '\n'
-        text += payload['action'] + ' issue ' + payload['issue']['title']
-    return text
-
-
-def saveMessage(message):
-    '''
-    create by bigzhu at 15/07/16 09:44:39 为了抽取数据方便,合并数据到 content 里
-    '''
-    message.id_str = message.pop('id')
-
-    content = storage()
-    content.type = message.type
-    content.repo = message.pop('repo')
-    content.payload = message.pop('payload')
-    message.content = json.dumps(content)
-
-    if message.get('org'):
-        message.org = json.dumps(message.org)
-
-    return db_bz.insertIfNotExist(pg, 'github_message', message, "id_str='%s'" % message.id_str)
 
 
 def saveUserCheckNew(blogs):
@@ -89,10 +47,14 @@ def saveUserCheckNew(blogs):
             pass
     pg.insertOrUpdate(pg, 'tumblr_user', user, where)
     blogs = blogs['posts']
-    saveBlogs(user_name, blogs, offset=7620)
+    saveBlogs(user_name, blogs, offset=20)
 
 
 def saveBlogs(user_name, blogs, offset):
+    if blogs:
+        pass
+    else:
+        return
     for blog in blogs:
         blog['created_date'] = time_bz.timestampToDateTime(blog['timestamp'])
         del blog['timestamp']
@@ -113,31 +75,12 @@ def saveBlogs(user_name, blogs, offset):
         blog['player'] = json.dumps(blog.get('player'))
         blog['dialogue'] = json.dumps(blog.get('dialogue'))
 
-        #if blog.get('tags'):
-        #    del blog['tags']
-        #if blog.get('reblog'):
-        #    del blog['reblog']
-        #if blog.get('trail'):
-        #    del blog['trail']
-        #if blog.get('photos'):
-        #    del blog['photos']
-        #if blog.get('post_author'):
-        #    del blog['post_author']
-
-
-
-
-
-
-
-
-
         result = pg.insertIfNotExist(pg, 'tumblr_blog', blog, "id_str='%s'" % blog['id_str'])
         if result is None:  # 有重复记录了,就不再继续了
             print 'have some data'
             return
         else:
-            print 'new ',blog['id_str'],blog['type'],'offset:',offset
+            print 'new ', blog['id_str'], blog['type'], 'offset:', offset
     # 继续取
     new_offset = offset + 20
     new_blogs = callGetMeidaApi(user_name, offset=new_offset)['response']['posts']
@@ -173,4 +116,7 @@ def main(user_name=None):
     blogs = callGetMeidaApi(user_name)['response']
     saveUserCheckNew(blogs)
 if __name__ == '__main__':
-    main('triketora')
+    while True:
+        check()
+        pg.refresh('messages')
+        time.sleep(300)
