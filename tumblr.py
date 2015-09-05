@@ -29,71 +29,11 @@ def check(user_name=None):
             getUserEvent(user.github, user.etag)
 
 
-def updateEtag(user_name, etag):
-    count = pg.update('github_user', where="lower(login)=lower('%s')" % user_name, etag=etag)
-    if count != 1:
-        raise Exception('更新etag 失败, %s, user_name=%s' % (count, user_name))
-
-
 def delGithubUser(user_name):
     sql = '''
     update user_info set github=null where lower(github)=lower('%s')
     ''' % user_name
     pg.query(sql)
-
-
-def getUserEvent(user_name, etag):
-    '''
-    create by bigzhu at 15/07/15 17:54:08 取github
-    modify by bigzhu at 15/07/22 16:20:42 时间同样要加入8小时,否则不正确
-    '''
-    headers = {'If-None-Match': etag}
-    try:
-        r = requests.get('https://api.github.com/users/%s/events' % user_name, headers=headers)
-    except requests.exceptions.ConnectionError:
-        print public_bz.getExpInfoAll()
-        return
-    if r.status_code == 200:
-        messages = r.json()
-        if not messages:
-            delGithubUser(user_name)
-            # 没有这个github用户,取消
-            return
-        actor = messages[0]['actor']
-        #actor不定是作者名字，有可能org才是
-        if actor['login'].lower() == user_name.lower():
-            the_user = actor
-        else:
-            org = messages[0]['org']
-            if org['login'].lower() == user_name.lower():
-                the_user = org
-                #如果是org，那么url不同
-                the_user['url'] = "https://api.github.com/users/"+user_name
-            else:
-                raise("in this github can't find user_name=%s" % user_name)
-
-        user_id = saveUser(the_user['id'], the_user['url'])
-
-        # 更新etag
-        etag = r.headers['etag']
-        updateEtag(user_name, etag)
-
-        for i in r.json():
-            i['actor'] = user_id
-            message = storage(i)
-            message.created_at = time_bz.unicodeToDateTIme(message.created_at)
-            message.created_at += timedelta(hours=8)
-            id = saveMessage(copy.deepcopy(message))
-            if id is not None:
-                text = formatInfo(message)
-                print text
-                openids = public_db.getOpenidsByName('github', user_name)
-                for data in openids:
-                    wechat_oper.sendGithub(data.openid, text, user_name, id)
-    if r.status_code == 404:
-        delGithubUser(user_name)
-    else:
-        print r.status_code
 
 
 def formatInfo(message):
@@ -136,37 +76,71 @@ def saveMessage(message):
     return db_bz.insertIfNotExist(pg, 'github_message', message, "id_str='%s'" % message.id_str)
 
 
-def saveUser(id, url):
+def saveUserCheckNew(blogs):
     '''
-    create by bigzhu at 15/07/15 21:27:19 保存github信息
-    create by bigzhu at 15/07/22 16:17:37 fix bug, not return id
+    create by bigzhu at 15/09/05 11:57:11
     '''
-    if list(pg.select('github_user', where='id=%s' % id)):
-        return id
-    else:
-        r = requests.get(url)
-        user = storage(r.json())
-        del user.url
-        del user.followers_url
-        del user.following_url
-        del user.gists_url
-        del user.starred_url
-        del user.subscriptions_url
-        del user.organizations_url
-        del user.repos_url
-        del user.events_url
-        del user.received_events_url
-        del user.type
-        return db_bz.insertIfNotExist(pg, 'github_user', user)
+    user = blogs['blog']
+    user_name = user['name']
+    where = "name='%s'" % user_name
+    result = list(pg.select('tumblr_user', where=where))
+    if result:
+        if result[0].updated == user['updated']:  # 如果没有更新过，就不用继续了
+            print user_name, ' no update'
+            # return
+            pass
+    pg.insertOrUpdate(pg, 'tumblr_user', user, where)
+    for blog in blogs['posts']:
+        blog['created_date'] = time_bz.timestampToDateTime(blog['timestamp'])
+        del blog['timestamp']
+        blog['id_str'] = blog['id']
+        del blog['id']
+
+        del blog['date']
+        del blog['recommended_source']
+        del blog['recommended_color']
+        del blog['highlighted']
+        blog['user_name'] = user_name
+
+        blog['tags'] = json.dumps(blog['tags'])
+        blog['reblog'] = json.dumps(blog['reblog'])
+        blog['trail'] = json.dumps(blog['trail'])
+        blog['photos'] = json.dumps(blog['photos'])
+
+        result = pg.insertIfNotExist(pg, 'tumblr_blog', blog, "id_str='%s'" % blog['id_str'])
+        if result is None:  # 有重复记录了,就不再继续了
+            return
+    # 继续取
+    #blogs = callGetMeidaApi(user_name)['response']
 
 
-if __name__ == '__main__':
-
-    headers = {'If-None-Match': 'bigzhu'}
-    r = requests.get('http://api.tumblr.com/v2/blog/coverlibrary.tumblr.com/posts?api_key=fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4', headers=headers)
+def callGetMeidaApi(user_name, offset=0, limit=10):
+    api_key = 'fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4'
+    params = {'api_key': api_key,
+              'offset': offset,
+              'limit': limit,
+              }
+    url = '''http://api.tumblr.com/v2/blog/%s.tumblr.com/posts''' % user_name
+    try:
+        r = requests.get(url, params=params)
+    except requests.exceptions.ConnectionError:
+        print public_bz.getExpInfoAll()
+        return
     if r.status_code == 200:
-        print r.headers
-        #etag = r.headers['etag']
-        #print etag
+        medias = r.json()
+        return medias
     else:
         print r.status_code
+
+
+def main(user_name=None):
+    # try:
+    #    blogs = callGetMeidaApi(user_name)['response']
+    # except instagram.bind.InstagramClientError:
+    #    print public_bz.getExpInfoAll()
+    #    public_db.delNoName('tumblr', user_name)
+    #    return
+    blogs = callGetMeidaApi(user_name, offset=10)['response']
+    saveUserCheckNew(blogs)
+if __name__ == '__main__':
+    main('triketora')

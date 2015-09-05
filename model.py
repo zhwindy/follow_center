@@ -241,6 +241,55 @@ class instagram_media(model_oper_bz.base):
     type = TextField()
 
 
+class tumblr_user(model_oper_bz.base):
+
+    title = TextField()
+    name = TextField()
+    posts = IntegerField(null=True)
+    url = TextField()
+    updated = IntegerField(null=True)  # 貌似是时间戳，可以用这个来判断是否有更新,为了方便比较就用IntegerField来放了
+    description = TextField(null=True)
+    is_nsfw = BooleanField(null=True)
+    ask = BooleanField(null=True)
+    ask_page_title = TextField(null=True)
+    ask_anon = BooleanField(null=True)
+    can_message = BooleanField(null=True)
+    submission_page_title = TextField(null=True)
+    share_likes = BooleanField(null=True)
+    likes = IntegerField(null=True)
+
+
+class tumblr_blog(model_oper_bz.base):
+
+    blog_name = TextField()
+    id_str = TextField(null=True)  # id
+    post_url = TextField(null=True)
+    slug = TextField(null=True)
+    type = TextField(null=True)
+    #"date":"2015-09-01 21:02:57 GMT",
+    #"timestamp":1441141377,
+    state = TextField(null=True)
+    format = TextField(null=True)
+    reblog_key = TextField(null=True)
+    tags = BinaryJSONField(null=True)
+    short_url = TextField(null=True)
+    #"recommended_source":null,
+    #"recommended_color":null,
+    #"highlighted":[  ],
+    note_count = IntegerField(null=True)
+    caption = TextField(null=True)
+    reblog = BinaryJSONField(null=True)
+    trail = BinaryJSONField(null=True)
+    link_url = TextField(null=True)
+    image_permalink = TextField(null=True)
+    photos = BinaryJSONField(null=True)
+    source_title = TextField(null=True)
+    source_url = TextField(null=True)
+    photoset_layout = TextField(null=True)
+
+    user_name = TextField()
+
+
 class last(model_oper_bz.base):
 
     '''
@@ -267,5 +316,5 @@ if __name__ == '__main__':
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
-    model_oper_bz.reCreateTable(last, db_name)
+    model_oper_bz.reCreateTable(tumblr_blog, db_name)
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
