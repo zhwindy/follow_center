@@ -47,7 +47,7 @@ def saveUserCheckNew(blogs):
             pass
     pg.insertOrUpdate(pg, 'tumblr_user', user, where)
     blogs = blogs['posts']
-    saveBlogs(user_name, blogs, offset=6340)
+    saveBlogs(user_name, blogs, offset=20)
 
 
 def saveBlogs(user_name, blogs, offset):
