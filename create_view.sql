@@ -1,3 +1,4 @@
+   drop MATERIALIZED VIEW messages;
     CREATE MATERIALIZED VIEW messages AS
     select * ,ROW_NUMBER() OVER(ORDER BY Id) row_num from (
         select
@@ -47,5 +48,21 @@
                 from instagram_media m, instagram_user u, user_info ui
                 where m.user_id=u.id
                 and lower(u.username) = lower(ui.instagram)
+            union
+          select 
+            ui.user_name,
+            m.id,
+            'tumblr' as m_type,
+            m.created_date as created_at,
+            u.name,
+            '' as avatar,
+            null as content,
+            m.caption as text,
+            m.photos as extended_entities,
+            m.short_url as href,
+            m.type as type
+            from tumblr_blog m, tumblr_user u, user_info ui
+            where lower(m.user_name)=lower(u.name)
+            and lower(u.name)=lower(ui.tumblr)
+            
             ) as t order by created_at desc;
-
