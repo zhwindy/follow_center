@@ -1665,14 +1665,16 @@
 	    medias: function() {
 	      if (this.message.extended_entities) {
 	        return _.map(this.message.extended_entities, function(d) {
-	          var height, img_height, img_url, img_width, t;
+	          var caption, height, img_height, img_url, img_width, t;
 	          img_url = '/sp/' + btoa(btoa(d.original_size.url));
 	          img_height = d.original_size.height;
 	          img_width = d.original_size.width;
+	          caption = d.caption;
 	          height = bz.getFitHeight(img_height, img_width);
 	          t = {
 	            img_url: img_url,
-	            height: height
+	            height: height,
+	            caption: caption
 	          };
 	          return t;
 	        });
@@ -1735,7 +1737,7 @@
 /* 33 */
 /***/ function(module, exports) {
 
-	module.exports = "<div id=\"tumblr_(%message.id%)\" class=\"box box-solid item\">\n    <div class=\"box-header\">\n        <h2 class=\"box-title\">\n            <a href=\"#/god/(%message.user_name%)\">\n                <img v-attr=\"src:avatar\" class=\"direct-chat-img\">\n                <div class=\"name\">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class=\"box-tools pull-right\">\n            <a class=\"a-icon\" target=\"_blank\" href=\"(%message.href%)\">\n                <span class=\"round-icon bg-icon-dark-blue\">\n                    <i class=\"fa fa-tumblr\"></i>\n                </span>\n            </a>\n            <a href=\"/message?t=(%message.m_type%)&id=(%message.id%)\">\n                <sub v-time-len=\"message.created_at\"></sub>\n            </a>\n        </div>\n    </div>\n    <div class=\"box-body\">\n        <p class=\"description_bz\" v-html=\"text\"></p>\n        <template v-repeat=\"media:medias\">\n            <img v-attr=\"src:media.img_url, height:media.height\" class=\"my-img-responsive\" >\n            <br>\n        </template>\n    </div>\n</div>\n";
+	module.exports = "<div id=\"tumblr_(%message.id%)\" class=\"box box-solid item\">\n    <div class=\"box-header\">\n        <h2 class=\"box-title\">\n            <a href=\"#/god/(%message.user_name%)\">\n                <img v-attr=\"src:avatar\" class=\"direct-chat-img\">\n                <div class=\"name\">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class=\"box-tools pull-right\">\n            <a class=\"a-icon\" target=\"_blank\" href=\"(%message.href%)\">\n                <span class=\"round-icon bg-icon-dark-blue\">\n                    <i class=\"fa fa-tumblr\"></i>\n                </span>\n            </a>\n            <a href=\"/message?t=(%message.m_type%)&id=(%message.id%)\">\n                <sub v-time-len=\"message.created_at\"></sub>\n            </a>\n        </div>\n    </div>\n    <div class=\"box-body\">\n        <p class=\"description_bz\" v-html=\"text\"></p>\n        <template v-repeat=\"media:medias\">\n            <p class=\"description_bz\" v-html=\"media.caption\"></p>\n            <img v-attr=\"src:media.img_url, height:media.height\" class=\"my-img-responsive\" >\n            <br>\n        </template>\n    </div>\n</div>\n";
 
 /***/ },
 /* 34 */

@@ -40,12 +40,14 @@ module.exports =
           img_url = '/sp/'+btoa(btoa(d.original_size.url))
           img_height = d.original_size.height
           img_width = d.original_size.width
+          caption = d.caption
 
           height = bz.getFitHeight(img_height, img_width)
 
           t =
             img_url: img_url
             height: height
+            caption: caption
           return t
           )
     text:->

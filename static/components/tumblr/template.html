@@ -22,6 +22,7 @@
     <div class="box-body">
         <p class="description_bz" v-html="text"></p>
         <template v-repeat="media:medias">
+            <p class="description_bz" v-html="media.caption"></p>
             <img v-attr="src:media.img_url, height:media.height" class="my-img-responsive" >
             <br>
         </template>
