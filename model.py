@@ -321,6 +321,7 @@ class tumblr_blog(model_oper_bz.base):
     is_panorama = BooleanField(null=True)
     album = TextField(null=True)
     plays = TextField(null=True)
+    caption_abstract = TextField(null=True)
 
 
 

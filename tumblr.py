@@ -116,7 +116,7 @@ def main(user_name=None):
     blogs = callGetMeidaApi(user_name)['response']
     saveUserCheckNew(blogs)
 if __name__ == '__main__':
-    main('deviantart')
+    main('coverlibrary')
     while True:
         check()
         pg.refresh('messages')
