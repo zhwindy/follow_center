@@ -333,6 +333,7 @@ class user_info(model_bz.user_info):
     create by bigzhu at 15/08/19 09:27:08 增加18+
     '''
     porn = IntegerField()  # 1 荤的，0 素的
+    tumblr = TextField() # 汤不热
 
 
 if __name__ == '__main__':
