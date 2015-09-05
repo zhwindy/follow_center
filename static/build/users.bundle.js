@@ -62,9 +62,9 @@
 /***/ 5:
 /***/ function(module, exports) {
 
-	Vue.config.debug = false;
+	Vue.config.debug = true;
 
-	Vue.config.silent = true;
+	Vue.config.silent = false;
 
 	Vue.config.delimiters = ['(%', '%)'];
 

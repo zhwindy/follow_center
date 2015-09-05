@@ -22,7 +22,7 @@ window.bz =
       real_height = calculateHeight(img_height, img_width, max_width)
     else #取真正能显示图片的大小
       max_width = $('#v_messages > .col-md-8').width()-50
-      real_height = calculateHeight(img_height, img_width, max_width)
+      real_height = window.bz.calculateHeight(img_height, img_width, max_width)
     return real_height
   delay: (ms, func)-> # underscorejs 有做好的 
     setTimeout func, ms

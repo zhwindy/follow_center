@@ -657,9 +657,9 @@
 /* 5 */
 /***/ function(module, exports) {
 
-	Vue.config.debug = false;
+	Vue.config.debug = true;
 
-	Vue.config.silent = true;
+	Vue.config.silent = false;
 
 	Vue.config.delimiters = ['(%', '%)'];
 
@@ -928,7 +928,7 @@
 	      real_height = calculateHeight(img_height, img_width, max_width);
 	    } else {
 	      max_width = $('#v_messages > .col-md-8').width() - 50;
-	      real_height = calculateHeight(img_height, img_width, max_width);
+	      real_height = window.bz.calculateHeight(img_height, img_width, max_width);
 	    }
 	    return real_height;
 	  },

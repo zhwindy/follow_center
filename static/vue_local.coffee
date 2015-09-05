@@ -1,7 +1,6 @@
-#Vue = require 'vue'
-Vue.config.debug = false
+Vue.config.debug = true
 #不要waring 
-Vue.config.silent = true
+Vue.config.silent = false
 Vue.config.delimiters = ['(%', '%)']
 Vue.transition 'fade',
   enter: (el, done) ->
