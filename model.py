@@ -344,5 +344,6 @@ if __name__ == '__main__':
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.createAllTable(globals().copy(), db_name)
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
+    model_oper_bz.reCreateTable(tumblr_user, db_name)
     model_oper_bz.reCreateTable(tumblr_blog, db_name)
     #model_oper_bz.reCreateTable(model_bz.user_info, db_name)
