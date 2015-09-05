@@ -36,10 +36,10 @@ module.exports =
       return '/sp/'+avatar
     medias:->
       if @message.extended_entities
-        return _.map(@message.extended_entities.media, (d)->
-          img_url = '/sp/'+btoa(btoa(d.media_url_https))
-          img_height = d.sizes.large.h
-          img_width = d.sizes.large.w
+        return _.map(@message.extended_entities, (d)->
+          img_url = '/sp/'+btoa(btoa(d.original_size.url))
+          img_height = d.original_size.height
+          img_width = d.original_size.width
 
           height = bz.getFitHeight(img_height, img_width)
 

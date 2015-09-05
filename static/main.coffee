@@ -188,6 +188,7 @@ v_messages = new Vue
     'twitter': require('./components/twitter'),
     'github': require('./components/github'),
     'instagram': require('./components/instagram'),
+    'tumblr': require('./components/tumblr'),
     'user_info': require('./components/user_info'),
     'god_list': require('./components/god_list'),
     'add_god': require('./components/add_god'),

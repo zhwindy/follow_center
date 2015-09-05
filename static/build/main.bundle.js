@@ -308,18 +308,19 @@
 	    }
 	  },
 	  components: {
-	    'follow': __webpack_require__(73),
-	    'simditor': __webpack_require__(78),
-	    'twitter': __webpack_require__(84),
-	    'github': __webpack_require__(89),
-	    'instagram': __webpack_require__(93),
-	    'user_info': __webpack_require__(97),
-	    'god_list': __webpack_require__(101),
-	    'add_god': __webpack_require__(109)
+	    'follow': __webpack_require__(6),
+	    'simditor': __webpack_require__(11),
+	    'twitter': __webpack_require__(15),
+	    'github': __webpack_require__(22),
+	    'instagram': __webpack_require__(26),
+	    'tumblr': __webpack_require__(30),
+	    'user_info': __webpack_require__(34),
+	    'god_list': __webpack_require__(44),
+	    'add_god': __webpack_require__(52)
 	  },
 	  directives: {
-	    'btn-loading': __webpack_require__(113),
-	    'loading': __webpack_require__(122)
+	    'btn-loading': __webpack_require__(41),
+	    'loading': __webpack_require__(56)
 	  }
 	});
 
@@ -687,84 +688,17 @@
 
 
 /***/ },
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var bz;
 
-	__webpack_require__(74);
+	__webpack_require__(7);
 
-	bz = __webpack_require__(76);
+	bz = __webpack_require__(9);
 
 	module.exports = {
-	  template: __webpack_require__(77),
+	  template: __webpack_require__(10),
 	  props: ['followed', 'god_id'],
 	  data: function() {
 	    return {
@@ -858,13 +792,13 @@
 
 
 /***/ },
-/* 74 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(75);
+	var content = __webpack_require__(8);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -884,7 +818,7 @@
 	}
 
 /***/ },
-/* 75 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -898,7 +832,7 @@
 
 
 /***/ },
-/* 76 */
+/* 9 */
 /***/ function(module, exports) {
 
 	if ($().toastmessage) {
@@ -1202,23 +1136,23 @@
 
 
 /***/ },
-/* 77 */
+/* 10 */
 /***/ function(module, exports) {
 
 	module.exports = "<button v-btn-loading=\"btn_loading\" v-on=\"click:toggleFollow\" type=\"button\" class=\"btn btn-sm\" aria-label=\"Left Align\">\n</button>\n";
 
 /***/ },
-/* 78 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var bz;
 
-	__webpack_require__(79);
+	__webpack_require__(12);
 
-	bz = __webpack_require__(76);
+	bz = __webpack_require__(9);
 
 	module.exports = {
-	  template: __webpack_require__(83),
+	  template: __webpack_require__(14),
 	  props: ['content'],
 	  ready: function() {
 	    this.initSimditor();
@@ -1263,13 +1197,13 @@
 
 
 /***/ },
-/* 79 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(80);
+	var content = __webpack_require__(13);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -1289,7 +1223,7 @@
 	}
 
 /***/ },
-/* 80 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -1303,23 +1237,21 @@
 
 
 /***/ },
-/* 81 */,
-/* 82 */,
-/* 83 */
+/* 14 */
 /***/ function(module, exports) {
 
 	module.exports = "<textarea placeholder=\"\"></textarea>\n";
 
 /***/ },
-/* 84 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var autoLink, bz,
 	  slice = [].slice;
 
-	__webpack_require__(85);
+	__webpack_require__(16);
 
-	bz = __webpack_require__(76);
+	bz = __webpack_require__(9);
 
 	autoLink = function() {
 	  var k, linkAttributes, option, options, pattern, v;
@@ -1350,7 +1282,7 @@
 	String.prototype['autoLink'] = autoLink;
 
 	module.exports = {
-	  template: __webpack_require__(88),
+	  template: __webpack_require__(18),
 	  props: ['message'],
 	  computed: {
 	    avatar: function() {
@@ -1382,19 +1314,19 @@
 	    }
 	  },
 	  directives: {
-	    'time-len': __webpack_require__(119)
+	    'time-len': __webpack_require__(19)
 	  }
 	};
 
 
 /***/ },
-/* 85 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(86);
+	var content = __webpack_require__(17);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -1414,7 +1346,7 @@
 	}
 
 /***/ },
-/* 86 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -1428,24 +1360,87 @@
 
 
 /***/ },
-/* 87 */,
-/* 88 */
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"twitter_(%message.id%)\" class=\"box box-solid item\">\n    <div class=\"box-header\">\n        <h2 class=\"box-title\">\n            <a href=\"#/god/(%message.user_name%)\">\n                <img v-attr=\"src:avatar\" class=\"direct-chat-img\">\n                <div class=\"name\">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class=\"box-tools pull-right\">\n            <a class=\"a-icon\" target=\"_blank\" href=\"(%message.href%)\">\n                <span class=\"round-icon bg-icon-blue\">\n                    <i class=\"fa fa-twitter\"></i>\n                </span>\n            </a>\n            <a href=\"/message?t=(%message.m_type%)&id=(%message.id%)\">\n                <sub v-time-len=\"message.created_at\"></sub>\n            </a>\n        </div>\n    </div>\n    <div class=\"box-body\">\n        <p class=\"description_bz\" v-html=\"text\"></p>\n        <template v-repeat=\"media:medias\">\n            <img v-attr=\"src:media.img_url, height:media.height\" class=\"my-img-responsive\" >\n            <br>\n        </template>\n    </div>\n</div>\n";
 
 /***/ },
-/* 89 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var bz;
 
-	__webpack_require__(90);
+	__webpack_require__(20);
 
-	bz = __webpack_require__(76);
+	bz = __webpack_require__(9);
 
 	module.exports = {
-	  template: __webpack_require__(92),
+	  bind: function() {},
+	  update: function(new_value, old_value) {
+	    var date_str, el;
+	    if (new_value) {
+	      el = $(this.el);
+	      date_str = bz.timeLen(new_value);
+	      return el.html(date_str);
+	    }
+	  },
+	  unbind: function() {}
+	};
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(21);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(4)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(3)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var bz;
+
+	__webpack_require__(23);
+
+	bz = __webpack_require__(9);
+
+	module.exports = {
+	  template: __webpack_require__(25),
 	  props: ['message'],
 	  computed: {
 	    avatar: function() {
@@ -1485,19 +1480,19 @@
 	    }
 	  },
 	  directives: {
-	    'time-len': __webpack_require__(119)
+	    'time-len': __webpack_require__(19)
 	  }
 	};
 
 
 /***/ },
-/* 90 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(91);
+	var content = __webpack_require__(24);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -1517,7 +1512,7 @@
 	}
 
 /***/ },
-/* 91 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -1531,23 +1526,23 @@
 
 
 /***/ },
-/* 92 */
+/* 25 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"github_(%message.id%)\" class=\"box box-solid item\">\n    <div class=\"box-header\">\n        <h2 class=\"box-title\">\n            <a href=\"#/god/(%message.user_name%)\">\n                <img v-attr=\"src:avatar\" class=\"direct-chat-img\">\n                <div class=\"name\">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class=\"box-tools pull-right\">\n            <a class=\"a-icon\" target=\"_blank\" href=\"(%repo_url%)\">\n                <span class=\"round-icon bg-icon-black\">\n                    <i class=\"fa fa-github\"></i>\n                </span>\n            </a>\n            <a href=\"/message?t=(%message.m_type%)&id=(%message.id%)\">\n                <sub v-time-len=\"message.created_at\"></sub>\n            </a>\n        </div>\n    </div>\n    <div class=\"box-body\">\n        (%type%) <a href='(%repo_url%)' target='_blank'>(%repo_name%)</a>\n        <li v-repeat=\"commits\">\n            <a target=\"_blank\" href=\"(%url.replace('api.github.com/repos', 'github.com')%)\">\n                (%message%)\n            </a>\n        </li>\n        <p v-html=\"issue_comment_link\">\n        </p>\n        <p v-show=\"issue_comment_body\" class='description_bz'>\n        (%issue_comment_body%)\n        </p>\n    </div>\n</div>\n";
 
 /***/ },
-/* 93 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var bz;
 
-	__webpack_require__(94);
+	__webpack_require__(27);
 
-	bz = __webpack_require__(76);
+	bz = __webpack_require__(9);
 
 	module.exports = {
-	  template: __webpack_require__(96),
+	  template: __webpack_require__(29),
 	  props: ['message'],
 	  computed: {
 	    avatar: function() {
@@ -1568,19 +1563,19 @@
 	    }
 	  },
 	  directives: {
-	    'time-len': __webpack_require__(119)
+	    'time-len': __webpack_require__(19)
 	  }
 	};
 
 
 /***/ },
-/* 94 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(95);
+	var content = __webpack_require__(28);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -1600,7 +1595,7 @@
 	}
 
 /***/ },
-/* 95 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -1614,23 +1609,146 @@
 
 
 /***/ },
-/* 96 */
+/* 29 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"instagram_(%message.id%)\" class=\"box box-solid item\">\n    <div class=\"box-header\">\n        <h2 class=\"box-title\">\n            <a href=\"#/god/(%message.user_name%)\">\n                <img v-attr=\"src:avatar\" class=\"direct-chat-img\">\n                <div class=\"name\">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class=\"box-tools pull-right\">\n            <a class=\"a-icon\" target=\"_blank\" href=\"(%message.href%)\">\n                <span class=\"round-icon bg-icon-orange\">\n                    <i class=\"fa fa-instagram\"></i>\n                </span>\n            </a>\n            <a href=\"/message?t=(%message.m_type%)&id=(%message.id%)\">\n                <sub v-time-len=\"message.created_at\"></sub>\n            </a>\n        </div>\n    </div>\n    <div class=\"box-body\">\n        <p class=\"description_bz\">(%message.text%)</p>\n        <br>\n        <img v-attr=\"src:img_url,height:height\" class=\"my-img-responsive\">\n    </div>\n</div>\n";
 
 /***/ },
-/* 97 */
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var autoLink, bz,
+	  slice = [].slice;
+
+	__webpack_require__(31);
+
+	bz = __webpack_require__(9);
+
+	autoLink = function() {
+	  var k, linkAttributes, option, options, pattern, v;
+	  options = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+	  pattern = /(^|[\s\n]|<br\/?>)((?:https?|ftp):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi;
+	  if (!(options.length > 0)) {
+	    return this.replace(pattern, "$1<a href='$2'>$2</a>");
+	  }
+	  option = options[0];
+	  linkAttributes = ((function() {
+	    var results;
+	    results = [];
+	    for (k in option) {
+	      v = option[k];
+	      if (k !== 'callback') {
+	        results.push(" " + k + "='" + v + "'");
+	      }
+	    }
+	    return results;
+	  })()).join('');
+	  return this.replace(pattern, function(match, space, url) {
+	    var link;
+	    link = (typeof option.callback === "function" ? option.callback(url) : void 0) || ("<a href='" + url + "'" + linkAttributes + ">" + url + "</a>");
+	    return "" + space + link;
+	  });
+	};
+
+	String.prototype['autoLink'] = autoLink;
+
+	module.exports = {
+	  template: __webpack_require__(33),
+	  props: ['message'],
+	  computed: {
+	    avatar: function() {
+	      var avatar;
+	      avatar = btoa(btoa(this.message.avatar));
+	      return '/sp/' + avatar;
+	    },
+	    medias: function() {
+	      if (this.message.extended_entities) {
+	        return _.map(this.message.extended_entities, function(d) {
+	          var height, img_height, img_url, img_width, t;
+	          img_url = '/sp/' + btoa(btoa(d.original_size.url));
+	          img_height = d.original_size.height;
+	          img_width = d.original_size.width;
+	          height = bz.getFitHeight(img_height, img_width);
+	          t = {
+	            img_url: img_url,
+	            height: height
+	          };
+	          return t;
+	        });
+	      }
+	    },
+	    text: function() {
+	      return this.message.text.autoLink({
+	        target: "_blank",
+	        rel: "外部链接,请谨慎打开"
+	      });
+	    }
+	  },
+	  directives: {
+	    'time-len': __webpack_require__(19)
+	  }
+	};
+
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(32);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(4)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(3)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".name {\n  margin-right: 50px;\n  margin-left: 0;\n  position: relative;\n  padding: 5px 10px;\n  margin: 5px 0 0 40px;\n  display: block;\n}\n.form-lable {\n  text-align: left;\n  font-weight: normal;\n}\n.min-form-lable {\n  text-align: left;\n  font-weight: normal;\n  padding-right: 0px;\n}\n.form-horizontal .control-label {\n  text-align: left;\n  font-weight: normal;\n}\n.round-icon {\n  border-radius: 100%;\n  padding: 4px;\n  color: #fff;\n  width: 24px;\n  height: 24px;\n  line-height: 17px;\n  display: inline-block;\n  font-size: 14px;\n  text-align: center;\n}\n.bg-icon-red {\n  background: #a33950;\n}\n.bg-icon-blue {\n  background: #3c83c5;\n}\n.bg-icon-orange {\n  background: #cd7020;\n}\n.bg-icon-black {\n  background: #000;\n}\n.bg-icon-green {\n  background: #33b332;\n}\n.round-icon:hover {\n  font-size: 17px;\n}\n@media screen and (max-width: 768px) {\n  #user_info {\n    display: none;\n  }\n}\n.my-img-responsive {\n  display: block;\n  max-width: 100%;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	module.exports = "<div id=\"tumblr_(%message.id%)\" class=\"box box-solid item\">\n    <div class=\"box-header\">\n        <h2 class=\"box-title\">\n            <a href=\"#/god/(%message.user_name%)\">\n                <img v-attr=\"src:avatar\" class=\"direct-chat-img\">\n                <div class=\"name\">\n                    (%message.name%)\n                </div>\n            </a>\n        </h2>\n        <div class=\"box-tools pull-right\">\n            <a class=\"a-icon\" target=\"_blank\" href=\"(%message.href%)\">\n                <span class=\"round-icon bg-icon-dark-blue\">\n                    <i class=\"fa fa-tumblr\"></i>\n                </span>\n            </a>\n            <a href=\"/message?t=(%message.m_type%)&id=(%message.id%)\">\n                <sub v-time-len=\"message.created_at\"></sub>\n            </a>\n        </div>\n    </div>\n    <div class=\"box-body\">\n        <p class=\"description_bz\" v-html=\"text\"></p>\n        <template v-repeat=\"media:medias\">\n            <img v-attr=\"src:media.img_url, height:media.height\" class=\"my-img-responsive\" >\n            <br>\n        </template>\n    </div>\n</div>\n";
+
+/***/ },
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var bz;
 
-	__webpack_require__(98);
+	__webpack_require__(35);
 
-	bz = __webpack_require__(76);
+	bz = __webpack_require__(9);
 
 	module.exports = {
-	  template: __webpack_require__(100),
+	  template: __webpack_require__(37),
 	  props: ['user_info'],
 	  computed: {
 	    avatar: function() {
@@ -1748,20 +1866,20 @@
 	    }
 	  },
 	  directives: {
-	    disable: __webpack_require__(116),
-	    'btn-loading': __webpack_require__(113)
+	    disable: __webpack_require__(38),
+	    'btn-loading': __webpack_require__(41)
 	  }
 	};
 
 
 /***/ },
-/* 98 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(99);
+	var content = __webpack_require__(36);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -1781,7 +1899,7 @@
 	}
 
 /***/ },
-/* 99 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -1795,23 +1913,139 @@
 
 
 /***/ },
-/* 100 */
+/* 37 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"fixed\" v-show=\"user_info\" v-transition=\"fade\">\n    <h3 class=\"box-title text-center\">(%user_info.user_name%)</h3>\n    <input v-disable=\"disable_edit\" id=\"profile-image-upload\" class=\"hide\" type=\"file\" v-on=\"change:previewImg\" accept=\"image/*\"/>\n    <a v-on=\"click:changeImg\" href=\"javascript:void(0)\">\n        <img v-attr=\"src:avatar\" id=\"profile-image\" class=\"img-responsive center-block avatar\" />\n    </a>\n    <div class=\"text-center\">\n        <sub v-show=\"!disable_edit\" >点击更换头像</sub>\n    </div>\n    <div v-html=\"user_info.slogan\">\n    </div>\n    <br>\n    <hr>\n    <form class=\"form-horizontal\">\n        <div class=\"form-group\">\n            <label for=\"user_name\" class=\"col-sm-3 control-label min-form-lable\">用户名</label>\n            <div class=\"col-sm-9\">\n                <input v-disable=\"disable_edit\" type=\"text\"  class=\"form-control\" id=\"user_name\" v-model=\"user_info.user_name\">\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label for=\"blog\" class=\"col-sm-3 control-label min-form-lable\">个人博客</label>\n            <div class=\"col-sm-9\">\n                <input v-disable=\"disable_edit\" type=\"text\"  class=\"form-control editable\" id=\"blog\" placeholder=\"\"  v-model=\"user_info.blog\"  v-on=\"focus:autoInsert('blog')\">\n            </div>\n        </div>\n        <div v-show=\"!disable_edit\" class=\"form-group\" id=\"slogan-group\">\n            <label for=\"editor\" class=\"col-sm-3 control-label min-form-lable\">个性签名</label>\n            <div class=\"col-sm-9\">\n                <simditor content=\"(%@ user_info.slogan%)\"></simditor>\n            </div>\n        </div>\n        <hr>\n        <div class=\"form-group\">\n            <a href=\"https://twitter.com/(%user_info.twitter%)\" target=\"_blank\">\n                <label class=\"col-sm-5 control-label\">\n                    <span class=\"round-icon bg-icon-blue\">\n                        <i class=\"fa fa-twitter\"></i>\n                    </span>\n                    Twitter\n                </label>\n            </a>\n            <div class=\"col-sm-7\">\n                <input v-disable=\"disable_edit\" type=\"text\" class=\"form-control editable\" id=\"twitter\" placeholder=\"\"   v-model=\"user_info.twitter\" v-on=\"focus:autoInsert('twitter', user_info.user_name)\">\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <a href=\"https://github.com/(%user_info.github%)\" target=\"_blank\">\n                <label class=\"col-sm-5 control-label\"><span class=\"round-icon bg-icon-black\"><i class=\"fa fa-github\"></i></span> Github</label>\n            </a>\n            <div class=\"col-sm-7\">\n                <input v-disable=\"disable_edit\" type=\"text\" class=\"form-control editable\" placeholder=\"\"  v-model=\"user_info.github\" v-on=\"focus:autoInsert('github', user_info.user_name)\">\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <a href=\"https://instagram.com/(%user_info.instagram%)\" target=\"_blank\">\n                <label class=\"col-sm-5 control-label\"><span class=\"round-icon bg-icon-orange\"><i class=\"fa fa-instagram\"></i></span> Instagram</label>\n            </a>\n            <div class=\"col-sm-7\">\n                <input v-disable=\"disable_edit\" type=\"text\" class=\"form-control editable\" placeholder=\"\"  v-model=\"user_info.instagram\" v-on=\"focus:autoInsert('instagram', user_info.user_name)\">\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <a href=\"http://(%user_info.tumblr%).tumblr.com\" target=\"_blank\">\n                <label class=\"col-sm-5 control-label\"><span class=\"round-icon bg-icon-dark-blue\"><i class=\"fa fa-tumblr\"></i></span> Tumblr</label>\n            </a>\n            <div class=\"col-sm-7\">\n                <input v-disable=\"disable_edit\" type=\"text\" class=\"form-control editable\" placeholder=\"\"  v-model=\"user_info.tumblr\" v-on=\"focus:autoInsert('tumblr', user_info.user_name)\">\n            </div>\n        </div>\n    </form>\n    <div class=\"text-center\">\n        <follow followed=\"(%@ user_info.followed%)\" god_id=\"(%user_info.god_id%)\"></follow>\n        <button id=\"btn-edit\" v-btn-loading=\"loading\" type=\"submit\" class=\"btn btn-primary btn-sm\" v-on=\"click:save\">编辑</button>\n    </div>\n    <hr>\n</div>\n";
 
 /***/ },
-/* 101 */
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(39);
+
+	module.exports = {
+	  bind: function() {},
+	  update: function(new_value, old_value) {
+	    return this.el.disabled = new_value;
+	  },
+	  unbind: function() {}
+	};
+
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(40);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(4)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(3)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(42);
+
+	module.exports = {
+	  bind: function() {
+	    $(this.el).prepend("<i class='fa fa-spin fa-spinner'></i>");
+	  },
+	  update: function(new_value, old_value) {
+	    if (new_value) {
+	      $(this.el).children().css('visibility', 'visible');
+	    } else {
+	      $(this.el).children().css('visibility', 'hidden');
+	    }
+	  },
+	  unbind: function() {}
+	};
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(43);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(4)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(3)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var bz;
 
-	__webpack_require__(102);
+	__webpack_require__(45);
 
-	bz = __webpack_require__(76);
+	bz = __webpack_require__(9);
 
 	module.exports = {
-	  template: __webpack_require__(104),
+	  template: __webpack_require__(47),
 	  data: function() {
 	    return {
 	      gods: []
@@ -1834,19 +2068,19 @@
 	    }
 	  },
 	  components: {
-	    'god': __webpack_require__(105)
+	    'god': __webpack_require__(48)
 	  }
 	};
 
 
 /***/ },
-/* 102 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(103);
+	var content = __webpack_require__(46);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -1866,7 +2100,7 @@
 	}
 
 /***/ },
-/* 103 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -1880,23 +2114,23 @@
 
 
 /***/ },
-/* 104 */
+/* 47 */
 /***/ function(module, exports) {
 
 	module.exports = "<god v-repeat=\"god in gods\" v-transition=\"fade\"></god>\n";
 
 /***/ },
-/* 105 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var bz;
 
-	__webpack_require__(106);
+	__webpack_require__(49);
 
-	bz = __webpack_require__(76);
+	bz = __webpack_require__(9);
 
 	module.exports = {
-	  template: __webpack_require__(108),
+	  template: __webpack_require__(51),
 	  props: ['god'],
 	  computed: {
 	    twitter_link: function() {
@@ -1959,13 +2193,13 @@
 
 
 /***/ },
-/* 106 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(107);
+	var content = __webpack_require__(50);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -1985,7 +2219,7 @@
 	}
 
 /***/ },
-/* 107 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -1999,23 +2233,23 @@
 
 
 /***/ },
-/* 108 */
+/* 51 */
 /***/ function(module, exports) {
 
 	module.exports = "<div  class=\"box box-solid item\">\n    <div class=\"box-header\">\n        <h3 class=\"box-title\">\n            <a href=\"/#/god/(%god.user_name%)\">\n                <img v-attr=\"src:avatar\" class=\"direct-chat-img\">\n                <div class=\"name\">\n                    (%god.user_name%)\n                </div>\n            </a>\n        </h3>\n        <div class=\"box-tools pull-right\" v-html=\"all_link\">\n        </div>\n    </div>\n    <div class=\"box-body\" v-html=\"description\">\n    </div>\n    <div class=\"box-footer\">\n        <follow followed=\"(%god.followed%)\" god_id=\"(%god.god_id%)\"></follow>\n    </div>\n</div>\n";
 
 /***/ },
-/* 109 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var bz;
 
-	__webpack_require__(110);
+	__webpack_require__(53);
 
-	bz = __webpack_require__(76);
+	bz = __webpack_require__(9);
 
 	module.exports = {
-	  template: __webpack_require__(112),
+	  template: __webpack_require__(55),
 	  data: function() {
 	    return {
 	      btn_loading: false,
@@ -2068,13 +2302,13 @@
 
 
 /***/ },
-/* 110 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(111);
+	var content = __webpack_require__(54);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -2094,7 +2328,7 @@
 	}
 
 /***/ },
-/* 111 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -2108,196 +2342,16 @@
 
 
 /***/ },
-/* 112 */
+/* 55 */
 /***/ function(module, exports) {
 
 	module.exports = "<a v-on=\"click:pop\" class=\"btn btn-defalt\" data-toggle=\"modal\" data-target=\"#god_input\">添加</a>\n<div id=\"god_input\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\">\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n                <h4 class=\"modal-title\" id=\"exampleModalLabel\">添加一个新的牛人</h4>\n            </div>\n            <div class=\"modal-body\">\n                <form>\n                    <div class=\"form-group\">\n                        <label for=\"recipient-name\" class=\"control-label\">用户名:</label>\n                        <input v-on=\"keyup:addGod | key 'enter'\" v-model=\"user_name\" type=\"text\" class=\"form-control\" id=\"recipient-name\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"message-text\" class=\"control-label\">描述:</label>\n                        <simditor content=\"(%@ slogan%)\"></simditor>\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer\">\n                <button v-btn-loading=\"btn_loading\" v-on=\"click:addGod\" type=\"button\" class=\"btn btn-sm btn-default\" data-dismiss=\"modal\">加好了</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 113 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(114);
-
-	module.exports = {
-	  bind: function() {
-	    $(this.el).prepend("<i class='fa fa-spin fa-spinner'></i>");
-	  },
-	  update: function(new_value, old_value) {
-	    if (new_value) {
-	      $(this.el).children().css('visibility', 'visible');
-	    } else {
-	      $(this.el).children().css('visibility', 'hidden');
-	    }
-	  },
-	  unbind: function() {}
-	};
-
-
-/***/ },
-/* 114 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(115);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 115 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(3)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "", ""]);
-
-	// exports
-
-
-/***/ },
-/* 116 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(117);
-
-	module.exports = {
-	  bind: function() {},
-	  update: function(new_value, old_value) {
-	    return this.el.disabled = new_value;
-	  },
-	  unbind: function() {}
-	};
-
-
-/***/ },
-/* 117 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(118);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 118 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(3)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "", ""]);
-
-	// exports
-
-
-/***/ },
-/* 119 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var bz;
-
-	__webpack_require__(120);
-
-	bz = __webpack_require__(76);
-
-	module.exports = {
-	  bind: function() {},
-	  update: function(new_value, old_value) {
-	    var date_str, el;
-	    if (new_value) {
-	      el = $(this.el);
-	      date_str = bz.timeLen(new_value);
-	      return el.html(date_str);
-	    }
-	  },
-	  unbind: function() {}
-	};
-
-
-/***/ },
-/* 120 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(121);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 121 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(3)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "", ""]);
-
-	// exports
-
-
-/***/ },
-/* 122 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(124);
+	__webpack_require__(57);
 
 	module.exports = {
 	  bind: function() {},
@@ -2311,7 +2365,7 @@
 	    if (this.arg) {
 	      color = this.arg;
 	    }
-	    html = __webpack_require__(123);
+	    html = __webpack_require__(59);
 	    if (new_value) {
 	      $(target).append(html);
 	    } else {
@@ -2323,19 +2377,13 @@
 
 
 /***/ },
-/* 123 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class='highwe-loading'>\n    <svg class='part l' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='50px' height='50px' viewBox='0 0 100 100' enable-background='new 0 0 100 100' xml:space='preserve'>\n        <g>\n        <path fill='#{color}' d='M52.451,10.494c18.441-4.941,37.352,4.69,44.514,21.834C87.965,8.55,62.229-5.001,37.149,1.72C10.582,8.838-5.246,36.02,1.59,62.594c0.992,4.299,3.463,7.563,6.977,8.516c6.066,1.646,12.934-4.208,15.339-13.074c0.766-2.823,0.985-5.609,0.735-8.152C23.207,32.102,34.602,15.277,52.451,10.494z'/>\n        </g>\n    </svg>\n    <svg version='1.1' class='part r' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'width='50px' height='50px' viewBox='0 0 100 100' enable-background='new 0 0 100 100' xml:space='preserve'>\n        <g>\n        <path fill='#{color}' d='M99.602,42.209c2.33,18.401-9.225,36.157-27.643,41.092c-8.741,2.343-17.588,1.407-25.239-2.047l0.002,0.003l-0.002,0.002c-2.618-1.305-6.136-1.844-9.871-1.297c-7.2,1.055-12.474,5.741-11.782,10.465c0.378,2.579,2.456,4.634,5.435,5.8L30.5,96.228c9.947,4.241,21.332,5.312,32.587,2.295C88.134,91.812,103.639,67.266,99.602,42.209z'/>\n        </g>\n    </svg>\n</div>\n";
-
-/***/ },
-/* 124 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(125);
+	var content = __webpack_require__(58);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -2355,7 +2403,7 @@
 	}
 
 /***/ },
-/* 125 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -2367,6 +2415,12 @@
 
 	// exports
 
+
+/***/ },
+/* 59 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class='highwe-loading'>\n    <svg class='part l' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='50px' height='50px' viewBox='0 0 100 100' enable-background='new 0 0 100 100' xml:space='preserve'>\n        <g>\n        <path fill='#{color}' d='M52.451,10.494c18.441-4.941,37.352,4.69,44.514,21.834C87.965,8.55,62.229-5.001,37.149,1.72C10.582,8.838-5.246,36.02,1.59,62.594c0.992,4.299,3.463,7.563,6.977,8.516c6.066,1.646,12.934-4.208,15.339-13.074c0.766-2.823,0.985-5.609,0.735-8.152C23.207,32.102,34.602,15.277,52.451,10.494z'/>\n        </g>\n    </svg>\n    <svg version='1.1' class='part r' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'width='50px' height='50px' viewBox='0 0 100 100' enable-background='new 0 0 100 100' xml:space='preserve'>\n        <g>\n        <path fill='#{color}' d='M99.602,42.209c2.33,18.401-9.225,36.157-27.643,41.092c-8.741,2.343-17.588,1.407-25.239-2.047l0.002,0.003l-0.002,0.002c-2.618-1.305-6.136-1.844-9.871-1.297c-7.2,1.055-12.474,5.741-11.782,10.465c0.378,2.579,2.456,4.634,5.435,5.8L30.5,96.228c9.947,4.241,21.332,5.312,32.587,2.295C88.134,91.812,103.639,67.266,99.602,42.209z'/>\n        </g>\n    </svg>\n</div>\n";
 
 /***/ }
 /******/ ]);
