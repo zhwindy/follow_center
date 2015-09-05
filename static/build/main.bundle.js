@@ -1667,6 +1667,7 @@
 	        return _.map(this.message.extended_entities, function(d) {
 	          var caption, height, img_height, img_url, img_width, t;
 	          img_url = '/sp/' + btoa(btoa(d.original_size.url));
+	          img_url = d.original_size.url;
 	          img_height = d.original_size.height;
 	          img_width = d.original_size.width;
 	          caption = d.caption;
