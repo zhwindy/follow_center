@@ -141,12 +141,13 @@ def saveMedias(user, medias):
 def saveLastId(user, medias):
     '''
     create by bigzhu at 15/09/04 21:42:06 保存最后那条记录，删除重复记录
+    modify by bigzhu at 15/09/05 09:12:42 删除重复记录不应该影响update id
     '''
     medias = medias['data']
     if medias:
         if medias[-1]['id'] == user.last_id:  # 会取出最后一条，要删了
             del medias[-1]
-        else:
+        if medias:
             last_id = medias[0]['id']
             pg.update('instagram_user', where="lower(username)=lower('%s')" % user.username, last_id=last_id)
 
