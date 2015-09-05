@@ -311,6 +311,16 @@ class tumblr_blog(model_oper_bz.base):
     year = TextField(null=True)
     feed_item = TextField(null=True)
     from_feed_id = IntegerField(null=True)
+    question = TextField(null=True)
+    answer = TextField(null=True)
+    asking_url = TextField(null=True)
+    asking_name = TextField(null=True)
+    duration = TextField(null=True)
+    link_image = TextField(null=True)
+    bookmarklet = TextField(null=True)
+    is_panorama = BooleanField(null=True)
+    album = TextField(null=True)
+    plays = TextField(null=True)
 
 
 

@@ -47,7 +47,7 @@ def saveUserCheckNew(blogs):
             pass
     pg.insertOrUpdate(pg, 'tumblr_user', user, where)
     blogs = blogs['posts']
-    saveBlogs(user_name, blogs, offset=20)
+    saveBlogs(user_name, blogs, offset=6340)
 
 
 def saveBlogs(user_name, blogs, offset):
@@ -116,6 +116,7 @@ def main(user_name=None):
     blogs = callGetMeidaApi(user_name)['response']
     saveUserCheckNew(blogs)
 if __name__ == '__main__':
+    main('deviantart')
     while True:
         check()
         pg.refresh('messages')
