@@ -9,7 +9,6 @@ import time_bz
 import instagram
 from instagram.client import InstagramAPI
 
-from datetime import timedelta
 import json
 import ConfigParser
 import public_db
@@ -189,8 +188,11 @@ def main(user_name=None):
         print public_bz.getExpInfoAll()
         public_db.delNoName('instagram', user_name)
         return
+    if medias is None:
+        return
+
     saveLastId(user, medias)
-    if len(medias['data']) !=0:
+    if len(medias['data']) != 0:
         print len(medias['data'])
     saveMedias(user, medias)
 
