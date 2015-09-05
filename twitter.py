@@ -94,13 +94,14 @@ def saveTwitter(tweet):
         tweet.user.entities = json.dumps(tweet.user.entities)
 
         del tweet.user.id
-        pg.insertIfNotExist(pg, 'twitter_user', vars(tweet.user), "id_str='%s'" % tweet.user.id_str)
+        pg.insertOrUpdate(pg, 'twitter_user', vars(tweet.user), "id_str='%s'" % tweet.user.id_str)
+
         tweet.t_user_id = tweet.user.id_str
         del tweet.user
 
     if hasattr(tweet, 'author'):
         #del tweet.author.id
-        pg.insertIfNotExist(pg, 'twitter_user', vars(tweet.author), "id_str='%s'" % tweet.author.id_str)
+        pg.insertOrUpdate(pg, 'twitter_user', vars(tweet.author), "id_str='%s'" % tweet.author.id_str)
         tweet.t_author_id = tweet.author.id_str
 
         del tweet.author
