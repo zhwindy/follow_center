@@ -4,7 +4,7 @@ bz = require '../../lib.coffee'
 module.exports =
   template: require('./template.html')
   props: [ 'followed', 'god_id']
-  data:
+  data:->
     btn_loading:false
   ready:->
     @$watch 'followed',->

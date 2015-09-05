@@ -193,6 +193,7 @@ v_messages = new Vue
     'add_god': require('./components/add_god'),
   directives:
     'btn-loading': require('./directives/btn_loading'),
+    'loading': require('./directives/loading'),
 
 routes =
   '/god/:god_name': v_messages.mainGod
