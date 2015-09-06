@@ -46,6 +46,8 @@
 
 	var Vue, app;
 
+	__webpack_require__(56);
+
 	Vue = __webpack_require__(1);
 
 	app = new Vue({
@@ -101,6 +103,11 @@
 	    'user_info': __webpack_require__(35),
 	    'god_list': __webpack_require__(42),
 	    'add_god': __webpack_require__(50)
+	  },
+	  data: function() {
+	    return {
+	      user_info: ''
+	    };
 	  }
 	};
 
@@ -2000,6 +2007,48 @@
 /***/ function(module, exports) {
 
 	module.exports = "<a v-on=\"click:pop\" class=\"btn btn-defalt\" data-toggle=\"modal\" data-target=\"#god_input\">添加</a>\n<div id=\"god_input\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\">\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n                <h4 class=\"modal-title\" id=\"exampleModalLabel\">添加一个新的牛人</h4>\n            </div>\n            <div class=\"modal-body\">\n                <form>\n                    <div class=\"form-group\">\n                        <label for=\"recipient-name\" class=\"control-label\">用户名:</label>\n                        <input v-on=\"keyup:addGod | key 'enter'\" v-model=\"user_name\" type=\"text\" class=\"form-control\" id=\"recipient-name\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"message-text\" class=\"control-label\">描述:</label>\n                        <simditor content=\"(%@ slogan%)\"></simditor>\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer\">\n                <button v-btn-loading=\"btn_loading\" v-on=\"click:addGod\" type=\"button\" class=\"btn btn-sm btn-default\" data-dismiss=\"modal\">加好了</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
+
+/***/ },
+/* 54 */,
+/* 55 */,
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(57);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(6)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./node_modules/css-loader/index.js!./node_modules/less-loader/index.js!./app.less", function() {
+				var newContent = require("!!./node_modules/css-loader/index.js!./node_modules/less-loader/index.js!./app.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(5)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "body {\n  background-color: #F9F9F9!important;\n}\n.box.box-solid > .box-header .a-icon:hover {\n  background: rgba(0, 0, 0, 0) !important;\n}\n", ""]);
+
+	// exports
+
 
 /***/ }
 /******/ ]);

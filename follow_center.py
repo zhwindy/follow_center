@@ -122,7 +122,7 @@ class main(tornado_bz.UserInfoHandler):
 
     def get(self, limit=None):
         if self.current_user:
-            self.render(tornado_bz.getTName(self, 'messages_app'))
+            self.render(tornado_bz.getTName(self, 'app'))
         else:
             if limit == '':
                 limit = None

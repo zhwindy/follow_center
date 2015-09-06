@@ -1,3 +1,5 @@
+
+require './app.less'
 Vue = require './vue_local.coffee'
 app = new Vue
   el:'#app'
