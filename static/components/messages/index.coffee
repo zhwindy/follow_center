@@ -3,8 +3,11 @@ module.exports =
   data:->
     new_loading:false
     old_loading:false
+    messages:[]
+  ready:->
+    @new()
   template: require('./template.html')
-  props: [ 'messages' ]
+  #props: [ 'messages' ]
   components:
     'twitter': require('../twitter'),
     'github': require('../github'),
@@ -27,7 +30,7 @@ module.exports =
             @setTitleUnreadCount(data.messages.length)
           else
             if @messages.length == 0
-              @oldAll()
+              @old()
           @new_loading=false
     old:->
       if @old_loading

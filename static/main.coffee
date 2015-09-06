@@ -35,7 +35,7 @@ v_messages = new Vue
     main:-> # 首页
       @god_name = null
       @user_info = ''
-      @newAll()
+      #@newAll()
     newAll:->
       @new_loading=true
       $.ajax
@@ -185,6 +185,6 @@ v_messages = new Vue
 
 routes =
   '/god/:god_name': v_messages.mainGod
-  '/': v_messages.main
+  #'/': v_messages.main
 router = Router(routes)
 router.init('/')

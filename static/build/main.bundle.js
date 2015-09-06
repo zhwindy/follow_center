@@ -91,8 +91,7 @@
 	    },
 	    main: function() {
 	      this.god_name = null;
-	      this.user_info = '';
-	      return this.newAll();
+	      return this.user_info = '';
 	    },
 	    newAll: function() {
 	      this.new_loading = true;
@@ -304,8 +303,7 @@
 	});
 
 	routes = {
-	  '/god/:god_name': v_messages.mainGod,
-	  '/': v_messages.main
+	  '/god/:god_name': v_messages.mainGod
 	};
 
 	router = Router(routes);
@@ -2414,11 +2412,14 @@
 	  data: function() {
 	    return {
 	      new_loading: false,
-	      old_loading: false
+	      old_loading: false,
+	      messages: []
 	    };
 	  },
+	  ready: function() {
+	    return this["new"]();
+	  },
 	  template: __webpack_require__(63),
-	  props: ['messages'],
 	  components: {
 	    'twitter': __webpack_require__(15),
 	    'github': __webpack_require__(22),
@@ -2446,7 +2447,7 @@
 	              _this.setTitleUnreadCount(data.messages.length);
 	            } else {
 	              if (_this.messages.length === 0) {
-	                _this.oldAll();
+	                _this.old();
 	              }
 	            }
 	            return _this.new_loading = false;
