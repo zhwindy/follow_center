@@ -60,8 +60,8 @@
 	  '/': {
 	    component: __webpack_require__(2)
 	  },
-	  '/god': {
-	    component: __webpack_require__(2)
+	  '/god/:god_name': {
+	    component: __webpack_require__(85)
 	  }
 	});
 
@@ -113,11 +113,6 @@
 	    'user_info': __webpack_require__(35),
 	    'god_list': __webpack_require__(42),
 	    'add_god': __webpack_require__(50)
-	  },
-	  data: function() {
-	    return {
-	      user_info: ''
-	    };
 	  }
 	};
 
@@ -447,7 +442,7 @@
 /* 7 */
 /***/ function(module, exports) {
 
-	module.exports = "<div  class=\"col-md-8\">\n    <messages></messages>\n</div>\n<div class=\"col-md-4\">\n    <div class=\"text-center\">\n        <add_god></add_god>\n    </div>\n    <user_info user_info=\"(%user_info%)\"></user_info>\n    <god_list></god_list>\n</div>\n";
+	module.exports = "<div  class=\"col-md-8\">\n    <messages></messages>\n</div>\n<div class=\"col-md-4\">\n    <div class=\"text-center\">\n        <add_god></add_god>\n    </div>\n    <god_list></god_list>\n</div>\n";
 
 /***/ },
 /* 8 */
@@ -4580,6 +4575,253 @@
 
 	module.exports = exports['default'];
 	// instance inherits the route data
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(82);
+
+	module.exports = {
+	  data: function() {
+	    return {
+	      new_loading: false,
+	      old_loading: false,
+	      messages: []
+	    };
+	  },
+	  ready: function() {
+	    this.god_name = this.$route.params.god_name;
+	    return this["new"]();
+	  },
+	  template: __webpack_require__(84),
+	  components: {
+	    'twitter': __webpack_require__(12),
+	    'github': __webpack_require__(20),
+	    'instagram': __webpack_require__(24),
+	    'tumblr': __webpack_require__(28)
+	  },
+	  directives: {
+	    'btn-loading': __webpack_require__(32)
+	  },
+	  methods: {
+	    "new": function() {
+	      var parm;
+	      if (this.new_loading) {
+	        return;
+	      }
+	      this.new_loading = true;
+	      parm = JSON.stringify({
+	        god_name: this.god_name
+	      });
+	      return $.ajax({
+	        url: '/god',
+	        type: 'POST',
+	        data: parm,
+	        success: (function(_this) {
+	          return function(data, status, response) {
+	            _this.messages = _.uniq(_.union(_this.messages, data.messages.reverse()), false, function(item, key, a) {
+	              return item.row_num;
+	            });
+	            _this.setTitleUnreadCount(0);
+	            return _this.new_loading = false;
+	          };
+	        })(this)
+	      });
+	    },
+	    old: function() {
+	      var parm;
+	      if (this.old_loading) {
+	        return;
+	      }
+	      parm = JSON.stringify({
+	        offset: this.messages.length + 1,
+	        god_name: this.god_name
+	      });
+	      this.old_loading = true;
+	      return $.ajax({
+	        url: '/god',
+	        type: 'POST',
+	        data: parm,
+	        success: (function(_this) {
+	          return function(data, status, response) {
+	            var el;
+	            _this.messages = _.uniq(_.union(data.messages.reverse(), _this.messages), false, function(item, key, a) {
+	              return item.row_num;
+	            });
+	            _this.old_loading = false;
+	            el = _this.getLastMessageEl();
+	            if (el !== null) {
+	              return _.delay(_this.scrollTo, 500, el, -50);
+	            }
+	          };
+	        })(this)
+	      });
+	    },
+	    getLastMessageEl: function() {
+	      var el;
+	      if (this.$.c_messages.length !== 0) {
+	        el = this.$.c_messages[0].$el;
+	      } else {
+	        el = null;
+	      }
+	      return el;
+	    },
+	    scrollTo: function(target, offset) {
+	      var y;
+	      if (offset == null) {
+	        offset = 0;
+	      }
+	      y = $(target).offset().top;
+	      y = y + offset;
+	      return window.scrollTo(0, y);
+	    },
+	    setTitleUnreadCount: function(count) {
+	      this.unreadCount = count;
+	      if (count === 0) {
+	        return document.title = "Follow Center";
+	      } else {
+	        return document.title = "(" + count + ") Follow Center";
+	      }
+	    }
+	  }
+	};
+
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(83);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(6)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(5)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 84 */
+/***/ function(module, exports) {
+
+	module.exports = "<div v-show=\"messages.length != 0 \" class=\"text-center\">\n    <a v-on=\"click:old\" v-btn-loading=\"old_loading\" href='javascript:void(0);' class=\"btn btn-defalt\">历史消息</a>\n</div>\n<component is=\"(%message.m_type%)\" keep-alive v-repeat=\"message in messages\" v-ref=\"c_messages\" v-transition=\"fade\">\n</component>\n<div class=\"text-center\">\n    <a v-on=\"click:new\" v-btn-loading=\"new_loading\" href='javascript:void(0);' class=\"btn btn-defalt\"></a>\n</div>\n";
+
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(86);
+
+	module.exports = {
+	  data: function() {
+	    return {
+	      user_info: ''
+	    };
+	  },
+	  ready: function() {
+	    return this.getUserInfo(this.$route.params.god_name);
+	  },
+	  template: __webpack_require__(88),
+	  components: {
+	    'god_messages': __webpack_require__(81),
+	    'user_info': __webpack_require__(35),
+	    'add_god': __webpack_require__(50)
+	  },
+	  methods: {
+	    getUserInfo: function(user_name) {
+	      var parm;
+	      parm = JSON.stringify({
+	        user_name: user_name
+	      });
+	      return $.ajax({
+	        url: '/user_info',
+	        type: 'POST',
+	        data: parm,
+	        success: (function(_this) {
+	          return function(data, status, response) {
+	            _this.user_info = data.user_info;
+	            return console.log(_this.user_info);
+	          };
+	        })(this)
+	      });
+	    }
+	  }
+	};
+
+
+/***/ },
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(87);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(6)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(5)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 88 */
+/***/ function(module, exports) {
+
+	module.exports = "<div  class=\"col-md-8\">\n    <god_messages></god_messages>\n</div>\n<div class=\"col-md-4\">\n    <div class=\"text-center\">\n        <add_god></add_god>\n    </div>\n    <user_info user_info=\"(%user_info%)\"></user_info>\n</div>\n";
 
 /***/ }
 /******/ ]);

@@ -8,7 +8,7 @@ router = new VueRouter()
 
 router.map
   '/': component: require('./components/main')
-  '/god': component: require('./components/main')
+  '/god/:god_name': component: require('./components/the_god')
 
 router.start(App, '#app')
 
