@@ -1595,6 +1595,9 @@
 	  directives: {
 	    disable: __webpack_require__(39),
 	    'btn-loading': __webpack_require__(32)
+	  },
+	  components: {
+	    'follow': __webpack_require__(89)
 	  }
 	};
 
@@ -1854,6 +1857,9 @@
 	      }
 	      return avatar_url;
 	    }
+	  },
+	  components: {
+	    'follow': __webpack_require__(89)
 	  }
 	};
 
@@ -4822,6 +4828,156 @@
 /***/ function(module, exports) {
 
 	module.exports = "<div  class=\"col-md-8\">\n    <god_messages></god_messages>\n</div>\n<div class=\"col-md-4\">\n    <div class=\"text-center\">\n        <add_god></add_god>\n    </div>\n    <user_info user_info=\"(%user_info%)\"></user_info>\n</div>\n";
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var bz;
+
+	__webpack_require__(90);
+
+	bz = __webpack_require__(15);
+
+	module.exports = {
+	  template: __webpack_require__(92),
+	  props: ['followed', 'god_id'],
+	  data: function() {
+	    return {
+	      btn_loading: false
+	    };
+	  },
+	  ready: function() {
+	    this.$watch('followed', function() {
+	      if (this.followed === 1) {
+	        return this.showFollow();
+	      } else {
+	        return this.showUnfollow();
+	      }
+	    });
+	    if (this.followed === 1) {
+	      return this.showFollow();
+	    } else {
+	      return this.showUnfollow();
+	    }
+	  },
+	  methods: {
+	    showFollow: function() {
+	      var target;
+	      target = this.$el;
+	      $(target).text('Following');
+	      return $(target).removeClass('btn-default').addClass('btn-warning');
+	    },
+	    showUnfollow: function() {
+	      var target;
+	      target = this.$el;
+	      $(target).html('<span class="fa fa-heart yellow" aria-hidden="true">+</span>Follow');
+	      return $(target).removeClass('btn-warning').addClass('btn-default');
+	    },
+	    toggleFollow: function() {
+	      var parm, target;
+	      if (this.btn_loading) {
+	        return;
+	      }
+	      this.btn_loading = true;
+	      target = this.$el;
+	      if (this.followed === 1) {
+	        parm = JSON.stringify({
+	          god_id: this.god_id
+	        });
+	        return $.ajax({
+	          url: '/unfollow',
+	          type: 'POST',
+	          data: parm,
+	          success: (function(_this) {
+	            return function(data, status, response) {
+	              _this.btn_loading = false;
+	              if (data.error !== '0') {
+	                throw new Error(data.error);
+	              } else {
+	                bz.showSuccess5('Unfollow 成功');
+	                _this.showUnfollow();
+	                return _this.followed = 0;
+	              }
+	            };
+	          })(this)
+	        });
+	      } else {
+	        parm = JSON.stringify({
+	          god_id: this.god_id
+	        });
+	        return $.ajax({
+	          url: '/follow',
+	          type: 'POST',
+	          data: parm,
+	          success: (function(_this) {
+	            return function(data, status, response) {
+	              _this.btn_loading = false;
+	              if (data.error !== '0') {
+	                if (data.error === 'must login') {
+	                  return window.location.href = "/login";
+	                } else {
+	                  throw new Error(data.error);
+	                }
+	              } else {
+	                bz.showSuccess5('Follow 成功');
+	                _this.showFollow();
+	                return _this.followed = 1;
+	              }
+	            };
+	          })(this)
+	        });
+	      }
+	    }
+	  }
+	};
+
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(91);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(6)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(5)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".yellow {\n  color: #F39C12;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 92 */
+/***/ function(module, exports) {
+
+	module.exports = "<button v-btn-loading=\"btn_loading\" v-on=\"click:toggleFollow\" type=\"button\" class=\"btn btn-sm\" aria-label=\"Left Align\">\n</button>\n";
 
 /***/ }
 /******/ ]);

@@ -87,4 +87,5 @@ module.exports =
   directives:
     disable: require('../../directives/disable')
     'btn-loading': require('../../directives/btn_loading')
-
+  components:
+    'follow':require('../follow')

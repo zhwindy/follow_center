@@ -66,4 +66,5 @@ module.exports =
         avatar_url = '/sp/'+ btoa(btoa(avatar_url))
 
       return avatar_url
-
+  components:
+    'follow':require('../follow')
