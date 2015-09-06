@@ -1,17 +1,8 @@
 {% extends 'base_app.html' %}
 {% block body %}
-<div id="v_messages" class="row">
-    <div  class="col-md-8">
-        <messages></messages>
-    </div>
-    <div class="col-md-4">
-        <div class="text-center">
-            <add_god></add_god>
-        </div>
-        <user_info user_info="(%user_info%)"></user_info>
-        <god_list></god_list>
-    </div>
+<div id="app" class="row">
+    <main></main>
 </div>
 
-<script src="{{static_url('build/main.bundle.js')}}"></script>
+<script src="{{static_url('build/app.bundle.js')}}"></script>
 {% end %}

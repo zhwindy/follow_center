@@ -40,14 +40,13 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue, v_users;
 
-	Vue = __webpack_require__(5);
+	Vue = __webpack_require__(1);
 
 	v_users = new Vue({
 	  created: function() {
@@ -58,8 +57,7 @@
 
 
 /***/ },
-
-/***/ 5:
+/* 1 */
 /***/ function(module, exports) {
 
 	Vue.config.debug = true;
@@ -91,5 +89,4 @@
 
 
 /***/ }
-
-/******/ });
+/******/ ]);

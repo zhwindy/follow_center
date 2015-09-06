@@ -1,7 +1,7 @@
 var path = require("path");
 module.exports = {
   entry: {
-        main: "./main.coffee",
+        app: "./app.coffee",
         users: "./users.coffee"
   	},
   output: {
