@@ -35,3 +35,6 @@ module.exports =
             else
               bz.showSuccess5("保存成功")
               $('#god_input').modal('hide')
+  directives:
+    'btn-loading': require('../../directives/btn_loading'),
+

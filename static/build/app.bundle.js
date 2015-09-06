@@ -1958,6 +1958,9 @@
 	        });
 	      }
 	    }
+	  },
+	  directives: {
+	    'btn-loading': __webpack_require__(32)
 	  }
 	};
 
