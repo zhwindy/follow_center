@@ -48,7 +48,7 @@ v_messages = new Vue
             @setTitleUnreadCount(data.messages.length)
           else
             if @messages.length == 0
-              @oldAll()
+              @$.c_messages.old()
           @new_loading=false
     oldAll:->
       parm = JSON.stringify
@@ -101,12 +101,6 @@ v_messages = new Vue
           el = @getLastMessageEl()
           if el != null
             _.delay(@scrollTo, 500, el, -50)
-    getLastMessageEl:->
-      if @$.c_messages.length != 0
-        el = @$.c_messages[0].$el
-      else
-        el = null
-      return el
     setTitleUnreadCount:(count)->#设置未读的条目数
       @unreadCount = count
       if count == 0
@@ -133,10 +127,6 @@ v_messages = new Vue
           if data.count == 1
             count = @getUnreadCount(last_message)
             @setTitleUnreadCount(count)
-    scrollTo:(target, offset=0)-># 定位到这个target, offset偏移量 
-      y = $(target).offset().top
-      y = y+ offset
-      window.scrollTo(0, y)
     getUserInfo:(user_name)->
       if @user_infos[user_name]
         @user_info = @user_infos[user_name]

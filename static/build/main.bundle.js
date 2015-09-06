@@ -108,7 +108,7 @@
 	              _this.setTitleUnreadCount(data.messages.length);
 	            } else {
 	              if (_this.messages.length === 0) {
-	                _this.oldAll();
+	                _this.$.c_messages.old();
 	              }
 	            }
 	            return _this.new_loading = false;
@@ -194,15 +194,6 @@
 	        })(this)
 	      });
 	    },
-	    getLastMessageEl: function() {
-	      var el;
-	      if (this.$.c_messages.length !== 0) {
-	        el = this.$.c_messages[0].$el;
-	      } else {
-	        el = null;
-	      }
-	      return el;
-	    },
 	    setTitleUnreadCount: function(count) {
 	      this.unreadCount = count;
 	      if (count === 0) {
@@ -242,15 +233,6 @@
 	          };
 	        })(this)
 	      });
-	    },
-	    scrollTo: function(target, offset) {
-	      var y;
-	      if (offset == null) {
-	        offset = 0;
-	      }
-	      y = $(target).offset().top;
-	      y = y + offset;
-	      return window.scrollTo(0, y);
 	    },
 	    getUserInfo: function(user_name) {
 	      var parm;
@@ -2429,8 +2411,11 @@
 	__webpack_require__(61);
 
 	module.exports = {
-	  created: function() {
-	    return console.log(this);
+	  data: function() {
+	    return {
+	      new_loading: false,
+	      old_loading: false
+	    };
 	  },
 	  template: __webpack_require__(63),
 	  props: ['messages'],
@@ -2448,21 +2433,72 @@
 	      if (this.new_loading) {
 	        return;
 	      }
-	      if (this.god_name) {
-	        return this.newGod();
-	      } else {
-	        return this.newAll();
-	      }
+	      this.new_loading = true;
+	      return $.ajax({
+	        url: '/new',
+	        type: 'POST',
+	        success: (function(_this) {
+	          return function(data, status, response) {
+	            if (data.messages.length !== 0) {
+	              _this.messages = _.uniq(_.union(_this.messages, data.messages.reverse()), false, function(item, key, a) {
+	                return item.row_num;
+	              });
+	              _this.setTitleUnreadCount(data.messages.length);
+	            } else {
+	              if (_this.messages.length === 0) {
+	                _this.oldAll();
+	              }
+	            }
+	            return _this.new_loading = false;
+	          };
+	        })(this)
+	      });
 	    },
 	    old: function() {
+	      var parm;
 	      if (this.old_loading) {
 	        return;
 	      }
-	      if (this.god_name) {
-	        return this.oldGod();
+	      parm = JSON.stringify({
+	        offset: this.messages.length
+	      });
+	      this.old_loading = true;
+	      return $.ajax({
+	        url: '/old',
+	        type: 'POST',
+	        data: parm,
+	        success: (function(_this) {
+	          return function(data, status, response) {
+	            var el;
+	            _this.messages = _.uniq(_.union(data.messages.reverse(), _this.messages), false, function(item, key, a) {
+	              return item.row_num;
+	            });
+	            _this.old_loading = false;
+	            el = _this.getLastMessageEl();
+	            if (el !== null) {
+	              return _.delay(_this.scrollTo, 500, el, -50);
+	            }
+	          };
+	        })(this)
+	      });
+	    },
+	    getLastMessageEl: function() {
+	      var el;
+	      if (this.$.c_messages.length !== 0) {
+	        el = this.$.c_messages[0].$el;
 	      } else {
-	        return this.oldAll();
+	        el = null;
 	      }
+	      return el;
+	    },
+	    scrollTo: function(target, offset) {
+	      var y;
+	      if (offset == null) {
+	        offset = 0;
+	      }
+	      y = $(target).offset().top;
+	      y = y + offset;
+	      return window.scrollTo(0, y);
 	    }
 	  }
 	};

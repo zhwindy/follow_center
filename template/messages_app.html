@@ -2,7 +2,8 @@
 {% block body %}
 <div id="v_messages" v-loading="loading" class="row">
     <div  class="col-md-8">
-        <messages messages="(%messages%)"> </messages>
+        <messages messages="(%messages%)" v-ref="c_messages">
+        </messages>
     </div>
     <div class="col-md-4">
         <div class="text-center">
