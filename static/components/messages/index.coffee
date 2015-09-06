@@ -65,4 +65,3 @@ module.exports =
         document.title = "Follow Center"
       else
         document.title = "(#{count}) Follow Center"
-

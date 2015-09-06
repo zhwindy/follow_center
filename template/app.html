@@ -1,7 +1,7 @@
 {% extends 'base_app.html' %}
 {% block body %}
 <div id="app" class="row">
-    <main></main>
+    <router-view></router-view>
 </div>
 
 <script src="{{static_url('build/app.bundle.js')}}"></script>
