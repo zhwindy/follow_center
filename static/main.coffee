@@ -23,48 +23,14 @@ v_messages = new Vue
         return
       if @god_name
         @newGod()
-      else
-        @newAll()
     old:->
       if @old_loading
         return
       if @god_name
         @oldGod()
-      else
-        @oldAll()
     main:-> # 首页
       @god_name = null
       @user_info = ''
-      #@newAll()
-    newAll:->
-      @new_loading=true
-      $.ajax
-        url: '/new'
-        type: 'POST'
-        success: (data, status, response) =>
-          if data.messages.length != 0
-            @messages = _.uniq _.union(@messages, data.messages.reverse()), false, (item, key, a) ->
-              item.row_num
-            @setTitleUnreadCount(data.messages.length)
-          else
-            if @messages.length == 0
-              @$.c_messages.old()
-          @new_loading=false
-    oldAll:->
-      parm = JSON.stringify
-        offset:@messages.length
-      @old_loading=true
-      $.ajax
-        url: '/old'
-        type: 'POST'
-        data : parm
-        success: (data, status, response) =>
-          @messages = _.uniq _.union(data.messages.reverse(), @messages), false, (item, key, a) ->
-            item.row_num
-          @old_loading=false
-          el = @getLastMessageEl()
-          if el != null
-            _.delay(@scrollTo, 500, el, -50)
     mainGod:(god_name)->
       @god_name = god_name
       @messages=[]
@@ -101,12 +67,6 @@ v_messages = new Vue
           el = @getLastMessageEl()
           if el != null
             _.delay(@scrollTo, 500, el, -50)
-    setTitleUnreadCount:(count)->#设置未读的条目数
-      @unreadCount = count
-      if count == 0
-        document.title = "Follow Center"
-      else
-        document.title = "(#{count}) Follow Center"
     getUnreadCount:(message)->
       index = _.findIndex(@messages, (d)=>
                return d.row_num == message.row_num
@@ -173,15 +133,10 @@ v_messages = new Vue
               v.saveLast(message)
             return false
   components:
-    'follow': require('./components/follow'),
-    'simditor': require('./components/simditor'),
     'user_info': require('./components/user_info'),
     'god_list': require('./components/god_list'),
     'add_god': require('./components/add_god'),
     'messages': require('./components/messages'),
-  directives:
-    'btn-loading': require('./directives/btn_loading'),
-    'loading': require('./directives/loading'),
 
 routes =
   '/god/:god_name': v_messages.mainGod

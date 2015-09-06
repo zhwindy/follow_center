@@ -75,8 +75,6 @@
 	      }
 	      if (this.god_name) {
 	        return this.newGod();
-	      } else {
-	        return this.newAll();
 	      }
 	    },
 	    old: function() {
@@ -85,60 +83,11 @@
 	      }
 	      if (this.god_name) {
 	        return this.oldGod();
-	      } else {
-	        return this.oldAll();
 	      }
 	    },
 	    main: function() {
 	      this.god_name = null;
 	      return this.user_info = '';
-	    },
-	    newAll: function() {
-	      this.new_loading = true;
-	      return $.ajax({
-	        url: '/new',
-	        type: 'POST',
-	        success: (function(_this) {
-	          return function(data, status, response) {
-	            if (data.messages.length !== 0) {
-	              _this.messages = _.uniq(_.union(_this.messages, data.messages.reverse()), false, function(item, key, a) {
-	                return item.row_num;
-	              });
-	              _this.setTitleUnreadCount(data.messages.length);
-	            } else {
-	              if (_this.messages.length === 0) {
-	                _this.$.c_messages.old();
-	              }
-	            }
-	            return _this.new_loading = false;
-	          };
-	        })(this)
-	      });
-	    },
-	    oldAll: function() {
-	      var parm;
-	      parm = JSON.stringify({
-	        offset: this.messages.length
-	      });
-	      this.old_loading = true;
-	      return $.ajax({
-	        url: '/old',
-	        type: 'POST',
-	        data: parm,
-	        success: (function(_this) {
-	          return function(data, status, response) {
-	            var el;
-	            _this.messages = _.uniq(_.union(data.messages.reverse(), _this.messages), false, function(item, key, a) {
-	              return item.row_num;
-	            });
-	            _this.old_loading = false;
-	            el = _this.getLastMessageEl();
-	            if (el !== null) {
-	              return _.delay(_this.scrollTo, 500, el, -50);
-	            }
-	          };
-	        })(this)
-	      });
 	    },
 	    mainGod: function(god_name) {
 	      this.god_name = god_name;
@@ -192,14 +141,6 @@
 	          };
 	        })(this)
 	      });
-	    },
-	    setTitleUnreadCount: function(count) {
-	      this.unreadCount = count;
-	      if (count === 0) {
-	        return document.title = "Follow Center";
-	      } else {
-	        return document.title = "(" + count + ") Follow Center";
-	      }
 	    },
 	    getUnreadCount: function(message) {
 	      var index;
@@ -289,16 +230,10 @@
 	    }
 	  },
 	  components: {
-	    'follow': __webpack_require__(6),
-	    'simditor': __webpack_require__(11),
 	    'user_info': __webpack_require__(34),
 	    'god_list': __webpack_require__(44),
 	    'add_god': __webpack_require__(52),
 	    'messages': __webpack_require__(60)
-	  },
-	  directives: {
-	    'btn-loading': __webpack_require__(41),
-	    'loading': __webpack_require__(56)
 	  }
 	});
 
@@ -665,150 +600,9 @@
 
 
 /***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var bz;
-
-	__webpack_require__(7);
-
-	bz = __webpack_require__(9);
-
-	module.exports = {
-	  template: __webpack_require__(10),
-	  props: ['followed', 'god_id'],
-	  data: function() {
-	    return {
-	      btn_loading: false
-	    };
-	  },
-	  ready: function() {
-	    this.$watch('followed', function() {
-	      if (this.followed === 1) {
-	        return this.showFollow();
-	      } else {
-	        return this.showUnfollow();
-	      }
-	    });
-	    if (this.followed === 1) {
-	      return this.showFollow();
-	    } else {
-	      return this.showUnfollow();
-	    }
-	  },
-	  methods: {
-	    showFollow: function() {
-	      var target;
-	      target = this.$el;
-	      $(target).text('Following');
-	      return $(target).removeClass('btn-default').addClass('btn-warning');
-	    },
-	    showUnfollow: function() {
-	      var target;
-	      target = this.$el;
-	      $(target).html('<span class="fa fa-heart yellow" aria-hidden="true">+</span>Follow');
-	      return $(target).removeClass('btn-warning').addClass('btn-default');
-	    },
-	    toggleFollow: function() {
-	      var parm, target;
-	      if (this.btn_loading) {
-	        return;
-	      }
-	      this.btn_loading = true;
-	      target = this.$el;
-	      if (this.followed === 1) {
-	        parm = JSON.stringify({
-	          god_id: this.god_id
-	        });
-	        return $.ajax({
-	          url: '/unfollow',
-	          type: 'POST',
-	          data: parm,
-	          success: (function(_this) {
-	            return function(data, status, response) {
-	              _this.btn_loading = false;
-	              if (data.error !== '0') {
-	                throw new Error(data.error);
-	              } else {
-	                bz.showSuccess5('Unfollow 成功');
-	                _this.showUnfollow();
-	                return _this.followed = 0;
-	              }
-	            };
-	          })(this)
-	        });
-	      } else {
-	        parm = JSON.stringify({
-	          god_id: this.god_id
-	        });
-	        return $.ajax({
-	          url: '/follow',
-	          type: 'POST',
-	          data: parm,
-	          success: (function(_this) {
-	            return function(data, status, response) {
-	              _this.btn_loading = false;
-	              if (data.error !== '0') {
-	                if (data.error === 'must login') {
-	                  return window.location.href = "/login";
-	                } else {
-	                  throw new Error(data.error);
-	                }
-	              } else {
-	                bz.showSuccess5('Follow 成功');
-	                _this.showFollow();
-	                return _this.followed = 1;
-	              }
-	            };
-	          })(this)
-	        });
-	      }
-	    }
-	  }
-	};
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(8);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(3)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".yellow {\n  color: #F39C12;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
+/* 6 */,
+/* 7 */,
+/* 8 */,
 /* 9 */
 /***/ function(module, exports) {
 
@@ -1113,113 +907,11 @@
 
 
 /***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	module.exports = "<button v-btn-loading=\"btn_loading\" v-on=\"click:toggleFollow\" type=\"button\" class=\"btn btn-sm\" aria-label=\"Left Align\">\n</button>\n";
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var bz;
-
-	__webpack_require__(12);
-
-	bz = __webpack_require__(9);
-
-	module.exports = {
-	  template: __webpack_require__(14),
-	  props: ['content'],
-	  ready: function() {
-	    this.initSimditor();
-	    return this.$watch('content', function(newVal, oldVal) {
-	      if (newVal !== this.simditor.getValue()) {
-	        return this.simditor.setValue(newVal);
-	      }
-	    });
-	  },
-	  methods: {
-	    initSimditor: function() {
-	      var mobileToolbar, small_tool_bar, toolbar;
-	      toolbar = ['title', 'bold', 'italic', 'underline', 'strikethrough', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'indent', 'outdent', 'alignment'];
-	      mobileToolbar = ['bold', 'underline', 'strikethrough', 'color', 'ul', 'ol'];
-	      small_tool_bar = ['title', 'link', 'image', 'bold'];
-	      if (bz.mobilecheck()) {
-	        toolbar = mobileToolbar;
-	      }
-	      this.simditor = new Simditor({
-	        textarea: this.$el,
-	        placeholder: '这里输入文字...',
-	        toolbar: small_tool_bar,
-	        toolbarFloat: false,
-	        pasteImage: true,
-	        defaultImage: 'assets/images/image.png',
-	        upload: {
-	          url: '/upload_image',
-	          params: null,
-	          fileKey: 'upload_file',
-	          connectionCount: 3,
-	          leaveConfirm: '正在上传文件，如果离开上传会自动取消'
-	        }
-	      });
-	      return this.simditor.on('valuechanged', (function(_this) {
-	        return function(e, src) {
-	          return _this.content = _this.simditor.getValue();
-	        };
-	      })(this));
-	    }
-	  }
-	};
-
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(13);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(3)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".simditor .simditor-body {\n  min-height: 2em !important;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
-
-	module.exports = "<textarea placeholder=\"\"></textarea>\n";
-
-/***/ },
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -2328,81 +2020,10 @@
 	module.exports = "<a v-on=\"click:pop\" class=\"btn btn-defalt\" data-toggle=\"modal\" data-target=\"#god_input\">添加</a>\n<div id=\"god_input\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\">\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n                <h4 class=\"modal-title\" id=\"exampleModalLabel\">添加一个新的牛人</h4>\n            </div>\n            <div class=\"modal-body\">\n                <form>\n                    <div class=\"form-group\">\n                        <label for=\"recipient-name\" class=\"control-label\">用户名:</label>\n                        <input v-on=\"keyup:addGod | key 'enter'\" v-model=\"user_name\" type=\"text\" class=\"form-control\" id=\"recipient-name\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"message-text\" class=\"control-label\">描述:</label>\n                        <simditor content=\"(%@ slogan%)\"></simditor>\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer\">\n                <button v-btn-loading=\"btn_loading\" v-on=\"click:addGod\" type=\"button\" class=\"btn btn-sm btn-default\" data-dismiss=\"modal\">加好了</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(57);
-
-	module.exports = {
-	  bind: function() {},
-	  update: function(new_value, old_value) {
-	    var color, html, target;
-	    target = "body";
-	    color = "#040000";
-	    if (this.vm.$data.loading_target) {
-	      target = this.vm.$data.loading_target;
-	    }
-	    if (this.arg) {
-	      color = this.arg;
-	    }
-	    html = __webpack_require__(59);
-	    if (new_value) {
-	      $(target).append(html);
-	    } else {
-	      $(target).find('.highwe-loading').remove();
-	    }
-	  },
-	  unbind: function() {}
-	};
-
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(58);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./style.less");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(3)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "", ""]);
-
-	// exports
-
-
-/***/ },
-/* 59 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class='highwe-loading'>\n    <svg class='part l' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='50px' height='50px' viewBox='0 0 100 100' enable-background='new 0 0 100 100' xml:space='preserve'>\n        <g>\n        <path fill='#{color}' d='M52.451,10.494c18.441-4.941,37.352,4.69,44.514,21.834C87.965,8.55,62.229-5.001,37.149,1.72C10.582,8.838-5.246,36.02,1.59,62.594c0.992,4.299,3.463,7.563,6.977,8.516c6.066,1.646,12.934-4.208,15.339-13.074c0.766-2.823,0.985-5.609,0.735-8.152C23.207,32.102,34.602,15.277,52.451,10.494z'/>\n        </g>\n    </svg>\n    <svg version='1.1' class='part r' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'width='50px' height='50px' viewBox='0 0 100 100' enable-background='new 0 0 100 100' xml:space='preserve'>\n        <g>\n        <path fill='#{color}' d='M99.602,42.209c2.33,18.401-9.225,36.157-27.643,41.092c-8.741,2.343-17.588,1.407-25.239-2.047l0.002,0.003l-0.002,0.002c-2.618-1.305-6.136-1.844-9.871-1.297c-7.2,1.055-12.474,5.741-11.782,10.465c0.378,2.579,2.456,4.634,5.435,5.8L30.5,96.228c9.947,4.241,21.332,5.312,32.587,2.295C88.134,91.812,103.639,67.266,99.602,42.209z'/>\n        </g>\n    </svg>\n</div>\n";
-
-/***/ },
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
 /* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -2500,6 +2121,14 @@
 	      y = $(target).offset().top;
 	      y = y + offset;
 	      return window.scrollTo(0, y);
+	    },
+	    setTitleUnreadCount: function(count) {
+	      this.unreadCount = count;
+	      if (count === 0) {
+	        return document.title = "Follow Center";
+	      } else {
+	        return document.title = "(" + count + ") Follow Center";
+	      }
 	    }
 	  }
 	};

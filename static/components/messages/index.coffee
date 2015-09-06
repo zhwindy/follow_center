@@ -59,3 +59,10 @@ module.exports =
       y = $(target).offset().top
       y = y+ offset
       window.scrollTo(0, y)
+    setTitleUnreadCount:(count)->#设置未读的条目数
+      @unreadCount = count
+      if count == 0
+        document.title = "Follow Center"
+      else
+        document.title = "(#{count}) Follow Center"
+
