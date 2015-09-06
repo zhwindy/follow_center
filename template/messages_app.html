@@ -2,14 +2,7 @@
 {% block body %}
 <div id="v_messages" v-loading="loading" class="row">
     <div  class="col-md-8">
-        <div v-show="messages.length != 0 " class="text-center">
-            <a v-on="click:old" v-btn-loading="old_loading" href='javascript:void(0);' class="btn btn-defalt">历史消息</a>
-        </div>
-        <component is="(%message.m_type%)" v-repeat="message in messages" v-ref="c_messages" v-transition="fade">
-        </component>
-        <div class="text-center">
-            <a v-on="click:new" v-btn-loading="new_loading" href='javascript:void(0);' class="btn btn-defalt"></a>
-        </div>
+        <messages messages="(%messages%)"> </messages>
     </div>
     <div class="col-md-4">
         <div class="text-center">
@@ -22,4 +15,3 @@
 
 <script src="{{static_url('build/main.bundle.js')}}"></script>
 {% end %}
-

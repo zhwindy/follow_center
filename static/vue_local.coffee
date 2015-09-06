@@ -1,5 +1,4 @@
 Vue.config.debug = true
-#不要waring 
 Vue.config.silent = false
 Vue.config.delimiters = ['(%', '%)']
 Vue.transition 'fade',

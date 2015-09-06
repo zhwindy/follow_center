@@ -185,13 +185,10 @@ v_messages = new Vue
   components:
     'follow': require('./components/follow'),
     'simditor': require('./components/simditor'),
-    'twitter': require('./components/twitter'),
-    'github': require('./components/github'),
-    'instagram': require('./components/instagram'),
-    'tumblr': require('./components/tumblr'),
     'user_info': require('./components/user_info'),
     'god_list': require('./components/god_list'),
     'add_god': require('./components/add_god'),
+    'messages': require('./components/messages'),
   directives:
     'btn-loading': require('./directives/btn_loading'),
     'loading': require('./directives/loading'),

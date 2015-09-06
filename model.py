@@ -322,6 +322,11 @@ class tumblr_blog(model_oper_bz.base):
     album = TextField(null=True)
     plays = TextField(null=True)
     caption_abstract = TextField(null=True)
+    track_name = TextField(null=True)
+    artist = TextField(null=True)
+    audio_type = TextField(null=True)
+    audio_source_url = TextField(null=True)
+    embed = TextField(null=True)
 
 
 
