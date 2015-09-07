@@ -608,6 +608,7 @@
 	          if (message_position === scroll_bottom) {
 	            message = $(this)[0].__vue__.message;
 	            if (v.last_message === null || v.last_message.created_at < message.created_at) {
+	              console.log('saveLast:' + message.id);
 	              v.saveLast(message);
 	            }
 	            return false;

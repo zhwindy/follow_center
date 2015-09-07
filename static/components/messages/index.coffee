@@ -119,7 +119,7 @@ module.exports =
             #从jquery对像又取到 vue 对象
             message = $(this)[0].__vue__.message
             if v.last_message == null or v.last_message.created_at<message.created_at
-              #console.log message.id
+              console.log 'saveLast:' + message.id
               v.saveLast(message)
             return false
 
