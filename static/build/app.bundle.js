@@ -455,11 +455,14 @@
 	    return {
 	      new_loading: false,
 	      old_loading: false,
-	      messages: []
+	      error_info: '',
+	      messages: [],
+	      last_message: null
 	    };
 	  },
 	  ready: function() {
-	    return this["new"]();
+	    this["new"]();
+	    return this.bindScroll();
 	  },
 	  template: __webpack_require__(11),
 	  components: {
@@ -551,29 +554,58 @@
 	        return document.title = "(" + count + ") Follow Center";
 	      }
 	    },
+	    getUnreadCount: function(message) {
+	      var index;
+	      index = _.findIndex(this.messages, (function(_this) {
+	        return function(d) {
+	          return d.row_num === message.row_num;
+	        };
+	      })(this));
+	      return this.messages.length - index - 1;
+	    },
+	    saveLast: function(last_message) {
+	      var parm;
+	      this.last_message_id = last_message.m_type + '_' + last_message.id;
+	      parm = JSON.stringify({
+	        last_time: last_message.created_at,
+	        last_message_id: last_message.m_type + '_' + last_message.id
+	      });
+	      return $.ajax({
+	        url: '/save_last',
+	        type: 'POST',
+	        data: parm,
+	        success: (function(_this) {
+	          return function(data, status, response) {
+	            var count;
+	            _this.last_message = last_message;
+	            if (data.count === 1) {
+	              count = _this.getUnreadCount(last_message);
+	              return _this.setTitleUnreadCount(count);
+	            }
+	          };
+	        })(this)
+	      });
+	    },
 	    bindScroll: function() {
-	      var v;
+	      var messages_element, top, v;
 	      v = this;
+	      messages_element = $(v.$el.parentElement);
+	      top = messages_element.offset().top;
 	      return $(window).scroll(function() {
-	        var $top;
-	        $top = $(this.$el).offset().top;
 	        if ($(this).scrollTop() === 0) {
 	          null;
-	        } else if (($(this.$el).height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
+	        } else if ((messages_element.height() + top - $(this).scrollTop() - $(this).height()) <= 0) {
 	          if (v.new_loading === false) {
 	            v["new"]();
 	          }
 	        }
-	        return $('#v_messages .col-md-8 .box').each(function() {
+	        return messages_element.children('.box').each(function() {
 	          var message, message_position, scroll_bottom;
 	          message_position = $(this).offset().top + $(this).height();
 	          scroll_bottom = $(window).scrollTop() + $(window).height();
 	          message_position = parseInt(message_position / 10);
 	          scroll_bottom = parseInt(scroll_bottom / 10);
 	          if (message_position === scroll_bottom) {
-	            if (v.god_name !== null) {
-	              return false;
-	            }
 	            message = $(this)[0].__vue__.message;
 	            if (v.last_message === null || v.last_message.created_at < message.created_at) {
 	              v.saveLast(message);
@@ -778,14 +810,24 @@
 	    return real_height;
 	  },
 	  getFitHeight: function(img_height, img_width) {
-	    var max_width, real_height;
-	    max_width = $(window).width() - 50;
-	    if (max_width <= 768) {
-	      real_height = calculateHeight(img_height, img_width, max_width);
-	    } else {
-	      max_width = $('#v_messages > .col-md-8').width() - 50;
-	      real_height = window.bz.calculateHeight(img_height, img_width, max_width);
+	    var border, img_border, max_width, message_width, real_height, window_width;
+	    window_width = $(window).width();
+	    border = 15 * 2;
+	    if (window_width <= 768) {
+	      message_width = window_width - border;
 	    }
+	    if ((768 < window_width && window_width < 992)) {
+	      message_width = 750 - border;
+	    }
+	    if ((992 <= window_width && window_width < 1200)) {
+	      message_width = 970 * (8 / 12) - border;
+	    }
+	    if (window_width >= 1200) {
+	      message_width = 1170 * (8 / 12) - border;
+	    }
+	    img_border = 20;
+	    max_width = message_width - img_border;
+	    real_height = window.bz.calculateHeight(img_height, img_width, max_width);
 	    return real_height;
 	  },
 	  delay: function(ms, func) {
@@ -1251,10 +1293,11 @@
 	      return '/sp/' + img_url;
 	    },
 	    height: function() {
-	      var img_height, img_width;
+	      var img_height, img_width, real_height;
 	      img_height = this.message.extended_entities.height;
 	      img_width = this.message.extended_entities.width;
-	      return bz.getFitHeight(img_height, img_width);
+	      real_height = bz.getFitHeight(img_height, img_width);
+	      return real_height;
 	    }
 	  },
 	  directives: {

@@ -18,55 +18,9 @@ v_messages = new Vue
   created:->
     @bindScroll()
   methods:
-    new:->
-      if @new_loading
-        return
-      if @god_name
-        @newGod()
-    old:->
-      if @old_loading
-        return
-      if @god_name
-        @oldGod()
     main:-> # 首页
       @god_name = null
       @user_info = ''
-    mainGod:(god_name)->
-      @god_name = god_name
-      @messages=[]
-      @newGod()
-      #window.scrollTo(0, 0) #回到顶端
-      #_.delay(window.scrollTo, 2500, 0,0)
-    newGod:->
-      @new_loading=true
-      parm = JSON.stringify
-        god_name:@god_name
-      $.ajax
-        url: '/god'
-        type: 'POST'
-        data : parm
-        success: (data, status, response) =>
-          @messages = _.uniq _.union(@messages, data.messages.reverse()), false, (item, key, a) ->
-            item.row_num
-          @setTitleUnreadCount(data.messages.length)
-          @new_loading=false
-      @getUserInfo(@god_name)
-    oldGod:->
-      parm = JSON.stringify
-        offset:@messages.length+1
-        god_name:@god_name
-      @old_loading=true
-      $.ajax
-        url: '/god'
-        type: 'POST'
-        data : parm
-        success: (data, status, response) =>
-          @messages = _.uniq _.union(data.messages.reverse(), @messages), false, (item, key, a) ->
-            item.row_num
-          @old_loading=false
-          el = @getLastMessageEl()
-          if el != null
-            _.delay(@scrollTo, 500, el, -50)
     getUnreadCount:(message)->
       index = _.findIndex(@messages, (d)=>
                return d.row_num == message.row_num

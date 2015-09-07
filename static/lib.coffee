@@ -17,13 +17,21 @@ window.bz =
       real_height = img_height
     return real_height
   getFitHeight: (img_height, img_width)->
-    max_width = $(window).width()-50
-    if max_width <= 768 #小屏幕，应该这时占满整个屏幕了
-      real_height = calculateHeight(img_height, img_width, max_width)
-    else #取真正能显示图片的大小
-      max_width = $('#v_messages > .col-md-8').width()-50
+      #还没渲染，无法动态取，只能用 bootstrap的栅格来算
+      window_width = $(window).width()
+      border = 15*2 #边框总是有15，两边30
+      if window_width <=768
+        message_width = window_width-border
+      if 768<window_width<992
+        message_width = 750-border
+      if 992<=window_width<1200
+        message_width = 970*(8/12)-border
+      if window_width>=1200
+        message_width = 1170*(8/12)-border
+      img_border = 20
+      max_width = message_width-img_border
       real_height = window.bz.calculateHeight(img_height, img_width, max_width)
-    return real_height
+      return real_height
   delay: (ms, func)-> # underscorejs 有做好的 
     setTimeout func, ms
   mobilecheck: ->
