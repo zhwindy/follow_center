@@ -64,3 +64,6 @@ module.exports =
               bz.showSuccess5('Follow 成功')
               @showFollow()
               @followed = 1
+  directives:
+    'btn-loading': require('../../directives/btn_loading')
+

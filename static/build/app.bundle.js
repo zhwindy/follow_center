@@ -550,6 +550,38 @@
 	      } else {
 	        return document.title = "(" + count + ") Follow Center";
 	      }
+	    },
+	    bindScroll: function() {
+	      var v;
+	      v = this;
+	      return $(window).scroll(function() {
+	        var $top;
+	        $top = $(this.$el).offset().top;
+	        if ($(this).scrollTop() === 0) {
+	          null;
+	        } else if (($(this.$el).height() + $top - $(this).scrollTop() - $(this).height()) <= 0) {
+	          if (v.new_loading === false) {
+	            v["new"]();
+	          }
+	        }
+	        return $('#v_messages .col-md-8 .box').each(function() {
+	          var message, message_position, scroll_bottom;
+	          message_position = $(this).offset().top + $(this).height();
+	          scroll_bottom = $(window).scrollTop() + $(window).height();
+	          message_position = parseInt(message_position / 10);
+	          scroll_bottom = parseInt(scroll_bottom / 10);
+	          if (message_position === scroll_bottom) {
+	            if (v.god_name !== null) {
+	              return false;
+	            }
+	            message = $(this)[0].__vue__.message;
+	            if (v.last_message === null || v.last_message.created_at < message.created_at) {
+	              v.saveLast(message);
+	            }
+	            return false;
+	          }
+	        });
+	      });
 	    }
 	  }
 	};
@@ -4929,6 +4961,9 @@
 	        });
 	      }
 	    }
+	  },
+	  directives: {
+	    'btn-loading': __webpack_require__(32)
 	  }
 	};
 
